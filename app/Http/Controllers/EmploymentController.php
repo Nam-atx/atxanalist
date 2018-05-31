@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests;
-
+use Illuminate\Http\Response;
 use Input;
 use App\Employment;
 use DB;
@@ -54,6 +54,19 @@ class EmploymentController extends Controller
        
 
         return back();
+    }
+
+
+    public function getList()
+    {
+        $employment = Employment::all();
+        return response()->json(['data' => $employment,'status' => Response::HTTP_OK]);
+    }
+
+    public function getEmployeeDetail($id)
+    {
+        $employment = Employment::where('id',$id)->first();
+        return response()->json(['data' => $employment,'status' => Response::HTTP_OK]);
     }
 
 }
