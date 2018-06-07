@@ -13,13 +13,19 @@ use Illuminate\Http\Request;
 |
 */
 
+Route::post('login', 'API\UserController@login');
+Route::post('register', 'API\UserController@register');
+
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-
-
+Route::group(['middleware' => 'auth:api'], function(){
+	Route::post('/employmentcomment/{id}', 'EmploymentController@postComment');
+});
 Route::get('/getemployments', 'EmploymentController@getList');
 Route::get('/getemployee/{id}', 'EmploymentController@getEmployeeDetail');
+
+Route::get('/comments/{id}', 'EmploymentController@getComments');
 
 

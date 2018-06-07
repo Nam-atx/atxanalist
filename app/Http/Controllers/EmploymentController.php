@@ -7,6 +7,7 @@ use App\Http\Requests;
 use Illuminate\Http\Response;
 use Input;
 use App\Employment;
+use App\empComments;
 use DB;
 use Session;
 use Excel;
@@ -69,4 +70,21 @@ class EmploymentController extends Controller
         return response()->json(['data' => $employment,'status' => Response::HTTP_OK]);
     }
 
+    public function postComment(Request $request,$id){
+        $data=['user_id'=>$request->input('user_id'),'emp_id'=>$id,'comment'=>$request->input('comment')];
+
+        empComments::create($data);
+
+        //$results=empComments::where('emp_id',$id)->get();
+
+        $results = DB::table('users')->join('emp_comments', 'users.id', '=', 'emp_comments.user_id')->where('emp_comments.emp_id',$id)->select('users.*', 'emp_comments.emp_id', 'emp_comments.comment', 'emp_comments.created_at')->get();
+
+        return response()->json(['data' => $results,'status' => Response::HTTP_OK]);   
+    }
+
+    public function getComments($id){
+        $results = DB::table('users')->join('emp_comments', 'users.id', '=', 'emp_comments.user_id')->where('emp_comments.emp_id',$id)->select('users.id','users.name', 'emp_comments.emp_id', 'emp_comments.comment', 'emp_comments.created_at')->get();
+
+        return response()->json(['data' => $results,'status' => Response::HTTP_OK]); 
+    }
 }
