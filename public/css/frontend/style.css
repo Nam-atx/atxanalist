@@ -1,0 +1,9 @@
+.pagination{float: right;margin-right: 25px;}
+.table td, .table th{ padding:0.3%;}
+.comment-show{min-height:400px;border: 1px solid #cecece;}
+.comment-list{list-style: none;padding-left: 0px;text-indent: 10px;}
+.comment-list li{background: #c3c3c3;border: 1px solid #b3b3b3;}
+
+@media (min-width: 1200px) {
+.container {max-width: 1300px;}
+}

@@ -11,15 +11,19 @@
 |
 */
 
-Route::match(['get', 'post'],'/','AdminController@login')->name('admin.login');
+//Route::match(['get', 'post'],'/','AdminController@login')->name('admin.login');
 
 Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');
-
-
-Route::match(['get', 'post'],'/admin','AdminController@login')->name('admin.login');
 Route::group(['middleware'=>['auth']],function(){
+  Route::get('/home', 'User\UserController@index');
+  Route::get('/','User\UserController@index');
+  Route::get('/emp/{emp}','User\UserController@show')->name('emp.show');
+});
+
+
+
+Route::match(['get', 'post'],'/admin/login','AdminController@login')->name('admin.login');
+Route::group(['middleware'=>['auth','admin']],function(){
   Route::get('/admin/dashboard','AdminController@dashboard')->name('admin.dashboard');
   Route::get('/admin/users','AdminController@users')->name('admin.users');
   Route::get('/admin/user/add','AdminController@userCreate')->name('admin.user.create');

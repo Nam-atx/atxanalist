@@ -19,11 +19,11 @@ class RedirectIfAuthenticated
     {
         if (Auth::guard($guard)->check()) {
             return redirect('/admin/dashboard');
-        } else {
+        } /*else {
             flash('Please login to access')->error();
             return redirect()->action('AdminController@login');
         }
-
+*/
         return $next($request);
     }
 }
