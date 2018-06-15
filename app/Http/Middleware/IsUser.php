@@ -4,7 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Support\Facades\Auth;
-class IsAdmin
+class IsUser
 {
     /**
      * Handle an incoming request.
@@ -22,6 +22,6 @@ class IsAdmin
         
         }
 
-        return redirect('/');
+        return redirect('/admin/dashboard');
     }
 }

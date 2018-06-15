@@ -4,9 +4,10 @@ namespace App\Http\Controllers\User;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-
+use Illuminate\Http\Response;
 use App\Employment;
 use App\empComments;
+use App\Systemlog;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -29,10 +30,34 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         //
-        $employments=Employment::paginate(5);
+        $string='';
+
+        $user=Auth::user();
+
+        $sql=DB::table('employment');
+        if($request->input('position')){
+            $sql->where('position','=',$request->input('position'));
+            $string.=',postion='.$request->input('position');
+        }
+        if($request->input('city')){
+            $sql->where('city','=',$request->input('city'));
+            $string.=',city='.$request->input('city');
+        }
+        if($request->input('state')){
+            $sql->where('state','=',$request->input('state'));
+            $string.=',state='.$request->input('state');
+        }
+
+        if($string){
+            $data=['user_id'=>$user->id,'name'=>$user->name,'type'=>'search','comment'=>'search by '.$user->name. '=>'.$string];
+            Systemlog::create($data);
+        }
+
+        $employments=$sql->paginate(5)->appends(request()->query());
+        //$employments=Employment::paginate(5);
 
         return view('user.employment.index',['employments'=>$employments]);
 
@@ -75,10 +100,27 @@ class UserController extends Controller
 
         $empcomments = DB::table('users')
             ->join('emp_comments', 'emp_comments.user_id', '=', 'users.id')
-            ->select('users.id','users.name','emp_comments.comment','emp_comments.created_at')->where('emp_comments.emp_id','=',$id)->where('users.id','=',$user->id)->get();
+            ->select('users.id','users.name','emp_comments.comment',DB::raw('DATE_FORMAT(emp_comments.created_at, "%d %b %Y %r") as created_at'))->where('emp_comments.emp_id','=',$id)->get();
         
+        $data=['user_id'=>$user->id,'name'=>$user->name,'type'=>'view','comment'=>'viewed by '.$user->name];
+        Systemlog::create($data);
+
         return view('user.employment.show',['employement'=>$employment,'empcomments'=>$empcomments]);
 
+    }
+
+
+    public function saveComment(Request $request, $id){
+        $user=Auth::user();
+        $data=['user_id'=>$user->id,'emp_id'=>$id,'comment'=>$request->input('comment')];
+
+        empComments::create($data);
+
+        //$results=empComments::where('emp_id',$id)->get();
+
+        $results = DB::table('users')->join('emp_comments', 'users.id', '=', 'emp_comments.user_id')->where('emp_comments.emp_id',$id)->select('users.name', 'emp_comments.emp_id', 'emp_comments.comment', DB::raw('DATE_FORMAT(emp_comments.created_at, "%d %b %Y %r") as created_at'))->get();
+
+        return response()->json(['data' => $results,'status' => Response::HTTP_OK]); 
     }
 
     /**

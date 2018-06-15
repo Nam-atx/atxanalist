@@ -11,6 +11,8 @@
 <link rel="stylesheet" href="{{asset('public/css/backend/matrix-media.css')}}" />
 <link href="{{asset('public/fonts/backend/css/font-awesome.css')}}" rel="stylesheet" />
 <link rel="stylesheet" href="{{asset('public/css/backend/jquery.gritter.css')}}" />
+
+<link rel="stylesheet" href="{{asset('public/css/backend/style.css')}}" />
 <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700,800' rel='stylesheet' type='text/css'>
 <meta name="csrf-token" content="{{ csrf_token() }}">
 
@@ -23,6 +25,7 @@
 @include('admin.layout.sidebar')
 @yield('content')
 @include('admin.layout.footer')
+
 <script src="{{asset('public/js/backend/excanvas.min.js')}}"></script> 
 <script src="{{asset('public/js/backend/jquery.min.js')}}"></script> 
 <script src="{{asset('public/js/backend/jquery.ui.custom.js')}}"></script> 

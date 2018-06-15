@@ -14,10 +14,11 @@
 //Route::match(['get', 'post'],'/','AdminController@login')->name('admin.login');
 
 Auth::routes();
-Route::group(['middleware'=>['auth']],function(){
-  Route::get('/home', 'User\UserController@index');
+Route::group(['middleware'=>['auth','user']],function(){
+  Route::get('/home', 'User\UserController@index')->name('home');
   Route::get('/','User\UserController@index');
   Route::get('/emp/{emp}','User\UserController@show')->name('emp.show');
+  Route::post('/emp/{emp}/comment','User\UserController@saveComment')->name('emp.comment');
 });
 
 
@@ -40,6 +41,13 @@ Route::group(['middleware'=>['auth','admin']],function(){
 
   Route::get('/admin/excel/export/{type}','EmploymentController@exportExcel')->name('admin.excel.export');
   
+  // employment management
+
+  Route::get('/admin/emp/list','EmploymentController@list')->name('admin.emp.list');
+  Route::get('/admin/emp/{emp}/edit','EmploymentController@edit')->name('admin.emp.edit');
+  Route::put('/admin/emp/{emp}/edit','EmploymentController@update')->name('admin.emp.update');
+  Route::get('/admin/emp/add','EmploymentController@add')->name('admin.emp.add');
+  Route::post('/admin/emp/save','EmploymentController@save')->name('admin.emp.save');
 
 });
 

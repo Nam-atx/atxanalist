@@ -37,12 +37,12 @@
                         @if($empcomments)
                         <ul class="comment-list">
                         @foreach( $empcomments as $empcomment)
-                        <li>{{$empcomment->comment}} {{$empcomment->name?'By '.$empcomment->name:''}} {{$empcomment->created_at?'@ '.\Carbon\Carbon::parse($empcomment->created_at)->format('d M Y H:i:s A'):''}}</li>
+                        <li>{{$empcomment->comment}} {{$empcomment->name?'By '.$empcomment->name:''}} {{$empcomment->created_at?'@ '.$empcomment->created_at:''}}</li>
                         @endforeach
                       </ul>
                         @endif
                       </div>
-                      <form method="POST" action="{{ route('register') }}">
+                      <form id="comment-submit" method="POST" action="{{ route('emp.comment',$employement['id']) }}">
                         @csrf
                         <div class="form-group row">
                             
@@ -57,14 +57,8 @@
                             </div>
                         </div>
 
-                        <div class="form-group row mb-0">
-                            <div class="col-md-2 offset-md-10">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Send') }}
-                                </button>
-                            </div>
-                        </div>
-                    </form>
+                        <div class="form-group row mb-0"><div class="col-md-2 offset-md-10"><button id="comment-submit" type="submit" class="btn btn-primary">{{ __('Send') }}</button></div></div>
+                      </form>
                     </div>
                     </div>
                   </div>
