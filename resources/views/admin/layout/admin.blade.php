@@ -17,19 +17,11 @@
 <meta name="csrf-token" content="{{ csrf_token() }}">
 
 
-
-</head>
-<body>
-
-@include('admin.layout.header')
-@include('admin.layout.sidebar')
-@yield('content')
-@include('admin.layout.footer')
-
 <script src="{{asset('public/js/backend/excanvas.min.js')}}"></script> 
 <script src="{{asset('public/js/backend/jquery.min.js')}}"></script> 
 <script src="{{asset('public/js/backend/jquery.ui.custom.js')}}"></script> 
 <script src="{{asset('public/js/backend/bootstrap.min.js')}}"></script> 
+<script src="{{asset('public/js/backend/bootstrap-datepicker.js')}}"></script> 
 <script src="{{asset('public/js/backend/jquery.flot.min.js')}}"></script> 
 <script src="{{asset('public/js/backend/jquery.flot.resize.min.js')}}"></script> 
 <script src="{{asset('public/js/backend/jquery.peity.min.js')}}"></script> 
@@ -46,7 +38,15 @@
 <script src="{{asset('public/js/backend/select2.min.js')}}"></script> 
 <script src="{{asset('public/js/backend/matrix.popover.js')}}"></script> 
 <script src="{{asset('public/js/backend/jquery.dataTables.min.js')}}"></script> 
-<script src="{{asset('public/js/backend/matrix.tables.js')}}"></script> 
+<script src="{{asset('public/js/backend/matrix.tables.js')}}"></script>
+</head>
+<body>
+
+@include('admin.layout.header')
+@include('admin.layout.sidebar')
+@yield('content')
+@include('admin.layout.footer')
+ 
 
 <script type="text/javascript">
   // This function is called from the pop-up menus to transfer to

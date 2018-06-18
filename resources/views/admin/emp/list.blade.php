@@ -20,7 +20,11 @@
          <div class="widget-title"> <span class="icon"> <i class="icon-user"></i> </span>
           <h5>Employment List</h5>
           </div>
-          @include('flash::message')  
+          @if (session('message'))
+              <div class="alert alert-success">
+                  {{ session('message') }}
+              </div>
+          @endif  
           <div class="widget-content nopadding">
             <div class="widget-content nopadding">
         	<form class="form-inline" action="{{route('admin.emp.list')}}"><div class="form-group"><input class="form-control" type="text" name="position" placeholder="Position" value="{{ app('request')->input('position') }}"></div>

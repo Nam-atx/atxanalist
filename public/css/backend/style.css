@@ -16,7 +16,10 @@ list-style: none;border-radius: .25rem;}
     background-color: #fff;border: 1px solid #dee2e6;border-top-color: rgb(222, 226, 230);border-right-color: rgb(222, 226, 230);border-bottom-color: rgb(222, 226, 230);
         border-left-color: rgb(222, 226, 230);}
 
+.is-invalid > input{border:1px solid red;}
+.help-block{color:red;}
 
+#log .form-inline .form-group{width:19%;}
 
 @media (min-width: 1200px) {
 .container {max-width: 1300px;}
