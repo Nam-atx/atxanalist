@@ -23,6 +23,7 @@
                           <th scope="col">Email</th>
                           <th scope="col">Position</th>
                           <th scope="col">Address</th>
+                          <th scope="col">DND</th>
                           <th scope="col">Action</th>
                         </tr>
                       </thead>
@@ -39,6 +40,7 @@
                             {{$employment->country?','.$employment->country:''}}
                             {{$employment->zipcode?'-'.$employment->zipcode:''}}
                             </td>
+                            <td>{{ $employment->dnd == 1 ? "DND" : "NO DND" }}</td>
                             <td><a href="{{route('emp.show',$employment->id)}}"><i class="far fa-eye"></i></a></td>
                         </tr>
                         @endforeach
@@ -51,3 +53,6 @@
     </div>
 </div>
 @endsection
+
+
+

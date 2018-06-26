@@ -3,6 +3,9 @@
 @section('content')
 
 
+<head>
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+</head>
 
 <!--main-container-part-->
 <div id="content">
@@ -37,11 +40,14 @@
             <div class="form-group"> 
               <input class="form-control" type="text" name="message" placeholder="Keyword"  value="{{ app('request')->input('message') }}">
             </div>
-            <!--<div class="form-group"> 
+           
+            <div class="form-group"> 
               <div class="controls">
                 <input data-date-format="dd-mm-yyyy" class="form-control datepicker" id="datepicker" type="text" name="created_at" placeholder="Date"  value="{{ app('request')->input('created_at') }}">
               </div>
-            </div> -->
+            </div> 
+
+
             <div class="form-group"> 
               <button class="btn btn-primary" type="submit">Filter</button>
             </div>
@@ -51,10 +57,15 @@
             <table class="table table-bordered data-table">
               <thead>
                 <tr>
-                  <th scope="col">User Name</th>
+                 <!--  <th scope="col">User Name</th>
                   <th scope="col">Type</th>
                   <th scope="col">Message</th>
-                  <th scope="col">Log Date</th>
+                  <th scope="col">Log Date</th> -->
+
+            <th scope="col">@sortablelink('name')</th>
+            <th scope="col">@sortablelink('type')</th>
+            <th scope="col">Message</th>
+            <th scope="col">@sortablelink('created_at')</th>
                 </tr>
               </thead>
               <tbody>
@@ -71,6 +82,7 @@
               </tbody>
             </table>
             {{$logs->links()}}
+            <!-- {!! $logs->appends(\Request::except('page'))->render() !!} -->
           </div>
           </div>
         </div>

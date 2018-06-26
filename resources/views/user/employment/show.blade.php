@@ -3,12 +3,31 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
+
         <div class="col-md-12">
+
             <div class="card">
-                <div class="card-header">Employer detail</div>
+
+                <div class="card-header">Employer detail
+                      @if($employement['dnd']==0)
+                       <form action="{{route('emp.dnd')}}"  method="POST">
+                        {{ csrf_field() }}
+                        <input type="hidden" name="emp_id" value="{{$employement['id']}}">
+                        <button type="submit" name="submit" >DND</button>
+                       </form>
+                       @else
+                       <form action="{{route('emp.nondnd')}}"  method="POST">
+                        {{ csrf_field() }}
+                        <input type="hidden" name="emp_id" value="{{$employement['id']}}">
+                        <button type="submit" name="submit" >NON DND</button>
+                       </form>
+                       @endif
+
+                </div>
                 <div class="card-body1">
                   <div class="row">
                     <div class="col-md-6">
+
                       <table class="table">
                       <tbody>
                         <tr><td><strong>Title</strong></td><td>{{$employement['title']}}</td></tr>
@@ -57,7 +76,12 @@
                             </div>
                         </div>
 
-                        <div class="form-group row mb-0"><div class="col-md-2 offset-md-10"><button id="comment-submit" type="submit" class="btn btn-primary">{{ __('Send') }}</button></div></div>
+                        <div class="form-group row mb-0">
+                            <div class="col-md-2 offset-md-10">
+                                <button id="comment-submit" type="submit" class="btn btn-primary">{{ __('Send') }}</button>
+                            </div></div>
+                        <div>
+                        </div>
                       </form>
                     </div>
                     </div>
@@ -67,4 +91,6 @@
         </div>
     </div>
 </div>
+
 @endsection
+

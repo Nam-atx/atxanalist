@@ -63,7 +63,26 @@ class UserController extends Controller
 
     }
 
+    public function dnd(Request $request){
 
+        $employment=Employment::find($request->input('emp_id'));
+
+        $employment->dnd=1;
+
+        $employment->save();
+
+        return redirect()->route('emp.show',$request->input('emp_id'))->with('message','Employment has been updated successfully');
+    }
+
+  public function nondnd(Request $request){
+
+         $employment=Employment::find($request->input('emp_id'));
+
+         $employment->dnd=0;
+         $employment->save();
+        
+          return redirect()->route('emp.show',$request->input('emp_id'))->with('message','Employment has been updated successfully');
+     }
 
     /**
      * Show the form for creating a new resource.

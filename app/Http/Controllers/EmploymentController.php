@@ -17,6 +17,8 @@ class EmploymentController extends Controller
 {
     //
 
+
+
 	// show template
     public function importExport()
     {
@@ -248,4 +250,9 @@ class EmploymentController extends Controller
 
         return response()->json(['data' => $results,'status' => Response::HTTP_OK]); 
     }
+
+
+  
+
+
 }

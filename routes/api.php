@@ -29,3 +29,4 @@ Route::get('/getemployee/{id}', 'EmploymentController@getEmployeeDetail');
 Route::get('/comments/{id}', 'EmploymentController@getComments');
 
 
+

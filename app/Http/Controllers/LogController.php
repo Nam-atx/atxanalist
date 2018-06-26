@@ -13,11 +13,10 @@ use Session;
 use Excel;
 use Illuminate\Support\Facades\Validator;
 
+
 class LogController extends Controller
 {
   
-    // admin section employment listing
-
     public function list(Request $request)
     {
         $sql=DB::table('system_log');
@@ -34,10 +33,29 @@ class LogController extends Controller
           
         }
 
+        if($request->input('created_at')){
+            $sql->where('created_at','like','%'.$request->input('created_at').'%');
+          
+        }
+        if ($request->input('sort')){
+            if($request->input('orderby')){
+                $sql->orderby($request->input('sort'),$request->input('orderby'));
+            }
+            else {
+                $sql->orderby($request->input('sort'),'asc');
+            }
+
+            
+        }
+      // echo '<pre>';
+       // print_r($request->all());
         $logs=$sql->paginate(10)->appends(request()->query());;
+
 
 
         return view('admin.log.list',['logs'=>$logs]);
     }
 
 }
+
+

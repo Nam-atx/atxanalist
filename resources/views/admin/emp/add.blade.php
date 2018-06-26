@@ -249,8 +249,6 @@
                   @endif
                 </div>
               </div>
-
-
               <div class="form-actions">
                 <input type="submit" value="Save" class="btn btn-success">
               </div>
@@ -259,10 +257,7 @@
         </div>
       </div>
     </div>
-    
   </div>
-
-
 </div>
 
 @endsection

@@ -48,6 +48,9 @@
 
               	@foreach( $employments as $employment)
                 <tr>
+
+
+
                     <td>{{$employment->title}}</td>
                     <td>{{$employment->first_name}}</td>
                     <td>{{$employment->last_name}}</td>
