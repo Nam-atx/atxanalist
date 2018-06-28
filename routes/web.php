@@ -21,7 +21,14 @@ Route::group(['middleware'=>['auth','user']],function(){
   Route::post('/emp/{emp}/comment','User\UserController@saveComment')->name('emp.comment');
   Route::post('/dnd','User\UserController@dnd')->name('emp.dnd');
   Route::post('/nondnd','User\UserController@nondnd')->name('emp.nondnd');
-  Route::post('/dashboard, User\UserController@dashboard') -> name('user.dashboard');;
+  Route::get('/dashboard', 'User\DashboardController@dashboard')->name('user.employment.dashboard');
+  Route::get('/recentresume', 'User\DashboardController@recentresume')->name('user.employment.recentresume');
+  Route::get('/yesterdayresume', 'User\DashboardController@yesterdayresume')->name('user.employment.yesterdayresume');
+  Route::get('/twodaybackresume', 'User\DashboardController@twodaybackresume')->name('user.employment.twodaybackresume');
+  Route::get('/weekresume', 'User\DashboardController@weekresume')->name('user.employment.weekresume');
+  Route::get('/monthresume', 'User\DashboardController@monthresume')->name('user.employment.monthresume');
+  Route::get('/yearresume', 'User\DashboardController@yearresume')->name('user.employment.yearresume');
+
 
 });
 

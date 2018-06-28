@@ -251,8 +251,4 @@ class EmploymentController extends Controller
         return response()->json(['data' => $results,'status' => Response::HTTP_OK]); 
     }
 
-
-  
-
-
 }

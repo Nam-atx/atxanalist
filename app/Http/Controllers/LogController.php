@@ -56,6 +56,9 @@ class LogController extends Controller
         return view('admin.log.list',['logs'=>$logs]);
     }
 
+    
+
+
 }
 
 
