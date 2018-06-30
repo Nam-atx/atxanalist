@@ -41,7 +41,7 @@
                             {{$employment->zipcode?'-'.$employment->zipcode:''}}
                             </td>
                             <td>{{ $employment->dnd == 1 ? "DND" : "NO DND" }}</td>
-                            <td><a href="{{route('emp.show',$employment->id)}}"><i class="far fa-eye"></i></a></td>
+                            <td><a href="{{route('emp.show',$employment->emp_id)}}"><i class="far fa-eye"></i></a></td>
                         </tr>
                         @endforeach
                     </tbody>

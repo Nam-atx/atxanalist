@@ -16,7 +16,8 @@
 Auth::routes();
 Route::group(['middleware'=>['auth','user']],function(){
   Route::get('/home', 'User\UserController@index')->name('home');
-  Route::get('/','User\UserController@index');
+  // Route::get('/','User\UserController@index');
+  Route::get('/','User\DashboardController@dashboard');
   Route::get('/emp/{emp}','User\UserController@show')->name('emp.show');
   Route::post('/emp/{emp}/comment','User\UserController@saveComment')->name('emp.comment');
   Route::post('/dnd','User\UserController@dnd')->name('emp.dnd');

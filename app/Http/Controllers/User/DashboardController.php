@@ -57,6 +57,7 @@ class DashboardController extends Controller
     
     }
 
+
      public function twodaybackresume()
     {
        $user=Auth::user();

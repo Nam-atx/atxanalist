@@ -13,15 +13,19 @@
 <meta name="csrf-token" content="{{ csrf_token() }}">
 
 </head>
-<body>
+<body style="margin-left: 22px;font-size: 14px;">
 
 <div>
   <h1><a href="{{route('user.employment.dashboard')}}">Dashboard</a></h1>
 </div>
 
+<div>
+  <h2><a href="{{route('home')}}">Home</a></h2>
+</div>
+
 <div id="user-nav">
   <ul >
-   <li><a href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();"><span>Logout</span></a>
+   <li style="border-right: none; margin-left: 120px;"><a href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();" style="font-size: 15px;"><span>Logout</span></a>
     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                         @csrf
     </form>
@@ -43,6 +47,8 @@
   <li class=""><a href="{{route('user.employment.monthresume')}}"target="_blank"><span>This Month</span></a> </li>
 
   <li class=""><a href="{{route('user.employment.yearresume')}}" target="_blank"><span>This Year</span></a> </li>
+
+
 
 
 <!--     <li class=""><a href=#><i class="icon icon-cogs"></i> <span>Logs</span></a> </li>
