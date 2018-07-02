@@ -66,6 +66,7 @@
             <th scope="col">@sortablelink('type')</th>
             <th scope="col">Message</th>
             <th scope="col">@sortablelink('created_at')</th>
+            <th scope="col">Last Login IP</th>
                 </tr>
               </thead>
               <tbody>
@@ -76,6 +77,7 @@
                     <td>{{$log->type}}</td>
                     <td>{{$log->comment}}</td>
                     <td>{{$log->created_at}}</td>
+                    <td>{{$log->ip_address}}</td>
                 </tr>
                 @endforeach
                 

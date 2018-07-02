@@ -29,6 +29,7 @@ Route::group(['middleware'=>['auth','user']],function(){
   Route::get('/weekresume', 'User\DashboardController@weekresume')->name('user.employment.weekresume');
   Route::get('/monthresume', 'User\DashboardController@monthresume')->name('user.employment.monthresume');
   Route::get('/yearresume', 'User\DashboardController@yearresume')->name('user.employment.yearresume');
+  Route::get('/latestresume', 'User\DashboardController@latestresume')->name('user.employment.latestresume');
 
 
 });

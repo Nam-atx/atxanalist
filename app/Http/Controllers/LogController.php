@@ -51,13 +51,8 @@ class LogController extends Controller
        // print_r($request->all());
         $logs=$sql->paginate(10)->appends(request()->query());;
 
-
-
         return view('admin.log.list',['logs'=>$logs]);
     }
-
-    
-
 
 }
 

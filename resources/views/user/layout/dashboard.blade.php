@@ -2,59 +2,93 @@
 <html lang="en">
 <head>
 <title>{{ config('app.name', 'Dashboard') }}</title>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<link rel="stylesheet" href="{{asset('public/css/backend/bootstrap.min.css')}}" />
-<link rel="stylesheet" href="{{asset('public/css/backend/bootstrap-responsive.min.css')}}" />
-<link rel="stylesheet" href="{{asset('public/css/backend/fullcalendar.css')}}" />
-<link rel="stylesheet" href="{{asset('public/css/backend/matrix-style.css')}}" />
-<link rel="stylesheet" href="{{asset('public/css/backend/matrix-media.css')}}" />
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+* {
+    box-sizing: border-box;
+}
 
-<meta name="csrf-token" content="{{ csrf_token() }}">
+body {
+    font-family: Arial, Helvetica, sans-serif;
+}
 
+/* Style the header */
+header {
+    background-color: #808080;
+    padding: 1px;
+    font-size: 25px;
+    color: white;
+}
+
+
+
+h4{
+  text-align: right;
+}
+
+/* Create two columns/boxes that floats next to each other */
+nav {
+    float: left;
+    width: 30%;
+    height: 300px; /* only for demonstration, should be removed */
+    background: #ccc;
+    
+}
+
+
+
+/* Style the list inside the menu */
+nav ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+
+a:link, a:visited {
+    color: black;
+    padding: 14px 25px;
+    text-decoration: none;
+    display: inline-block;
+}
+/* Clear floats after the columns */
+section:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+/* Responsive layout - makes the two columns/boxes stack on top of each other instead of next to each other, on small screens */
+@media (max-width: 600px) {
+    nav, article {
+        width: 100%;
+        height: auto;
+    }
+}
+
+article {
+    float: left;
+    padding: 20px;
+    width: 70%;
+    background-color: #f1f1f1;
+    height: 300px; /* only for demonstration, should be removed */
+}
+</style>
 </head>
-<body style="margin-left: 22px;font-size: 14px;">
+<body>
 
-<div>
-  <h1><a href="{{route('user.employment.dashboard')}}">Dashboard</a></h1>
-</div>
 
-<div>
-  <h2><a href="{{route('home')}}">Home</a></h2>
-</div>
+<header>
+ <h2><a href="{{route('user.employment.dashboard')}}">Dashboard</a></h2>
 
-<div id="user-nav">
-  <ul >
-   <li style="border-right: none; margin-left: 120px;"><a href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();" style="font-size: 15px;"><span>Logout</span></a>
+   <a href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();" style="float: right;margin-top: -92px;"><span>Logout</span></a>
     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                         @csrf
     </form>
-    </li>
-  </ul>
-</div>
 
-<div id="sidebar">
-  <a href="{{route('user.employment.dashboard')}}" class="visible-phone">Dashboard</a>
-  <ul>
-  <h3>Follow Up</h3></a>
-  <li class=""><a href="{{route('user.employment.recentresume')}}" target="_blank"><span>Recent Contacts</span></a> </li>
-  <li class=""><a href="{{route('user.employment.yesterdayresume')}}" target="_blank"> <span>Yesterday</span></a> </li>
+</header>
 
-  <li class=""><a href="{{route('user.employment.twodaybackresume')}}" target="_blank"><span>2 Days Back</span></a> </li>
-
-  <li class=""><a href="{{route('user.employment.weekresume')}}" target="_blank"><span>This Week</span></a> </li>
-
-  <li class=""><a href="{{route('user.employment.monthresume')}}"target="_blank"><span>This Month</span></a> </li>
-
-  <li class=""><a href="{{route('user.employment.yearresume')}}" target="_blank"><span>This Year</span></a> </li>
-
-
-
-
-<!--     <li class=""><a href=#><i class="icon icon-cogs"></i> <span>Logs</span></a> </li>
- -->
-  </ul>
-</div>
+@yield('content')
 
 
 </body>

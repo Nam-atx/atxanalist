@@ -10,6 +10,7 @@
         <link href="{{asset('public/fonts/backend/font-awesome/css/font-awesome.css')}}" rel="stylesheet" />
 		<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700,800' rel='stylesheet' type='text/css'>
         <meta name="csrf-token" content="{{ csrf_token() }}">
+
     </head>
     <body>
         <div id="loginbox">   

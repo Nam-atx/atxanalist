@@ -47,9 +47,12 @@
                     </tbody>
                     </table>
                     {{$employments->links()}}
+
                 </div>
             </div>
         </div>
     </div>
+    <h2>Total number of records: {{$numbers}}</h2>
 </div>
+
 @endsection

@@ -19,6 +19,8 @@ class UserController extends Controller
      *
      * @return void
      */
+
+
     public function __construct()
     {
         $this->middleware('auth');
@@ -52,7 +54,7 @@ class UserController extends Controller
         }
 
         if($string){
-            $data=['user_id'=>$user->id,'name'=>$user->name,'type'=>'search','comment'=>'search by '.$user->name. '=>'.$string];
+            $data=['user_id'=>$user->id,'name'=>$user->name,'type'=>'search','comment'=>'search by '.$user->name. '=>'.$string,'ip_address'=>$request->ip()];
             Systemlog::create($data);
         }
 
@@ -111,9 +113,10 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id,Request $request)
     {
         //
+
         $user=Auth::user();
         $employment=Employment::find($id);
 
@@ -121,7 +124,8 @@ class UserController extends Controller
             ->join('emp_comments', 'emp_comments.user_id', '=', 'users.id')
             ->select('users.id','users.name','emp_comments.comment',DB::raw('DATE_FORMAT(emp_comments.created_at, "%d %b %Y %r") as created_at'))->where('emp_comments.emp_id','=',$id)->get();
         
-        $data=['user_id'=>$user->id,'name'=>$user->name,'type'=>'view','comment'=>'viewed by '.$user->name];
+        $data=['user_id'=>$user->id,'name'=>$user->name,'type'=>'view','comment'=>'viewed by '.$user->name,'ip_address'=>$request->ip()];
+
         Systemlog::create($data);
 
         return view('user.employment.show',['employement'=>$employment,'empcomments'=>$empcomments]);
