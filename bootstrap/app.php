@@ -41,6 +41,9 @@ $app->singleton(
     App\Exceptions\Handler::class
 );
 
+
+$app->register(Jcf\Geocode\GeocodeServiceProvider::class);
+
 /*
 |--------------------------------------------------------------------------
 | Return The Application

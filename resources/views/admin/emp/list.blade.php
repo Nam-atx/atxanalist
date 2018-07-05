@@ -41,6 +41,8 @@
                   <th scope="col">Email</th>
                   <th scope="col">Position</th>
                   <th scope="col">Address</th>
+                  <th scope="col">Longitude</th>
+                  <th scope="col">Latitude</th>
                   <th scope="col">Action</th>
                 </tr>
               </thead>
@@ -61,6 +63,8 @@
                     {{$employment->country?','.$employment->country:''}}
                     {{$employment->zipcode?'-'.$employment->zipcode:''}}
                     </td>
+                    <td>{{$employment->longitude}}</td>
+                    <td>{{$employment->latitude}}</td>
                     <td><a href="{{route('admin.emp.edit',$employment->id)}}">Edit</a></td>
                 </tr>
                 @endforeach

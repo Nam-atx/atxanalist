@@ -147,7 +147,10 @@ return [
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
         Kyslik\ColumnSortable\ColumnSortableServiceProvider::class,
-
+        //Toin0u\Geocoder\GeocoderServiceProvider::class,
+        Geocoder\Laravel\Providers\GeocoderService::class,
+        Jcf\Geocode\GeocodeServiceProvider::class,
+        Spatie\Geocoder\GeocoderServiceProvider::class,
 
 
         /*
@@ -214,6 +217,10 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
+        //'Geocoder' => Toin0u\Geocoder\Facade\Geocoder::class,
+        'Geocode' => Jcf\Geocode\Facades\Geocode::class,
+        'Geocoder' => Spatie\Geocoder\Facades\Geocoder::class,
+
     ],
 
 ];

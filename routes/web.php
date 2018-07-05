@@ -65,6 +65,9 @@ Route::group(['middleware'=>['auth','admin']],function(){
   //logs management
 
   Route::get('/admin/log/list','LogController@list')->name('admin.log.list');
+  
+
 
 });
 
+Route::get('/admin/geolocal','EmploymentController@geolocal');

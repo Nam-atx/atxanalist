@@ -2,6 +2,48 @@
 
 @section('content')
 <div class="container">
+
+
+  <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Click to Mail</button>
+
+  <!-- Modal -->
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+       
+        <div class="modal-body">
+          <form>
+            Your name<br>
+            <input type="text" name="name" value="{{ Auth::user()->name }}"><br>
+            Company<br>
+            <input type="text" name="company" value="ATX Learning"><br>
+            Message templates<br>
+            <input type="text" name="messagetemplates"><br>
+            Message<br>
+            <textarea rows="4" cols="50"></textarea><br>
+
+            Title of Job Opening<br>
+            <input type="text" name="titleofjob" value="{{$employement['position']}}"><br>
+            <br>
+            Email<br>
+            <input type="text" name="email" value="{{ Auth::user()->email }}"><br>
+            Job Description<br>
+            <textarea rows="4" cols="50"></textarea><br>
+            <button type="submit" name="submit" >Send Email</button>
+           
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+
+
     <div class="row justify-content-center">
 
         <div class="col-md-12">

@@ -249,6 +249,20 @@
                   @endif
                 </div>
               </div>
+
+       <!--      <div class="control-group">
+              <label class="control-label">Longitude</label>
+                <div class="controls {{ $errors->has('longitude') ? ' is-invalid' : '' }}">
+                  <input type="text" name="longitude" id="required" value="{{ old('longitude') }}" >
+                  @if ($errors->has('longitude'))
+                      <span class="help-block">
+                          <strong>{{ $errors->first('longitude') }}</strong>
+                      </span>
+                  @endif
+                </div>
+              </div> -->
+
+
               <div class="form-actions">
                 <input type="submit" value="Save" class="btn btn-success">
               </div>

@@ -13,10 +13,22 @@ use Session;
 use Excel;
 use Illuminate\Support\Facades\Validator;
 
+use Jcf\Geocode\Geocode;
+
+use App\Traits\latlon;
+
 class EmploymentController extends Controller
 {
     //
+    use latlon;
 
+
+     public function geolocal()
+     {
+        $address='ALigarh,aligarh,Up,202002';
+        $getinfo=$this->getlatlon($address);
+        print_r($getinfo);
+     }
 
 
 	// show template
@@ -34,14 +46,42 @@ class EmploymentController extends Controller
 
 
     public function save(Request $request){
+        $address='';
+        if($request->input('street1')){
+            $address.=$request->input('street1').' ';
+        }
+        if($request->input('street2')){
+            $address.=$request->input('street2').' ';
+        }
+
+        if($request->input('city')){
+            $address.=$request->input('city').' ';
+        }
+        if($request->input('state')){
+            $address.=$request->input('state').' ';
+        }
+
+        if($request->input('zipcode')){
+            $address.=$request->input('zipcode').' ';
+        }
+        // echo $address; die;
+
+        try {
+           $response=$this->getlatlon($address);
+           //print_r($response); die;
+        } catch (\Exception $e) {
+            echo $e->getMessage();
+        }
+
         $validator= $this->validator($request->all());
+        
          if ($validator->fails()) {
             return redirect()->route('admin.emp.add')->withErrors($validator)->withInput();
         }
 
-        $data=['title'=>$request->input('title'),'first_name'=>$request->input('first_name'),'last_name'=>$request->input('last_name'),'email'=>$request->input('email'),'phone'=>$request->input('phone'),'cell_number'=>$request->input('cell_number'),'best_time_to_call'=>$request->input('best_time_to_call'),'street1'=>$request->input('street1'),'street2'=>$request->input('street2'),'city'=>$request->input('city'),'state'=>$request->input('state'),'zipcode'=>$request->input('zipcode'),'country'=>$request->input('country'),'position'=>$request->input('position'),'days_available'=>implode(' ',$request->input('days_available')),'license'=>$request->input('license'),'need_call'=>$request->input('need_call'),'resume'=>$request->input('resume')];
+        $data=['title'=>$request->input('title'),'first_name'=>$request->input('first_name'),'last_name'=>$request->input('last_name'),'email'=>$request->input('email'),'phone'=>$request->input('phone'),'cell_number'=>$request->input('cell_number'),'best_time_to_call'=>$request->input('best_time_to_call'),'street1'=>$request->input('street1'),'street2'=>$request->input('street2'),'city'=>$request->input('city'),'state'=>$request->input('state'),'zipcode'=>$request->input('zipcode'),'country'=>$request->input('country'),'position'=>$request->input('position'),'days_available'=>implode(' ',$request->input('days_available')),'license'=>$request->input('license'),'need_call'=>$request->input('need_call'),'resume'=>$request->input('resume'), 'longitude'=>$response['longitude'],'latitude'=>$response['latitude']];
 
-        Employment::create($data);
+        $employment = Employment::create($data);
 
         return redirect()->route('admin.emp.list')->with('message','Client has been created successfully');
     }
@@ -134,6 +174,35 @@ class EmploymentController extends Controller
             return redirect()->route('admin.emp.edit',$id)->withErrors($validator)->withInput();
         }
         
+         $address='';
+        if($request->input('street1')){
+            $address.=$request->input('street1').' ';
+        }
+        if($request->input('street2')){
+            $address.=$request->input('street2').' ';
+        }
+
+        if($request->input('city')){
+            $address.=$request->input('city').' ';
+        }
+        if($request->input('state')){
+            $address.=$request->input('state').' ';
+        }
+
+        if($request->input('zipcode')){
+            $address.=$request->input('zipcode').' ';
+        }
+        // echo $address; die;
+
+        try {
+            $address=rtrim($address);
+
+           $response=$this->getlatlon($address);
+           //print_r($response); die;
+        } catch (\Exception $e) {
+            echo $e->getMessage();
+        }
+
         $employment = Employment::find($id);
 
         $employment->title=$request->input('title');
@@ -154,6 +223,8 @@ class EmploymentController extends Controller
         $employment->license=$request->input('license');
         $employment->need_call=$request->input('need_call');
         $employment->resume=$request->input('resume');
+        $employment->longitude=$response['longitude'];
+        $employment->latitude=$response['latitude'];
         $employment->save();
 
         return redirect()->route('admin.emp.list')->with('message','Client has been updated successfully');
@@ -200,10 +271,35 @@ class EmploymentController extends Controller
     // import data
     public function importExcel(Request $request)
     {
+
         if($request->hasFile('import_file')){
             Excel::load($request->file('import_file')->getRealPath(), function ($reader) {
 	                foreach ($reader->toArray() as $key => $row) {
-	                    $data=['title'=>$row['title'], 'first_name'=>$row['first_name'], 'last_name'=>$row['last_name'],'email'=>$row['email_address'],'phone'=>$row['phone'],'cell_number'=>$row['cell_number'],'best_time_to_call'=>$row['best_time_to_call'],'street1'=>$row['address_street_address'],'street2'=>$row['address_street_address_line_2'],'city'=>$row['city'],'state'=>$row['state'],'zipcode'=>$row['zip_code'],'country'=>$row['address_country'],'position'=>$row['applying_for_position'],'days_available'=>$row['days_available'],'license'=>mb_convert_encoding($row['licenses_skills_training_awards'], 'UTF-8'),'need_call'=>$row['need_a_call_back'],'resume'=>''];
+
+                        $address='';
+                        if($row['address_street_address']){
+                            $address.=$row['address_street_address'].' ';
+                        }
+                        if($row['address_street_address_line_2']){
+                            $address.=$row['address_street_address_line_2'].' ';
+                        }
+
+                        if($row['city']){
+                            $address.=$row['city'].' ';
+                        }
+                        if($row['state']){
+                            $address.=$row['state'].' ';
+                        }
+
+                        if($row['zip_code']){
+                            $address.=$row['zip_code'].' ';
+                        }
+                        // echo $address; die;
+
+                        $response=$this->getlatlon($address);
+
+
+	                    $data=['title'=>$row['title'], 'first_name'=>$row['first_name'], 'last_name'=>$row['last_name'],'email'=>$row['email_address'],'phone'=>$row['phone'],'cell_number'=>$row['cell_number'],'best_time_to_call'=>$row['best_time_to_call'],'street1'=>$row['address_street_address'],'street2'=>$row['address_street_address_line_2'],'city'=>$row['city'],'state'=>$row['state'],'zipcode'=>$row['zip_code'],'country'=>$row['address_country'],'position'=>$row['applying_for_position'],'days_available'=>$row['days_available'],'license'=>mb_convert_encoding($row['licenses_skills_training_awards'], 'UTF-8'),'need_call'=>$row['need_a_call_back'],'resume'=>'','longitude'=>$response['longitude'],'latitude'=>$response['latitude']];
 
 	                    	Employment::create($data);
 	                }

@@ -27,6 +27,24 @@ class DashboardController extends Controller
     }
 
 
+    public function latestresume(){
+         
+
+         $user=Auth::user();
+
+      $sql = DB::table('employment')->select('employment.id','first_name')
+        ->leftJoin('emp_comments','emp_comments.emp_id','=','employment.id')
+        ->whereNull('emp_comments.emp_id')
+        ->paginate(5);
+
+
+ $employments=$sql->appends(request()->query());
+
+        return view('user.employment.recentresume',['employments'=>$employments]);
+    
+    }
+
+
 
     public function recentresume()
     {
@@ -151,22 +169,6 @@ class DashboardController extends Controller
     }
 
 
-    public function latestresume(){
-         
-
-         $user=Auth::user();
-
-         
-
-
-
-$employments=$latest->request()->query();
-
- return view('user.employment.latestresume',['employments'=>$employments],compact('latest'));
-         
-
-
-    }
 
 
 }
