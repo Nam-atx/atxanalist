@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jul 03, 2018 at 06:59 PM
+-- Generation Time: Jul 07, 2018 at 06:54 PM
 -- Server version: 5.7.22-0ubuntu0.16.04.1
 -- PHP Version: 7.2.7-1+ubuntu16.04.1+deb.sury.org+1
 
@@ -49,16 +49,16 @@ CREATE TABLE `employment` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `dnd` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `langitude` double(8,2) DEFAULT NULL,
-  `latitude` double(8,2) DEFAULT NULL
+  `longitude` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `latitude` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `employment`
 --
 
-INSERT INTO `employment` (`id`, `title`, `first_name`, `last_name`, `email`, `phone`, `cell_number`, `best_time_to_call`, `street1`, `street2`, `city`, `state`, `zipcode`, `country`, `position`, `days_available`, `license`, `need_call`, `resume`, `created_at`, `updated_at`, `dnd`, `langitude`, `latitude`) VALUES
-(1, 'Mrs.', 'Suzette', 'Nielsen', 'sukie83153@yahoo.com', '(832) 495-9359', '(832) 4959359', NULL, '981 Arbor Way', NULL, 'Conroe', 'TX', '77303', 'United States', 'Speech/Language Pathologist', 'Monday\nTuesday\nWednesday\nThursday\nFriday', 'licensed SLP in TX and LA, teacher\'s certificate, 30+yrs experience in early childhood, schools, in-home services, geriatrics, home health, long-term care, supervision, management etc., multiple certifications to include estim, sent resume to Fred Miller\'s email', NULL, '', '2018-05-29 03:25:42', '2018-06-30 08:25:00', '1', NULL, NULL),
+INSERT INTO `employment` (`id`, `title`, `first_name`, `last_name`, `email`, `phone`, `cell_number`, `best_time_to_call`, `street1`, `street2`, `city`, `state`, `zipcode`, `country`, `position`, `days_available`, `license`, `need_call`, `resume`, `created_at`, `updated_at`, `dnd`, `longitude`, `latitude`) VALUES
+(1, 'Mrs.', 'Suzette', 'Nielsen', 'sukie83153@yahoo.com', '(832) 495-9359', '(832) 4959359', 'sdfsdf', '981 Arbor Way', NULL, 'Conroe', 'TX', '77303', 'United States', 'Speech/Language Pathologist', 'Monday Tuesday Wednesday Thursday Friday', 'licensed SLP in TX and LA, teacher\'s certificate, 30+yrs experience in early childhood, schools, in-home services, geriatrics, home health, long-term care, supervision, management etc., multiple certifications to include estim, sent resume to Fred Miller\'s email', 'other', 'sdfsdgf', '2018-05-29 03:25:42', '2018-07-07 07:11:34', '0', NULL, NULL),
 (2, 'Mrs.', 'Sabina', 'Duhon', 'sabinapd@yahoo.com', '(713) 4178838', '(713) 4178838', NULL, '24910 Waterstone Estates Circle', 'aaaaa', 'Tomball', 'TX', '77375', 'United States', 'Speech/Language Pathologist', 'MondayTuesdayWednesdayThursdayFridayAny', 'CCCVitalstim Certified', NULL, NULL, '2018-05-29 03:25:42', '2018-06-25 07:44:28', '1', NULL, NULL),
 (3, 'Ms.', 'Kimberly', 'Sanzo', 'kasanzo@gmail.com', '(860) 521-3606', '(860) 966-5316', NULL, '88 Kimberley Road', NULL, 'Newington', 'CT', '6111', 'United States', 'Speech/Language Pathologist', 'Any', 'State of CT licensure', NULL, '', '2018-05-29 03:25:42', '2018-06-25 07:44:36', '1', NULL, NULL),
 (4, 'Mrs.', 'Denise', 'Walsh', 'hawgsmc@comcast.net', '(781) 812-1411', '(781) 858-7939', NULL, '25 Wales Avenue', NULL, 'South Weymouth', 'MA', NULL, 'United States', 'Speech/Language Pathologist', 'Any', 'MA license in SLP, DOE certified for Speech Language Pathology and Early Childhood Education, ACE award from ASHA for four years, Stuttering workshop 2013 from American Stuttering Foundation', NULL, '', '2018-05-29 03:25:42', '2018-06-30 06:57:44', '0', NULL, NULL),
@@ -79,7 +79,19 @@ INSERT INTO `employment` (`id`, `title`, `first_name`, `last_name`, `email`, `ph
 (19, 'Mrs.', 'Madalena', 'Mendoza-Gonzales', 'mmgonzales1@yahoo.com', '(956) 781-5616', '(956) 457-7660', NULL, '407 Judean Ln.', NULL, 'San Juan', 'TX', '78589', 'United States', 'Speech/Language Pathologist', 'Monday\nTuesday\nWednesday\nThursday', 'TX License as a Speech Lang. Pathologist\nCertificate of Clinical Competence from ASHA', NULL, '', '2018-05-29 03:25:42', '2018-05-29 03:25:42', '', NULL, NULL),
 (20, 'Mrs.', 'Kathy', 'Heinz-Newingham', 'splapath@aol.com', '(217) 556-1225', '(217) 556-1225', NULL, 'rr 3 box 45', NULL, 'Carrollton', 'IL', '62016', 'United States', 'Speech/Language Pathologist', 'Any', 'ASHA CCC, IL State lic, 24 yrs experience', NULL, '', '2018-05-29 03:25:42', '2018-05-29 03:25:42', '', NULL, NULL),
 (21, 'Mr.', 'dsfsdfsadf', 'sdfsdf', 'junaid@atxlearning.com', '8279473091', '45345435435', 'sdfsdf', 'ALigarh', NULL, 'aligarh', 'Up', '202002', 'India', 'Speech/Language Pathologist', 'Monday Wednesday', 'sdfsdaf', 'Yes, soonest possible', 'sdfasd', '2018-07-03 06:57:11', '2018-07-03 06:58:47', '0', NULL, NULL),
-(22, 'Mr.', 'sdfsdfsdf', 'sdfsdaf', 'allthebest91@gmail.com', '45645654', '45345435435', 'sdfsdf', 'ALigarh', NULL, 'aligarh', 'Up', '202002', 'India', 'Speech/Language Pathologist', 'Any', 'hfghfgh', 'No', 'fghfg', '2018-07-03 07:18:03', '2018-07-03 07:18:03', NULL, NULL, NULL);
+(22, 'Mr.', 'sdfsdfsdf', 'sdfsdaf', 'allthebest91@gmail.com', '45645654', '45345435435', 'sdfsdf', 'ALigarh', NULL, 'aligarh', 'Up', '202002', 'India', 'Speech/Language Pathologist', 'Any', 'hfghfgh', 'No', 'fghfg', '2018-07-03 07:18:03', '2018-07-03 07:18:03', NULL, NULL, NULL),
+(23, 'Mrs.', 'dfgdfg', 'sdfsdf', 'jitendra@atxlearning.com', '9876543210', '45345435435', 'sdfsdf', 'ALigarh', 'wefsde', 'aligarh', 'Up', '202002', 'India', 'Speech/Language Pathologist', 'Wednesday Friday', 'dfdfg', 'Yes, soonest possible', 'dfgdfsg', '2018-07-04 05:45:05', '2018-07-04 05:45:05', NULL, '87.63', '41.88'),
+(24, 'Ms.', 'dsfgdfgdf', 'gdfgfdsg', 'teste@atxlearning.com', '45645654', '545645', 'dfgdfg', 'ALigarh', 'dfgdfg', 'aligarh', 'Up', '202002', 'India', 'Speech/Language Pathologist', 'Monday Wednesday', 'sdfdsfsd', 'No', 'sdfsdfsd', '2018-07-04 05:57:50', '2018-07-04 05:57:50', NULL, '87.6298', '41.8781'),
+(26, 'Mrs.', 'ertertertr', 'dfgvdfgfdg', 'fvxcvxc@yahoo.com', '(832) 495-9359', '(832) 4959359', NULL, '981 Arbor Way', NULL, 'Conroecx', 'xcv', '77303cxv', 'United States', 'Speech/Language Pathologist', 'Monday\nTuesday\nWednesday\nThursday\nFriday', 'licensed SLP in TX and LA, teacher\'s certificate, 30+yrs experience in early childhood, schools, in-home services, geriatrics, home health, long-term care, supervision, management etc., multiple certifications to include estim, sent resume to Fred Miller\'s email', NULL, '', '2018-07-04 06:32:37', '2018-07-04 06:32:37', NULL, NULL, NULL),
+(27, 'Mrs.', 'xcvxcvx', 'xcvxcv', 'xcvxcvxc@yahoo.com', '(713) 4178838', '(713) 4178838', NULL, '24910 Waterstone Estates Circle', NULL, 'Tomballxcv', 'xcv', '4543543', 'United States', 'Speech/Language Pathologist', 'Monday\nTuesday\nWednesday\nThursday\nFriday\nAny', 'CCC\nVitalstim Certified', NULL, '', '2018-07-04 06:32:37', '2018-07-04 06:32:37', NULL, NULL, NULL),
+(28, 'Mrs.', 'fsdfsd', 'sdfsdaf', 'junaid@yahoo.com', '3453452435', '3454235', 'dfg', '981 Arbor Way', 'fdsfsd', 'Conroe', 'TX', '77303', 'United States', 'Speech/Language Pathologist', 'Monday\nTuesday\nWednesday\nThursday\nFriday', 'licensed SLP in TX and LA, teacher\'s certificate, 30+yrs experience in early childhood, schools, in-home services, geriatrics, home health, long-term care, supervision, management etc., multiple certifications to include estim, sent resume to Fred Miller\'s email', NULL, '', '2018-07-04 06:55:57', '2018-07-04 06:55:57', NULL, NULL, NULL),
+(30, 'mr', 'fsdfsd', 'sdfsdaf', 'junaid@gmail.com', '3453452435', '3454235', 'dfg', '981 Arbor Way', 'fdsfsd', 'Conroe', 'TX', '77303', 'United States', 'Speech/Language Pathologist', 'Monday\nTuesday\nWednesday\nThursday\nFriday', 'licensed SLP in TX and LA, teacher\'s certificate, 30+yrs experience in early childhood, schools, in-home services, geriatrics, home health, long-term care, supervision, management etc., multiple certifications to include estim, sent resume to Fred Miller\'s email', NULL, '', '2018-07-04 07:57:14', '2018-07-04 07:57:14', NULL, NULL, NULL),
+(31, 'mr', 'fsdfsddsfgdg', 'sdfsdafdfgdfgdf', 'abc@gmail.com', '345345243534534', '3454235443', 'dfg', '981 Arbor Way', 'fdsfsd', 'Conroe', 'TX', '77303', 'United States', 'Speech/Language Pathologist', 'Monday\nTuesday\nWednesday\nThursday\nFriday', 'licensed SLP in TX and LA, teacher\'s certificate, 30+yrs experience in early childhood, schools, in-home services, geriatrics, home health, long-term care, supervision, management etc., multiple certifications to include estim, sent resume to Fred Miller\'s email', NULL, '', '2018-07-04 08:00:49', '2018-07-04 08:00:49', NULL, '87.6298', '41.8781'),
+(32, 'mr', 'fsdfsddsfgdg', 'sdfsdafdfgdfgdf', 'xyz@gmail.com', '345345243534534', '3454235443', 'dfg', '981 Arbor Way', 'fdsfsd', 'Conroe', 'TX', '77303', 'United States', 'Speech/Language Pathologist', 'Monday\nTuesday\nWednesday\nThursday\nFriday', 'licensed SLP in TX and LA, teacher\'s certificate, 30+yrs experience in early childhood, schools, in-home services, geriatrics, home health, long-term care, supervision, management etc., multiple certifications to include estim, sent resume to Fred Miller\'s email', NULL, '', '2018-07-04 08:05:19', '2018-07-04 08:05:19', NULL, '87.6298', '41.8781'),
+(33, 'mr', 'iuoioiy', 'vbcxbfgh', 'test@atxlearning.coms', '45645', '12323213', 'dfg', '981 Arbor Way', 'fdsfsd', 'Conroe', 'TX', '77303', 'United States', 'Speech/Language Pathologist', 'Monday\nTuesday\nWednesday\nThursday\nFriday', 'licensed SLP in TX and LA, teacher\'s certificate, 30+yrs experience in early childhood, schools, in-home services, geriatrics, home health, long-term care, supervision, management etc., multiple certifications to include estim, sent resume to Fred Miller\'s email', NULL, '', '2018-07-04 08:05:19', '2018-07-04 08:05:19', NULL, '87.6298', '41.8781'),
+(34, 'ms', 'dgfdgd', 'FSDFSD', 'junaid@atx.com', '53565', '33453454', 'dfg', '981 Arbor Way', 'fdsfsd', 'Conroe', 'TX', '77303', 'United States', 'Speech/Language Pathologist', 'Monday\nTuesday\nWednesday\nThursday\nFriday', 'licensed SLP in TX and LA, teacher\'s certificate, 30+yrs experience in early childhood, schools, in-home services, geriatrics, home health, long-term care, supervision, management etc., multiple certifications to include estim, sent resume to Fred Miller\'s email', NULL, '', '2018-07-04 08:05:19', '2018-07-04 08:05:19', NULL, '87.6298', '41.8781'),
+(35, 'ms', 'qwewqe', 'qwqeqwe', 'test@atx.com', '456456546', '456546335', 'dfg', '981 Arbor Way', 'fdsfsd', 'Conroe', 'TX', '77303', 'United States', 'Speech/Language Pathologist', 'Monday\nTuesday\nWednesday\nThursday\nFriday', 'licensed SLP in TX and LA, teacher\'s certificate, 30+yrs experience in early childhood, schools, in-home services, geriatrics, home health, long-term care, supervision, management etc., multiple certifications to include estim, sent resume to Fred Miller\'s email', NULL, '', '2018-07-04 08:05:19', '2018-07-04 08:05:19', NULL, '87.6298', '41.8781'),
+(36, 'ms', 'hmhjkhj', 'juljklj', 'xyz@atx.com', '5446545', '3454235443564', 'dfg', '981 Arbor Way', 'fdsfsd', 'Conroe', 'TX', '77303', 'United States', 'Speech/Language Pathologist', 'Monday\nTuesday\nWednesday\nThursday\nFriday', 'licensed SLP in TX and LA, teacher\'s certificate, 30+yrs experience in early childhood, schools, in-home services, geriatrics, home health, long-term care, supervision, management etc., multiple certifications to include estim, sent resume to Fred Miller\'s email', NULL, '', '2018-07-04 08:05:19', '2018-07-04 08:05:19', NULL, '87.6298', '41.8781');
 
 -- --------------------------------------------------------
 
@@ -282,7 +294,11 @@ INSERT INTO `emp_comments` (`id`, `user_id`, `emp_id`, `comment`, `created_at`, 
 (179, 2, 4, 'Hello', '2018-06-30 06:16:54', '2018-06-30 06:16:54'),
 (180, 2, 15, 'Hello', '2018-06-30 07:07:50', '2018-06-30 07:07:50'),
 (181, 2, 4, 'dfgfdgdf', '2018-06-30 09:26:13', '2018-06-30 09:26:13'),
-(182, 2, 3, 'hello', '2018-07-02 04:40:02', '2018-07-02 04:40:02');
+(182, 2, 3, 'hello', '2018-07-02 04:40:02', '2018-07-02 04:40:02'),
+(183, 2, 1, 'Hello', '2018-07-07 00:03:42', '2018-07-07 00:03:42'),
+(184, 2, 1, 'Hi', '2018-07-07 00:04:18', '2018-07-07 00:04:18'),
+(185, 2, 1, 'hello', '2018-07-07 01:55:26', '2018-07-07 01:55:26'),
+(186, 2, 1, 'dgdfgdf', '2018-07-07 06:38:35', '2018-07-07 06:38:35');
 
 -- --------------------------------------------------------
 
@@ -1341,7 +1357,230 @@ INSERT INTO `system_log` (`id`, `user_id`, `name`, `type`, `comment`, `created_a
 (851, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-03 06:58:33', '2018-07-03 06:58:33', '::1'),
 (852, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-03 06:58:35', '2018-07-03 06:58:35', '::1'),
 (853, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-03 06:58:47', '2018-07-03 06:58:47', '::1'),
-(854, 1, 'jitendra', 'login', 'Loggedin by jitendra', '2018-07-03 07:02:53', '2018-07-03 07:02:53', '::1');
+(854, 1, 'jitendra', 'login', 'Loggedin by jitendra', '2018-07-03 07:02:53', '2018-07-03 07:02:53', '::1'),
+(855, 1, 'jitendra', 'login', 'Loggedin by jitendra', '2018-07-03 23:39:25', '2018-07-03 23:39:25', '::1'),
+(856, 2, 'habeeba', 'login', 'Loggedin by habeeba', '2018-07-04 00:35:06', '2018-07-04 00:35:06', '::1'),
+(857, 1, 'jitendra', 'login', 'Loggedin by jitendra', '2018-07-04 00:35:18', '2018-07-04 00:35:18', '::1'),
+(858, 1, 'jitendra', 'login', 'Loggedin by jitendra', '2018-07-04 06:57:20', '2018-07-04 06:57:20', '::1'),
+(859, 1, 'jitendra', 'login', 'Loggedin by jitendra', '2018-07-05 00:39:56', '2018-07-05 00:39:56', '::1'),
+(860, 2, 'habeeba', 'login', 'Loggedin by habeeba', '2018-07-05 07:53:54', '2018-07-05 07:53:54', '::1'),
+(861, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-05 07:54:03', '2018-07-05 07:54:03', '::1'),
+(862, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-05 08:11:45', '2018-07-05 08:11:45', '::1'),
+(863, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-05 08:12:43', '2018-07-05 08:12:43', '::1'),
+(864, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-05 08:13:12', '2018-07-05 08:13:12', '::1'),
+(865, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-05 08:15:59', '2018-07-05 08:15:59', '::1'),
+(866, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-05 08:17:54', '2018-07-05 08:17:54', '::1'),
+(867, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-05 08:18:44', '2018-07-05 08:18:44', '::1'),
+(868, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-05 08:19:10', '2018-07-05 08:19:10', '::1'),
+(869, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-05 08:20:09', '2018-07-05 08:20:09', '::1'),
+(870, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-05 08:20:20', '2018-07-05 08:20:20', '::1'),
+(871, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-05 08:20:31', '2018-07-05 08:20:31', '::1'),
+(872, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-05 08:20:44', '2018-07-05 08:20:44', '::1'),
+(873, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-05 08:25:19', '2018-07-05 08:25:19', '::1'),
+(874, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-05 08:25:46', '2018-07-05 08:25:46', '::1'),
+(875, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-05 08:27:23', '2018-07-05 08:27:23', '::1'),
+(876, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-05 08:27:40', '2018-07-05 08:27:40', '::1'),
+(877, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-05 08:28:33', '2018-07-05 08:28:33', '::1'),
+(878, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-05 08:29:13', '2018-07-05 08:29:13', '::1'),
+(879, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-05 08:29:16', '2018-07-05 08:29:16', '::1'),
+(880, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-05 08:29:44', '2018-07-05 08:29:44', '::1'),
+(881, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-05 08:30:03', '2018-07-05 08:30:03', '::1'),
+(882, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-05 08:30:13', '2018-07-05 08:30:13', '::1'),
+(883, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-05 08:30:37', '2018-07-05 08:30:37', '::1'),
+(884, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-05 08:31:42', '2018-07-05 08:31:42', '::1'),
+(885, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-05 08:32:03', '2018-07-05 08:32:03', '::1'),
+(886, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-05 08:48:26', '2018-07-05 08:48:26', '::1'),
+(887, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-05 08:48:35', '2018-07-05 08:48:35', '::1'),
+(888, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-05 08:48:45', '2018-07-05 08:48:45', '::1'),
+(889, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-05 08:49:51', '2018-07-05 08:49:51', '::1'),
+(890, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-05 08:50:49', '2018-07-05 08:50:49', '::1'),
+(891, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-05 08:52:33', '2018-07-05 08:52:33', '::1'),
+(892, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-05 08:52:46', '2018-07-05 08:52:46', '::1'),
+(893, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-05 08:54:28', '2018-07-05 08:54:28', '::1'),
+(894, 12, 'test', 'login', 'Loggedin by test', '2018-07-05 08:57:18', '2018-07-05 08:57:18', '::1'),
+(895, 12, 'test', 'view', 'viewed by test', '2018-07-05 08:57:22', '2018-07-05 08:57:22', '::1'),
+(896, 2, 'habeeba', 'login', 'Loggedin by habeeba', '2018-07-05 09:11:08', '2018-07-05 09:11:08', '::1'),
+(897, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-05 09:11:15', '2018-07-05 09:11:15', '::1'),
+(898, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-05 09:11:24', '2018-07-05 09:11:24', '::1'),
+(899, 2, 'habeeba', 'login', 'Loggedin by habeeba', '2018-07-06 02:04:01', '2018-07-06 02:04:01', '::1'),
+(900, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 03:16:56', '2018-07-06 03:16:56', '::1'),
+(901, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 03:17:43', '2018-07-06 03:17:43', '::1'),
+(902, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 03:19:05', '2018-07-06 03:19:05', '::1'),
+(903, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 03:20:26', '2018-07-06 03:20:26', '::1'),
+(904, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 03:20:43', '2018-07-06 03:20:43', '::1'),
+(905, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 03:21:09', '2018-07-06 03:21:09', '::1'),
+(906, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 03:22:08', '2018-07-06 03:22:08', '::1'),
+(907, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 03:22:31', '2018-07-06 03:22:31', '::1'),
+(908, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 03:22:41', '2018-07-06 03:22:41', '::1'),
+(909, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 03:22:54', '2018-07-06 03:22:54', '::1'),
+(910, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 03:23:02', '2018-07-06 03:23:02', '::1'),
+(911, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 03:23:18', '2018-07-06 03:23:18', '::1'),
+(912, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 03:23:25', '2018-07-06 03:23:25', '::1'),
+(913, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 03:23:56', '2018-07-06 03:23:56', '::1'),
+(914, 2, 'habeeba', 'login', 'Loggedin by habeeba', '2018-07-06 03:25:24', '2018-07-06 03:25:24', '::1'),
+(915, 2, 'habeeba', 'login', 'Loggedin by habeeba', '2018-07-06 03:25:59', '2018-07-06 03:25:59', '::1'),
+(916, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 03:31:06', '2018-07-06 03:31:06', '::1'),
+(917, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 03:31:34', '2018-07-06 03:31:34', '::1'),
+(918, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 03:31:42', '2018-07-06 03:31:42', '::1'),
+(919, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 03:55:08', '2018-07-06 03:55:08', '::1'),
+(920, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 03:55:16', '2018-07-06 03:55:16', '::1'),
+(921, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 03:55:44', '2018-07-06 03:55:44', '::1'),
+(922, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 03:55:53', '2018-07-06 03:55:53', '::1'),
+(923, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 03:58:11', '2018-07-06 03:58:11', '::1'),
+(924, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 03:58:29', '2018-07-06 03:58:29', '::1'),
+(925, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 04:02:28', '2018-07-06 04:02:28', '::1'),
+(926, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 04:02:40', '2018-07-06 04:02:40', '::1'),
+(927, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 04:02:54', '2018-07-06 04:02:54', '::1'),
+(928, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 04:03:03', '2018-07-06 04:03:03', '::1'),
+(929, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 04:10:24', '2018-07-06 04:10:24', '::1'),
+(930, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 04:10:31', '2018-07-06 04:10:31', '::1'),
+(931, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 04:28:14', '2018-07-06 04:28:14', '::1'),
+(932, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 04:29:01', '2018-07-06 04:29:01', '::1'),
+(933, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 04:29:10', '2018-07-06 04:29:10', '::1'),
+(934, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 04:30:07', '2018-07-06 04:30:07', '::1'),
+(935, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 04:31:27', '2018-07-06 04:31:27', '::1'),
+(936, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 04:31:52', '2018-07-06 04:31:52', '::1'),
+(937, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 04:35:43', '2018-07-06 04:35:43', '::1'),
+(938, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 04:35:54', '2018-07-06 04:35:54', '::1'),
+(939, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 04:37:53', '2018-07-06 04:37:53', '::1'),
+(940, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 04:38:39', '2018-07-06 04:38:39', '::1'),
+(941, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 04:43:17', '2018-07-06 04:43:17', '::1'),
+(942, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 04:47:14', '2018-07-06 04:47:14', '::1'),
+(943, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 04:47:32', '2018-07-06 04:47:32', '::1'),
+(944, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 04:54:02', '2018-07-06 04:54:02', '::1'),
+(945, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 04:54:15', '2018-07-06 04:54:15', '::1'),
+(946, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 04:54:21', '2018-07-06 04:54:21', '::1'),
+(947, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 04:56:30', '2018-07-06 04:56:30', '::1'),
+(948, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 04:56:32', '2018-07-06 04:56:32', '::1'),
+(949, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 05:04:33', '2018-07-06 05:04:33', '::1'),
+(950, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 05:06:25', '2018-07-06 05:06:25', '::1'),
+(951, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 05:06:25', '2018-07-06 05:06:25', '::1'),
+(952, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 05:11:03', '2018-07-06 05:11:03', '::1'),
+(953, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 05:13:24', '2018-07-06 05:13:24', '::1'),
+(954, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 05:15:25', '2018-07-06 05:15:25', '::1'),
+(955, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 05:18:12', '2018-07-06 05:18:12', '::1'),
+(956, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 05:19:10', '2018-07-06 05:19:10', '::1'),
+(957, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 05:20:10', '2018-07-06 05:20:10', '::1'),
+(958, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 05:21:13', '2018-07-06 05:21:13', '::1'),
+(959, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 05:24:39', '2018-07-06 05:24:39', '::1'),
+(960, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 05:26:24', '2018-07-06 05:26:24', '::1'),
+(961, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 05:26:25', '2018-07-06 05:26:25', '::1'),
+(962, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 05:26:51', '2018-07-06 05:26:51', '::1'),
+(963, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 05:27:50', '2018-07-06 05:27:50', '::1'),
+(964, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 05:28:23', '2018-07-06 05:28:23', '::1'),
+(965, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 05:28:26', '2018-07-06 05:28:26', '::1'),
+(966, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 05:28:30', '2018-07-06 05:28:30', '::1'),
+(967, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 05:31:02', '2018-07-06 05:31:02', '::1'),
+(968, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 05:32:22', '2018-07-06 05:32:22', '::1'),
+(969, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 05:33:31', '2018-07-06 05:33:31', '::1'),
+(970, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 05:34:04', '2018-07-06 05:34:04', '::1'),
+(971, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 05:39:13', '2018-07-06 05:39:13', '::1'),
+(972, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 05:45:33', '2018-07-06 05:45:33', '::1'),
+(973, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 05:45:52', '2018-07-06 05:45:52', '::1'),
+(974, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 05:50:29', '2018-07-06 05:50:29', '::1'),
+(975, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 05:54:05', '2018-07-06 05:54:05', '::1'),
+(976, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 05:55:27', '2018-07-06 05:55:27', '::1'),
+(977, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 06:04:32', '2018-07-06 06:04:32', '::1'),
+(978, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 06:10:37', '2018-07-06 06:10:37', '::1'),
+(979, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 06:19:55', '2018-07-06 06:19:55', '::1'),
+(980, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 06:20:13', '2018-07-06 06:20:13', '::1'),
+(981, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 06:20:39', '2018-07-06 06:20:39', '::1'),
+(982, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 06:21:00', '2018-07-06 06:21:00', '::1'),
+(983, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 06:23:15', '2018-07-06 06:23:15', '::1'),
+(984, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 06:26:47', '2018-07-06 06:26:47', '::1'),
+(985, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 06:30:44', '2018-07-06 06:30:44', '::1'),
+(986, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 06:51:48', '2018-07-06 06:51:48', '::1'),
+(987, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 06:52:34', '2018-07-06 06:52:34', '::1'),
+(988, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 06:55:24', '2018-07-06 06:55:24', '::1'),
+(989, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 06:56:34', '2018-07-06 06:56:34', '::1'),
+(990, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 06:57:24', '2018-07-06 06:57:24', '::1'),
+(991, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 06:59:04', '2018-07-06 06:59:04', '::1'),
+(992, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 07:00:09', '2018-07-06 07:00:09', '::1'),
+(993, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 07:00:56', '2018-07-06 07:00:56', '::1'),
+(994, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 07:01:22', '2018-07-06 07:01:22', '::1');
+INSERT INTO `system_log` (`id`, `user_id`, `name`, `type`, `comment`, `created_at`, `updated_at`, `ip_address`) VALUES
+(995, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 07:02:21', '2018-07-06 07:02:21', '::1'),
+(996, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 07:42:55', '2018-07-06 07:42:55', '::1'),
+(997, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 07:43:05', '2018-07-06 07:43:05', '::1'),
+(998, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 07:45:19', '2018-07-06 07:45:19', '::1'),
+(999, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 07:47:44', '2018-07-06 07:47:44', '::1'),
+(1000, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 07:48:19', '2018-07-06 07:48:19', '::1'),
+(1001, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 07:52:20', '2018-07-06 07:52:20', '::1'),
+(1002, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 07:57:14', '2018-07-06 07:57:14', '::1'),
+(1003, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 07:57:55', '2018-07-06 07:57:55', '::1'),
+(1004, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 08:05:16', '2018-07-06 08:05:16', '::1'),
+(1005, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 08:07:25', '2018-07-06 08:07:25', '::1'),
+(1006, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 08:09:59', '2018-07-06 08:09:59', '::1'),
+(1007, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 08:23:10', '2018-07-06 08:23:10', '::1'),
+(1008, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 08:25:58', '2018-07-06 08:25:58', '::1'),
+(1009, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 08:27:40', '2018-07-06 08:27:40', '::1'),
+(1010, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 08:28:37', '2018-07-06 08:28:37', '::1'),
+(1011, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 08:29:40', '2018-07-06 08:29:40', '::1'),
+(1012, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 08:30:24', '2018-07-06 08:30:24', '::1'),
+(1013, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 08:30:59', '2018-07-06 08:30:59', '::1'),
+(1014, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 08:32:14', '2018-07-06 08:32:14', '::1'),
+(1015, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 08:33:54', '2018-07-06 08:33:54', '::1'),
+(1016, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 08:56:02', '2018-07-06 08:56:02', '::1'),
+(1017, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 09:15:36', '2018-07-06 09:15:36', '::1'),
+(1018, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 09:15:52', '2018-07-06 09:15:52', '::1'),
+(1019, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 09:30:08', '2018-07-06 09:30:08', '::1'),
+(1020, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 09:30:53', '2018-07-06 09:30:53', '::1'),
+(1021, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 09:38:15', '2018-07-06 09:38:15', '::1'),
+(1022, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 09:50:39', '2018-07-06 09:50:39', '::1'),
+(1023, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 09:51:10', '2018-07-06 09:51:10', '::1'),
+(1024, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 09:51:42', '2018-07-06 09:51:42', '::1'),
+(1025, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 09:57:06', '2018-07-06 09:57:06', '::1'),
+(1026, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 11:03:45', '2018-07-06 11:03:45', '::1'),
+(1027, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 11:05:01', '2018-07-06 11:05:01', '::1'),
+(1028, 2, 'habeeba', 'login', 'Loggedin by habeeba', '2018-07-06 23:21:51', '2018-07-06 23:21:51', '::1'),
+(1029, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-06 23:22:52', '2018-07-06 23:22:52', '::1'),
+(1030, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-07 00:03:33', '2018-07-07 00:03:33', '::1'),
+(1031, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-07 00:04:12', '2018-07-07 00:04:12', '::1'),
+(1032, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-07 00:44:04', '2018-07-07 00:44:04', '::1'),
+(1033, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-07 00:44:58', '2018-07-07 00:44:58', '::1'),
+(1034, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-07 00:45:30', '2018-07-07 00:45:30', '::1'),
+(1035, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-07 00:45:58', '2018-07-07 00:45:58', '::1'),
+(1036, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-07 00:46:06', '2018-07-07 00:46:06', '::1'),
+(1037, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-07 00:46:20', '2018-07-07 00:46:20', '::1'),
+(1038, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-07 00:46:53', '2018-07-07 00:46:53', '::1'),
+(1039, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-07 00:47:06', '2018-07-07 00:47:06', '::1'),
+(1040, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-07 00:56:15', '2018-07-07 00:56:15', '::1'),
+(1041, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-07 00:56:37', '2018-07-07 00:56:37', '::1'),
+(1042, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-07 01:18:26', '2018-07-07 01:18:26', '::1'),
+(1043, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-07 01:19:34', '2018-07-07 01:19:34', '::1'),
+(1044, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-07 01:27:12', '2018-07-07 01:27:12', '::1'),
+(1045, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-07 01:27:22', '2018-07-07 01:27:22', '::1'),
+(1046, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-07 01:52:55', '2018-07-07 01:52:55', '::1'),
+(1047, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-07 01:52:58', '2018-07-07 01:52:58', '::1'),
+(1048, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-07 01:53:09', '2018-07-07 01:53:09', '::1'),
+(1049, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-07 01:53:18', '2018-07-07 01:53:18', '::1'),
+(1050, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-07 01:53:31', '2018-07-07 01:53:31', '::1'),
+(1051, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-07 01:53:32', '2018-07-07 01:53:32', '::1'),
+(1052, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-07 01:53:53', '2018-07-07 01:53:53', '::1'),
+(1053, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-07 01:54:18', '2018-07-07 01:54:18', '::1'),
+(1054, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-07 01:54:29', '2018-07-07 01:54:29', '::1'),
+(1055, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-07 01:55:21', '2018-07-07 01:55:21', '::1'),
+(1056, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-07 01:55:41', '2018-07-07 01:55:41', '::1'),
+(1057, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-07 01:57:11', '2018-07-07 01:57:11', '::1'),
+(1058, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-07 02:25:07', '2018-07-07 02:25:07', '::1'),
+(1059, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-07 03:08:12', '2018-07-07 03:08:12', '::1'),
+(1060, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-07 04:34:40', '2018-07-07 04:34:40', '::1'),
+(1061, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-07 04:53:23', '2018-07-07 04:53:23', '::1'),
+(1062, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-07 04:53:27', '2018-07-07 04:53:27', '::1'),
+(1063, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-07 04:53:32', '2018-07-07 04:53:32', '::1'),
+(1064, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-07 04:53:33', '2018-07-07 04:53:33', '::1'),
+(1065, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-07 04:53:49', '2018-07-07 04:53:49', '::1'),
+(1066, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-07 05:34:57', '2018-07-07 05:34:57', '::1'),
+(1067, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-07 06:38:26', '2018-07-07 06:38:26', '::1'),
+(1068, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-07 06:39:06', '2018-07-07 06:39:06', '::1'),
+(1069, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-07 06:39:07', '2018-07-07 06:39:07', '::1'),
+(1070, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-07 06:39:08', '2018-07-07 06:39:08', '::1'),
+(1071, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-07 06:43:40', '2018-07-07 06:43:40', '::1'),
+(1072, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-07 07:11:20', '2018-07-07 07:11:20', '::1'),
+(1073, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-07 07:11:26', '2018-07-07 07:11:26', '::1'),
+(1074, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-07 07:11:27', '2018-07-07 07:11:27', '::1'),
+(1075, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-07 07:11:33', '2018-07-07 07:11:33', '::1'),
+(1076, 2, 'habeeba', 'view', 'viewed by habeeba', '2018-07-07 07:11:35', '2018-07-07 07:11:35', '::1');
 
 -- --------------------------------------------------------
 
@@ -1366,11 +1605,11 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `email`, `password`, `remember_token`, `created_at`, `updated_at`, `is_admin`, `status`) VALUES
-(1, 'jitendra', 'jitendra@atxlearning.com', '$2y$10$ebMSPXE6/.YE3auVCW2ct.nbKAmlXZ8u6Yh9ZzCvdJBfZTe33I.P6', 'sjJJeZxcvN3mnqY4mxAqjyMQbJ6AW8gkbg6MhwsCYokxob4KCy4OVdbcEAq2', '2018-05-24 10:35:51', '2018-05-24 10:35:51', 1, 0),
-(2, 'habeeba', 'habeeba@atxlearning.com', '$2y$10$ZDk498KnepD3BBn3EqpauOYmoopz2EPLdDSvRmYCFN9bYUtB/ox.i', 'iRKvJ2qM3aQbKn8WZjjBPayyiaj5pdUzGAeO9oGekH8QpHbON8UHmHGnDRco', '2018-06-04 07:08:28', '2018-06-04 07:08:28', 0, 1),
+(1, 'jitendra', 'jitendra@atxlearning.com', '$2y$10$ebMSPXE6/.YE3auVCW2ct.nbKAmlXZ8u6Yh9ZzCvdJBfZTe33I.P6', '0oTyfmrMy4bv2qFRae9kg86Jq7kaEtn1HSDhg5xQrGm4bfeRPtU2qOPmmgwo', '2018-05-24 10:35:51', '2018-05-24 10:35:51', 1, 0),
+(2, 'habeeba', 'habeeba@atxlearning.com', '$2y$10$ZDk498KnepD3BBn3EqpauOYmoopz2EPLdDSvRmYCFN9bYUtB/ox.i', 'qGWJOauroVSOlfn3Uovw5207D2m9PkrYPWGxWpwGejbBkTKVloOyy882Jj00', '2018-06-04 07:08:28', '2018-06-04 07:08:28', 0, 1),
 (10, 'jks0586', 'jks0586@gmail.com', '$2y$10$JTzW/2AnPg4AYiFcgAeoS.YNdbZraGK9NkCugQUARom3PYyVxZSUK', NULL, '2018-06-04 12:12:10', '2018-06-06 05:26:16', 0, 1),
 (11, 'aaa', 'aaa@aaa.com', '$2y$10$YdHcGJZCl4Mg36Yh7Kwec.2nmI0MXcwNaOXIFvIdEGc.52yOtYD6C', NULL, '2018-06-05 10:29:09', '2018-06-05 10:29:09', 0, 1),
-(12, 'test', 'test@gmail.com', '$2y$10$wkYLPPM5hqChqmR0r0.PjubMAY3ArMN7Cl1W9/ty4buo1tgAu96Su', 'KFyhfAR4Y71SQxNTVpQK73V2LjOUkM2Zcan7QfYyL8Hq3P5MLq28m2JqvC27', '2018-06-06 06:31:46', '2018-06-06 06:31:46', 0, 1);
+(12, 'test', 'test@gmail.com', '$2y$10$wkYLPPM5hqChqmR0r0.PjubMAY3ArMN7Cl1W9/ty4buo1tgAu96Su', '3ZRDSUrAz7XMpTXvLRS5xmlDLyIUlWUAeXeoESpHFIkuWiPTvnRwtb2VNoic', '2018-06-06 06:31:46', '2018-06-06 06:31:46', 0, 1);
 
 --
 -- Indexes for dumped tables
@@ -1456,12 +1695,12 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `employment`
 --
 ALTER TABLE `employment`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 --
 -- AUTO_INCREMENT for table `emp_comments`
 --
 ALTER TABLE `emp_comments`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=183;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=187;
 --
 -- AUTO_INCREMENT for table `migrations`
 --
@@ -1481,7 +1720,7 @@ ALTER TABLE `oauth_personal_access_clients`
 -- AUTO_INCREMENT for table `system_log`
 --
 ALTER TABLE `system_log`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=855;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1077;
 --
 -- AUTO_INCREMENT for table `users`
 --

@@ -14,23 +14,34 @@
       <div class="modal-content">
        
         <div class="modal-body">
-          <form>
+          <form action="{{route('send.mail')}}" method="POST">
+             {{ csrf_field() }}
             Your name<br>
             <input type="text" name="name" value="{{ Auth::user()->name }}"><br>
-            Company<br>
-            <input type="text" name="company" value="ATX Learning"><br>
-            Message templates<br>
-            <input type="text" name="messagetemplates"><br>
-            Message<br>
-            <textarea rows="4" cols="50"></textarea><br>
+            To<br>
+            <input type="text" name="to" value="{{$employement['email']}}" style="width:300px"><br>
+            From<br>
+            <input type="text" name="email" value="{{ Auth::user()->email }}" style="width:300px"><br>
 
+                <label for="title">Select Template:</label>
+                <select name="template" class="form-control" style="width:350px">
+                    <option value="">Select Template</option>
+                    @foreach ($templates as $key => $value)
+                        <option value="{{ $key }}">{{ $value }}</option>
+                    @endforeach
+                </select>
+                <label for="title">Select Message:</label>
+                <select name="message" class="form-control" style="width:350px">
+                </select>
+          
+  
+            Message templates<br>
+            <input type="text" name="messagetemplates" ><br>
+            Message<br>
+            <textarea rows="4" cols="50" name="message" ></textarea><br>
             Title of Job Opening<br>
-            <input type="text" name="titleofjob" value="{{$employement['position']}}"><br>
-            <br>
-            Email<br>
-            <input type="text" name="email" value="{{ Auth::user()->email }}"><br>
-            Job Description<br>
-            <textarea rows="4" cols="50"></textarea><br>
+            <input type="text" name="titleofjob" value="{{$employement['position']}}" style="width:300px"><br>
+            <br> 
             <button type="submit" name="submit" >Send Email</button>
            
           </form>
@@ -122,9 +133,21 @@
                             <div class="col-md-2 offset-md-10">
                                 <button id="comment-submit" type="submit" class="btn btn-primary">{{ __('Send') }}</button>
                             </div></div>
-                        <div>
-                        </div>
+                            
                       </form>
+
+                         <div class="form-group">
+                    <select class="form-control" id="userd">
+                    <option value="">Select</option>
+                    @foreach($userdata as $users)
+                    <option value="{{$users->email}}">{{$users->name}}</option>
+                    @endforeach
+
+                    </select>
+                </div>
+                      <div>
+                                <button type="submit" name="submit" class="btn btn-primary">Send details to Sales Person</button>
+                            </div>
                     </div>
                     </div>
                   </div>
@@ -136,3 +159,66 @@
 
 @endsection
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script>
+$(document).ready(function(){
+    $("#userd").on('change',function(){
+      var email=$(this).val();
+      if(email!=''){
+      $.ajax({
+        headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+        url:'/sendmailtouser',
+        type:'post',
+        data: {
+              Title: $('#title').text(),
+              FirstName: $('#fname').text(),
+              LastName: $('#lname').text(),
+              Email: $('#email').text(),
+              SendTo:email,
+              },        
+         success: function(res){
+           if(res==true){
+             alert('Mail sent successfully.');
+           }else{
+             alert('Sorry Try again.');
+           }
+         }     
+      });
+      }
+
+
+
+    });
+});
+</script>
+
+<script src="http://demo.itsolutionstuff.com/plugin/jquery.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('select[name="template"]').on('change', function() {
+            var templateID = $(this).val();
+            if(templateID) {
+                $.ajax({
+                    url: '/myform/ajax/'+templateID,
+                    type: "GET",
+                    dataType: "json",
+                    success:function(data) {
+
+                        
+                        $('select[name="message"]').empty();
+                        $.each(data, function(key, value) {
+                            $('select[name="message"]').append('<option value="'+ key +'">'+ value +'</option>');
+                        });
+
+
+                    }
+                });
+            }else{
+                $('select[name="message"]').empty();
+            }
+        });
+    });
+</script>

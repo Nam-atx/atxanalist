@@ -12,6 +12,8 @@ use DB;
 use Session;
 use Excel;
 use Illuminate\Support\Facades\Validator;
+use App\Mail\sendEmail;
+use Illuminate\Support\Facades\Mail;
 
 use Jcf\Geocode\Geocode;
 
@@ -22,6 +24,55 @@ class EmploymentController extends Controller
     //
     use latlon;
 
+   
+ public function sendmail(Request $request)
+    {
+        
+        $title=$request->input('Title');
+        $fname=$request->input('FirstName');
+        $lname=$request->input('LastName');
+        $email=$request->input('Email');
+        $sendto=$request->input('SendTo');                  
+        if(isset($sendto) && !empty($sendto)){
+        
+            $to       = $sendto;
+            $subject  = 'Account Confirmation Link';      
+            $message="Your Confirmation link \r\n";
+            $message.="You have Successfully Registered And please pay Registration fees Before 17-Feb-2018. \r\n";
+            $headers  = 'From: xyz@gmail.com' . "\r\n" .
+                        'Reply-To: allthebest91@gmail.com' . "\r\n" .
+                        'MIME-Version: 1.0' . "\r\n" .
+                        'Content-type: text/html; charset=iso-8859-1' . "\r\n" .
+                        'X-Mailer: PHP/' . phpversion();  
+            ini_set("SMTP", "mx1.hostinger.in");
+            ini_set("sendmail_from", "xyz@gmail.com");
+            ini_set("smtp_port", "587");
+            ini_set("smtp_username", "xyz@gmail.com");
+            ini_set("smtp_password", "password123");
+            ini_set("auth",true);
+            if($sentmail=mail($to, $subject, $message, $headers) )
+                {
+           return true;
+            } 
+            else 
+            {
+            return false;  
+            }
+        }
+    //  $check= Mail::to('junaid@atxlearning.com')->send(new sendEmail($request->input('Title'),$request->input('FirstName'),$request->input('LastName'),$request->input('Email'),$request->input('SendTo')));
+    }
+
+
+ public function mail(Request $request)
+    {
+
+        Mail::to('junaid@atxlearning.com')->send(new sendEmail($request->input('name'),$request->input('company'),$request->input('messagetemplates'),$request->input('message'),$request->input('titleofjob'),$request->input('email'),$request->input('jobdescription')));
+
+    return "Your message has been delivered.";
+        
+    }
+
+
 
      public function geolocal()
      {
@@ -31,7 +82,7 @@ class EmploymentController extends Controller
      }
 
 
-	// show template
+    // show template
     public function importExport()
     {
         return view('admin.excel.importExport');
@@ -254,7 +305,7 @@ class EmploymentController extends Controller
     }
 
 
-	// export data
+    // export data
     public function exportExcel($type)
     {
         $data = Employment::get()->toArray();
@@ -274,7 +325,7 @@ class EmploymentController extends Controller
 
         if($request->hasFile('import_file')){
             Excel::load($request->file('import_file')->getRealPath(), function ($reader) {
-	                foreach ($reader->toArray() as $key => $row) {
+                    foreach ($reader->toArray() as $key => $row) {
 
                         $address='';
                         if($row['address_street_address']){
@@ -299,10 +350,11 @@ class EmploymentController extends Controller
                         $response=$this->getlatlon($address);
 
 
-	                    $data=['title'=>$row['title'], 'first_name'=>$row['first_name'], 'last_name'=>$row['last_name'],'email'=>$row['email_address'],'phone'=>$row['phone'],'cell_number'=>$row['cell_number'],'best_time_to_call'=>$row['best_time_to_call'],'street1'=>$row['address_street_address'],'street2'=>$row['address_street_address_line_2'],'city'=>$row['city'],'state'=>$row['state'],'zipcode'=>$row['zip_code'],'country'=>$row['address_country'],'position'=>$row['applying_for_position'],'days_available'=>$row['days_available'],'license'=>mb_convert_encoding($row['licenses_skills_training_awards'], 'UTF-8'),'need_call'=>$row['need_a_call_back'],'resume'=>'','longitude'=>$response['longitude'],'latitude'=>$response['latitude']];
+                        $data=['title'=>$row['title'], 'first_name'=>$row['first_name'], 'last_name'=>$row['last_name'],'email'=>$row['email_address'],'phone'=>$row['phone'],'cell_number'=>$row['cell_number'],'best_time_to_call'=>$row['best_time_to_call'],'street1'=>$row['address_street_address'],'street2'=>$row['address_street_address_line_2'],'city'=>$row['city'],'state'=>$row['state'],'zipcode'=>$row['zip_code'],'country'=>$row['address_country'],'position'=>$row['applying_for_position'],'days_available'=>$row['days_available'],'license'=>mb_convert_encoding($row['licenses_skills_training_awards'], 'UTF-8'),'need_call'=>$row['need_a_call_back'],'resume'=>'','longitude'=>$response['longitude'],'latitude'=>$response['latitude']];
 
-	                    	Employment::create($data);
-	                }
+
+                            Employment::create($data);
+                    }
 
             });
         }
@@ -346,5 +398,26 @@ class EmploymentController extends Controller
 
         return response()->json(['data' => $results,'status' => Response::HTTP_OK]); 
     }
+
+
+    public function myform()
+    {
+        $templates = DB::table("template")->lists("template","id");
+        return view('myform',compact('templates'));
+    }
+
+    /**
+     * Get Ajax Request and restun Data
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function myformAjax($id)
+    {
+        $messages = DB::table("message")
+                    ->where("template_id",$id)
+                    ->lists("message","id");
+        return json_encode($messages);
+    }
+
 
 }

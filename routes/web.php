@@ -30,6 +30,12 @@ Route::group(['middleware'=>['auth','user']],function(){
   Route::get('/monthresume', 'User\DashboardController@monthresume')->name('user.employment.monthresume');
   Route::get('/yearresume', 'User\DashboardController@yearresume')->name('user.employment.yearresume');
   Route::get('/latestresume', 'User\DashboardController@latestresume')->name('user.employment.latestresume');
+  Route::post('/sendMail','EmploymentController@mail')->name('send.mail');
+
+  Route::post('/sendmailtouser','EmploymentController@sendmail');
+
+  Route::get('myform',array('as'=>'myform','uses'=>'EmploymentController@myform'));
+Route::get('myform/ajax/{id}',array('as'=>'myform.ajax','uses'=>'EmploymentController@myformAjax'));
 
 
 });
@@ -71,3 +77,4 @@ Route::group(['middleware'=>['auth','admin']],function(){
 });
 
 Route::get('/admin/geolocal','EmploymentController@geolocal');
+

@@ -97,6 +97,7 @@ class DashboardController extends Controller
    $comparedate=$now->toDateString();
     
       $numbers= DB::table('employment')->join('emp_comments', 'emp_comments.emp_id', '=', 'employment.id')->where('emp_comments.user_id','=',$user->id)->where(DB::raw("(DATE_FORMAT(emp_comments.created_at,'%Y-%m-%d'))"),'>=',$comparedate)->count();
+      
       $sql = DB::table('employment')->join('emp_comments', 'emp_comments.emp_id', '=', 'employment.id')->where('emp_comments.user_id','=',$user->id)->where(DB::raw("(DATE_FORMAT(emp_comments.created_at,'%Y-%m-%d'))"),'>=',$comparedate)->take(1)->paginate(5);
 
          // echo '<pre>'; print_r($sql); die;

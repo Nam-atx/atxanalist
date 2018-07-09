@@ -8,8 +8,11 @@ use Illuminate\Http\Response;
 use App\Employment;
 use App\empComments;
 use App\Systemlog;
+use App\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use App\Mail\sendEmail;
+use Illuminate\Support\Facades\Mail;
 
 class UserController extends Controller
 {
@@ -65,6 +68,8 @@ class UserController extends Controller
 
     }
 
+    
+
     public function dnd(Request $request){
 
         $employment=Employment::find($request->input('emp_id'));
@@ -113,25 +118,26 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id,Request $request)
+     public function show($id,User $users,Request $request)
     {
         //
-
+        $userdata=$users->where('status','=',1)->get();
         $user=Auth::user();
         $employment=Employment::find($id);
 
         $empcomments = DB::table('users')
             ->join('emp_comments', 'emp_comments.user_id', '=', 'users.id')
             ->select('users.id','users.name','emp_comments.comment',DB::raw('DATE_FORMAT(emp_comments.created_at, "%d %b %Y %r") as created_at'))->where('emp_comments.emp_id','=',$id)->get();
+
+// echo '<pre>';print_r($empcomments);die();
         
         $data=['user_id'=>$user->id,'name'=>$user->name,'type'=>'view','comment'=>'viewed by '.$user->name,'ip_address'=>$request->ip()];
 
         Systemlog::create($data);
 
-        return view('user.employment.show',['employement'=>$employment,'empcomments'=>$empcomments]);
+        return view('user.employment.show',['employement'=>$employment,'empcomments'=>$empcomments,'userdata'=>$userdata]);
 
     }
-
 
     public function saveComment(Request $request, $id){
         $user=Auth::user();

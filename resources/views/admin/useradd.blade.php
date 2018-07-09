@@ -73,7 +73,11 @@
               <div class="control-group">
                 <label class="control-label">Status</label>
                 <div class="controls">
-                  <input type="radio" name="status" id="status" value="1"> Enable <input type="radio" name="status" id="status" value="0"> Disable 
+                  <input type="radio" name="status" id="status" value="0"> Admin
+                  <input type="radio" name="status" id="status" value="1"> Sales Person 
+                  <input type="radio" name="status" id="status" value="2"> Recruiter 
+
+
                 </div>
               </div>
 
