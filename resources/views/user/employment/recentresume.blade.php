@@ -8,10 +8,10 @@
                 <div class="card-header">Employer List</div>
                 <div class="card-body1">
                   
-                  <form class="form-inline" action="{{route('home')}}"><div class="form-group"><input class="form-control" type="text" name="position" placeholder="Position" value="{{ app('request')->input('position') }}"></div>
+                  <form class="form-inline" action="{{route('user.employment.recentresume')}}"><div class="form-group"><input class="form-control" type="text" name="position" placeholder="Position" value="{{ app('request')->input('position') }}"></div>
                     <div class="form-group"><input type="text" class="form-control" name="city" placeholder="City"  value="{{ app('request')->input('city') }}"> </div> <div class="form-group"> <input class="form-control" type="text" name="state" placeholder="State"  value="{{ app('request')->input('state') }}"></div> <div class="form-group"> <button class="btn btn-primary" type="submit">Filter</button></div>
                   </form>
-                  <form action="{{route('home')}}" class="form-inline reset"><button class="btn btn-primary" type="submit">Reset</button>
+                  <form action="{{route('user.employment.recentresume')}}" class="form-inline reset"><button class="btn btn-primary" type="submit">Reset</button>
                   </form>
                 
                     <table class="table">
@@ -28,6 +28,7 @@
                         </tr>
                       </thead>
                       <tbody>
+                        @if(!$employments->isEmpty())
                         @foreach( $employments as $employment)
                         <tr>
                             <td>{{$employment->title}}</td>
@@ -41,9 +42,16 @@
                             {{$employment->zipcode?'-'.$employment->zipcode:''}}
                             </td>
                             <td>{{ $employment->dnd == 1 ? "DND" : "NO DND" }}</td>
-                            <td><a href="{{route('emp.show',$employment->emp_id)}}"><i class="far fa-eye"></i></a></td>
+                            <td><a href="{{route('emp.show',$employment->id)}}"><i class="far fa-eye"></i></a></td>
                         </tr>
                         @endforeach
+
+                        @else
+                          <tr>
+                            <td colspan="8">No record found</td>
+                          </tr>
+                        @endif
+
                     </tbody>
                     </table>
                     {{$employments->links()}}
@@ -52,7 +60,7 @@
             </div>
         </div>
     </div>
-    <h2>Total number of records: {{$numbers}}</h2>
+{{--    <h2>Total number of records: {{$numbers}}</h2> --}}
 </div>
 
 @endsection

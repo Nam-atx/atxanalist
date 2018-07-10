@@ -14,7 +14,7 @@ class AddLoginFieldsToSystemLogTable extends Migration
     public function up()
     {
          Schema::table('system_log', function (Blueprint $table) {
-            $table->datetime('ip_address')->nullable();
+            $table->string('ip_address')->nullable();
         });
     }
 

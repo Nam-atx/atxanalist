@@ -15,9 +15,10 @@
 
 Auth::routes();
 Route::group(['middleware'=>['auth','user']],function(){
-  Route::get('/home', 'User\UserController@index')->name('home');
+  Route::get('/resumes', 'User\UserController@index')->name('home');
+  
   // Route::get('/','User\UserController@index');
-  Route::get('/','User\DashboardController@dashboard');
+  Route::get('/','User\DashboardController@dashboard')->name('main');
   Route::get('/emp/{emp}','User\UserController@show')->name('emp.show');
   Route::post('/emp/{emp}/comment','User\UserController@saveComment')->name('emp.comment');
   Route::post('/dnd','User\UserController@dnd')->name('emp.dnd');
@@ -35,14 +36,14 @@ Route::group(['middleware'=>['auth','user']],function(){
   Route::post('/sendmailtouser','EmploymentController@sendmail');
 
   Route::get('myform',array('as'=>'myform','uses'=>'EmploymentController@myform'));
-Route::get('myform/ajax/{id}',array('as'=>'myform.ajax','uses'=>'EmploymentController@myformAjax'));
-
-
+  Route::get('myform/ajax/{id}',array('as'=>'myform.ajax','uses'=>'EmploymentController@myformAjax'));
 });
 
 
 
 Route::match(['get', 'post'],'/admin/login','AdminController@login')->name('admin.login');
+
+// admin section routes
 Route::group(['middleware'=>['auth','admin']],function(){
   Route::get('/admin/dashboard','AdminController@dashboard')->name('admin.dashboard');
   Route::get('/admin/users','AdminController@users')->name('admin.users');
@@ -75,6 +76,8 @@ Route::group(['middleware'=>['auth','admin']],function(){
 
 
 });
+
+// admin route section end
 
 Route::get('/admin/geolocal','EmploymentController@geolocal');
 

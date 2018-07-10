@@ -1,69 +1,13 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
 
-
-  <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Click to Mail</button>
-
-  <!-- Modal -->
-  <div class="modal fade" id="myModal" role="dialog">
-    <div class="modal-dialog">
-    
-      <!-- Modal content-->
-      <div class="modal-content">
-       
-        <div class="modal-body">
-          <form action="{{route('send.mail')}}" method="POST">
-             {{ csrf_field() }}
-            Your name<br>
-            <input type="text" name="name" value="{{ Auth::user()->name }}"><br>
-            To<br>
-            <input type="text" name="to" value="{{$employement['email']}}" style="width:300px"><br>
-            From<br>
-            <input type="text" name="email" value="{{ Auth::user()->email }}" style="width:300px"><br>
-
-                <label for="title">Select Template:</label>
-                <select name="template" class="form-control" style="width:350px">
-                    <option value="">Select Template</option>
-                    @foreach ($templates as $key => $value)
-                        <option value="{{ $key }}">{{ $value }}</option>
-                    @endforeach
-                </select>
-                <label for="title">Select Message:</label>
-                <select name="message" class="form-control" style="width:350px">
-                </select>
-          
-  
-            Message templates<br>
-            <input type="text" name="messagetemplates" ><br>
-            Message<br>
-            <textarea rows="4" cols="50" name="message" ></textarea><br>
-            Title of Job Opening<br>
-            <input type="text" name="titleofjob" value="{{$employement['position']}}" style="width:300px"><br>
-            <br> 
-            <button type="submit" name="submit" >Send Email</button>
-           
-          </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
-      </div>
-      
-    </div>
-  </div>
-
-
+ 
     <div class="row justify-content-center">
-
-        <div class="col-md-12">
-
             <div class="card">
-
                 <div class="card-header">Employer detail
                       @if($employement['dnd']==0)
-                       <form action="{{route('emp.dnd')}}"  method="POST">
+                       <form class="dnd-form" action="{{route('emp.dnd')}}"  method="POST">
                         {{ csrf_field() }}
                         <input type="hidden" name="emp_id" value="{{$employement['id']}}">
                         <button type="submit" name="submit" >DND</button>
@@ -77,10 +21,10 @@
                        @endif
 
                 </div>
+                
                 <div class="card-body1">
-                  <div class="row">
-                    <div class="col-md-6">
-
+                  
+                    <div class="span4 csection">
                       <table class="table">
                       <tbody>
                         <tr><td><strong>Title</strong></td><td>{{$employement['title']}}</td></tr>
@@ -103,7 +47,7 @@
                       </tbody>
                       </table>
                     </div>
-                    <div class="col-md-6">
+                    <div class="span4 csection">
                       <div class="comment-section">
                       <div class="comment-show">
                         @if($empcomments)
@@ -116,7 +60,7 @@
                       </div>
                       <form id="comment-submit" method="POST" action="{{ route('emp.comment',$employement['id']) }}">
                         @csrf
-                        <div class="form-group row">
+                        <div class="form-group">
                             
                             <div class="col-md-12">
                                 <textarea id="comment" type="text" class="form-control{{ $errors->has('comment') ? ' is-invalid' : '' }}" name="comment" required autofocus>{{ old('comment') }}</textarea>
@@ -129,33 +73,69 @@
                             </div>
                         </div>
 
-                        <div class="form-group row mb-0">
-                            <div class="col-md-2 offset-md-10">
+                        <div class="form-group mb-0">
+                            <div class="col-md-2 offset-md-10 commit-send">
                                 <button id="comment-submit" type="submit" class="btn btn-primary">{{ __('Send') }}</button>
                             </div></div>
                             
                       </form>
 
-                         <div class="form-group">
-                    <select class="form-control" id="userd">
-                    <option value="">Select</option>
-                    @foreach($userdata as $users)
-                    <option value="{{$users->email}}">{{$users->name}}</option>
-                    @endforeach
+                    <div class="form-group">
+                      <select class="form-control" id="userd">
+                      <option value="">Select</option>
+                      @foreach($userdata as $users)
+                      <option value="{{$users->email}}">{{$users->name}}</option>
+                      @endforeach
 
-                    </select>
-                </div>
-                      <div>
-                                <button type="submit" name="submit" class="btn btn-primary">Send details to Sales Person</button>
-                            </div>
+                      </select>
+                    </div>
+                    <div>
+                        <button type="submit" name="submit" class="btn btn-primary">Send details to Sales Person</button>
                     </div>
                     </div>
-                  </div>
+                    </div>
+                    <div class="span4 csection">
+                      <form class="form-inline form-send" action="{{route('send.mail')}}" method="POST">
+                         {{ csrf_field() }}
+                        Your name<br>
+                        <input type="text" name="name" value="{{ Auth::user()->name }}"><br>
+                        To<br>
+                        <input type="text" name="to" value="{{$employement['email']}}" style="width:300px"><br>
+                        From<br>
+                        <input type="text" name="email" value="{{ Auth::user()->email }}" style="width:300px"><br>
+
+                            <label for="title">Select Template:</label>
+                            <select name="template" class="form-control" style="width:350px">
+                                <option value="">Select Template</option>
+                              {{-- 
+                               @foreach ($templates as $key => $value)
+                                    <option value="{{ $key }}">{{ $value }}</option>
+                                @endforeach
+                                --}}
+                            </select>
+                            <label for="title">Select Message:</label>
+                            <select name="message" class="form-control" style="width:350px">
+                            </select>
+                      
+              
+                        Message templates<br>
+                        <input type="text" name="messagetemplates" ><br>
+                        Message<br>
+                        <textarea rows="4" cols="50" name="message" ></textarea><br>
+                        Title of Job Opening<br>
+                        <input type="text" name="titleofjob" value="{{$employement['position']}}" style="width:300px"><br>
+                        <br> 
+                        <button type="submit" name="submit" >Send Email</button>
+                       
+                      </form>
+                            
+
+                    </div>
+                  
                 </div>
             </div>
-        </div>
+        
     </div>
-</div>
 
 @endsection
 
