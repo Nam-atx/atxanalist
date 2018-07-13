@@ -25,7 +25,7 @@
  <div class="span6">
   <div class="home-right">
   <ul>
-      <li><a href="#"><span>Latest Resume Upload ( {{$latest_count}} )</span></a></li>
+      <li><a href="{{route('user.employment.latestresume')}}"><span>Latest Resume Upload ( {{$latest_count}} )</span></a></li>
   
       <li><a href="#"><span>Miles Filter</span></a> </li>
 

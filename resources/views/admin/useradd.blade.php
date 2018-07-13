@@ -66,22 +66,25 @@
               <div class="control-group">
                 <label class="control-label">Admin</label>
                 <div class="controls">
-                  <input type="radio" name="is_admin" id="is_admin" value="1"> Yes <input type="radio" name="is_admin" id="is_admin" value="0"> No 
+                 <select name="is_admin" class="is-admin form-control">
+                  <option value="1">Admin</option>
+                  <option value="0">Recrutor</option>
+                  <option value="2">Sale</option>
+                </select>
                 </div>
               </div>
 
               <div class="control-group">
                 <label class="control-label">Status</label>
                 <div class="controls">
-                  <input type="radio" name="status" id="status" value="0"> Admin
-                  <input type="radio" name="status" id="status" value="1"> Sales Person 
-                  <input type="radio" name="status" id="status" value="2"> Recruiter 
-
-
+                 <select name="status" class="sttaus form-control">
+                  <option value="1">Enable</option>
+                  <option value="0">Disable</option>
+                  
+                </select>
                 </div>
               </div>
 
-              
               <div class="form-actions">
                 <input type="submit" value="Save" class="btn btn-success">
               </div>

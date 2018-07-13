@@ -8,17 +8,17 @@
                 <div class="card-header">Employer List</div>
                 <div class="card-body1">
                   
-                  <form class="form-inline" action="{{route('user.employment.yesterdayresume')}}"><div class="form-group"><input class="form-control" type="text" name="position" placeholder="Position" value="{{ app('request')->input('position') }}"></div>
-                    <div class="form-group"><input type="text" class="form-control" name="city" placeholder="City"  value="{{ app('request')->input('city') }}"> </div> <div class="form-group"> <input class="form-control" type="text" name="state" placeholder="State"  value="{{ app('request')->input('state') }}"></div> 
-                    
+                  <form class="form-inline" action="{{route('user.employment.latestresume')}}"><div class="form-group"><input class="form-control" type="text" name="position" placeholder="Position" value="{{ app('request')->input('position') }}"></div>
+                    <div class="form-group"><input type="text" class="form-control" name="city" placeholder="City"  value="{{ app('request')->input('city') }}" required> </div> <div class="form-group"> <input class="form-control" type="text" name="state" placeholder="State"  value="{{ app('request')->input('state') }}" required></div>
+
                     <div class="form-group"> 
                       <input type="text" class="form-control" name="radius" placeholder="Radius" value="{{ app('request')->input('radius') }}">
                      
                     </div>
 
-                    <div class="form-group"> <button class="btn btn-primary" type="submit">Filter</button></div>
+                     <div class="form-group"> <button class="btn btn-primary" type="submit">Filter</button></div>
                   </form>
-                  <form action="{{route('user.employment.yesterdayresume')}}" class="form-inline reset"><button class="btn btn-primary" type="submit">Reset</button>
+                  <form action="{{route('user.employment.latestresume')}}" class="form-inline reset"><button class="btn btn-primary" type="submit">Reset</button>
                   </form>
                 
                     <table class="table">
@@ -67,7 +67,7 @@
             </div>
         </div>
     </div>
-{{--    <h2>Total number of records: {{$numbers}}</h2> --}}
+
 </div>
 
 @endsection

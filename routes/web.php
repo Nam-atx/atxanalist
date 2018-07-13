@@ -31,12 +31,11 @@ Route::group(['middleware'=>['auth','user']],function(){
   Route::get('/monthresume', 'User\DashboardController@monthresume')->name('user.employment.monthresume');
   Route::get('/yearresume', 'User\DashboardController@yearresume')->name('user.employment.yearresume');
   Route::get('/latestresume', 'User\DashboardController@latestresume')->name('user.employment.latestresume');
-  Route::post('/sendMail','EmploymentController@mail')->name('send.mail');
-
+  
+  Route::post('/candidateMail','EmploymentController@sendEmailToCandidate')->name('candidate.mail');
   Route::post('/sendmailtouser','EmploymentController@sendmail');
 
-  Route::get('myform',array('as'=>'myform','uses'=>'EmploymentController@myform'));
-  Route::get('myform/ajax/{id}',array('as'=>'myform.ajax','uses'=>'EmploymentController@myformAjax'));
+  Route::post('gettemplate','EmploymentController@getTemplate')->name('template.get');
 });
 
 
@@ -70,11 +69,16 @@ Route::group(['middleware'=>['auth','admin']],function(){
   Route::post('/admin/emp/save','EmploymentController@save')->name('admin.emp.save');
 
   //logs management
-
   Route::get('/admin/log/list','LogController@list')->name('admin.log.list');
-  
 
-
+  // Sales person management by admin
+    Route::get('/admin/sales','Admin\SalesController@index')->name('admin.sales.index');
+    Route::get('/admin/sales/create','Admin\SalesController@create')->name('admin.sales.create');
+    Route::post('/admin/sales/store','Admin\SalesController@store')->name('admin.sales.store');
+    Route::get('/admin/sales/edit','Admin\SalesController@edit')->name('admin.sales.edit');
+    Route::put('/admin/sales/update','Admin\SalesController@update')->name('admin.sales.update');
+    Route::delete('/admin/sales/destroy','Admin\SalesController@destroy')->name('admin.sales.destroy');
+  // Sales person management by admin
 });
 
 // admin route section end

@@ -13,16 +13,18 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Mail\sendEmail;
 use Illuminate\Support\Facades\Mail;
-
+use App\Traits\latlon;
 class UserController extends Controller
 {
 
+
+    use latlon;
      /**
      * Create a new controller instance.
      *
      * @return void
      */
-
+     protected $address='';
 
     public function __construct()
     {
@@ -42,26 +44,63 @@ class UserController extends Controller
 
         $user=Auth::user();
 
-        $sql=DB::table('employment');
+        $sql=DB::table('employment')->select('employment.*');
         if($request->input('position')){
-            $sql->where('position','=',$request->input('position'));
+            $sql->where('position','LIKE','%'.$request->input('position').'%');
             $string.=',postion='.$request->input('position');
         }
-        if($request->input('city')){
-            $sql->where('city','=',$request->input('city'));
-            $string.=',city='.$request->input('city');
-        }
-        if($request->input('state')){
-            $sql->where('state','=',$request->input('state'));
-            $string.=',state='.$request->input('state');
-        }
+        
+
+
+        if($request->input('radius')){
+
+           if($request->input('city')){
+              $this->address.=','.$request->input('city');
+              $string.=',city='.$request->input('city');
+           }
+
+           if($request->input('state')){
+              $this->address.=','.$request->input('state');
+              $string.=',state='.$request->input('state');
+           }
+
+          if(!empty($this->address)){
+            
+            $this->address=ltrim($this->address,',');
+            $getinfo=$this->getlatlon($this->address);
+            
+            $lat=$getinfo['latitude'];
+            $lon=$getinfo['longitude'];
+
+            $sql->addselect(DB::raw("round((3959*acos(cos(radians($lat))*cos(radians(`employment`.`latitude`))*cos(radians( `employment`.`longitude`)-radians($lon))+sin(radians($lat))*sin(radians(`employment`.`latitude`))))) AS `distance`"));
+            $sql->where(DB::raw("round((3959*acos(cos(radians($lat))*cos(radians(`employment`.`latitude`))*cos(radians( `employment`.`longitude`)-radians($lon))+sin(radians($lat))*sin(radians(`employment`.`latitude`)))))"),'<=',$request->input('radius'));
+
+          }
+
+         } else {
+
+          if($request->input('city')){
+              $sql->where('employment.city','LIKE','%'.$request->input('city').'%');
+              
+               $string.=',city='.$request->input('city');
+              
+           }
+
+           if($request->input('state')){
+              $sql->where('employment.state','LIKE','%'.$request->input('state').'%');
+              $string.=',state='.$request->input('state');
+           }
+
+         }
 
         if($string){
             $data=['user_id'=>$user->id,'name'=>$user->name,'type'=>'search','comment'=>'search by '.$user->name. '=>'.$string,'ip_address'=>$request->ip()];
             Systemlog::create($data);
         }
+        $empsql=$sql->paginate(5);
 
-        $employments=$sql->paginate(5)->appends(request()->query());
+        $employments=$empsql->appends($request->query());
+        
         //$employments=Employment::paginate(5);
 
         return view('user.employment.index',['employments'=>$employments]);
@@ -118,10 +157,11 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-     public function show($id,User $users,Request $request)
+     public function show($id,Request $request)
     {
         //
-        $userdata=$users->where('status','=',1)->get();
+        $sales=User::where('is_admin','=',2)->where('status','=',1)->get();
+        
         $user=Auth::user();
         $employment=Employment::find($id);
 
@@ -135,7 +175,11 @@ class UserController extends Controller
 
         Systemlog::create($data);
 
-        return view('user.employment.show',['employement'=>$employment,'empcomments'=>$empcomments,'userdata'=>$userdata]);
+
+        $templates=DB::table('template')->get();
+
+
+        return view('user.employment.show',['employement'=>$employment,'empcomments'=>$empcomments,'sales'=>$sales,'templates'=>$templates]);
 
     }
 

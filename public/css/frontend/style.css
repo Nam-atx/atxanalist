@@ -8,6 +8,9 @@
 .comment-show::-webkit-scrollbar {width: 1px;height: 1px;background-color: #c3c3c3;} 
 .pb-4, .py-4 {padding-top:0px !important;padding-bottom:0px !important;}
 .form-inline .form-group{margin-right: 1%;}
+
+
+
 @media (min-width: 1200px) {
 .container {max-width: 1300px;}
 }

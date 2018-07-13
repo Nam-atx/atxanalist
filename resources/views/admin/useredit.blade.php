@@ -64,19 +64,29 @@
                 </div>
               </div>
 
+
               <div class="control-group">
                 <label class="control-label">Admin</label>
                 <div class="controls">
-                  <input type="radio" name="is_admin" id="is_admin" value="1" {{($user->is_admin==1)?'checked':''}}> Yes <input type="radio" name="is_admin" id="is_admin" value="0" {{($user->is_admin==0)?'checked':''}}> No 
+                 <select name="is_admin" class="is-admin form-control">
+                  <option value="1" {{($user->is_admin==1)?'selected':''}}>Admin</option>
+                  <option value="0" {{($user->is_admin==0)?'selected':''}}>Recrutor</option>
+                  <option value="2" {{($user->is_admin==2)?'selected':''}}>Sale</option>
+                </select>
                 </div>
               </div>
 
               <div class="control-group">
                 <label class="control-label">Status</label>
                 <div class="controls">
-                  <input type="radio" name="status" id="status" value="1" {{($user->status==1)?'checked':''}}> Enable <input type="radio" name="status" id="status" value="0" {{($user->status==0)?'checked':''}}> Disable 
+                 <select name="status" class="sttaus form-control">
+                  <option value="1" {{($user->status==1)?'selected':''}}>Enable</option>
+                  <option value="0" {{($user->status==0)?'selected':''}}>Disable</option>
+                  
+                </select>
                 </div>
               </div>
+
 
               <div class="form-actions">
                 <input type="submit" value="Save" class="btn btn-success">

@@ -15,17 +15,15 @@ class CreateTemplateMessageTables extends Migration
     {
         Schema::create('template', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('template');
-            $table->timestamps();
-        });
-
-
-         Schema::create('message', function (Blueprint $table) {
-            $table->increments('id');
-            $table->integer('template_id');
+            $table->integer('user_id');
+            $table->string('template_name');
             $table->string('message');
             $table->timestamps();
+            $table->unique(['user_id', 'template_name']);
         });
+
+
+         
     }
 
     /**
@@ -36,6 +34,5 @@ class CreateTemplateMessageTables extends Migration
     public function down()
     {
         Schema::drop('template');
-        Schema::drop('message');
     }
 }

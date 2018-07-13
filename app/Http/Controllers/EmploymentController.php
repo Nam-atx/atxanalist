@@ -8,69 +8,80 @@ use Illuminate\Http\Response;
 use Input;
 use App\Employment;
 use App\empComments;
+use App\Template;
 use DB;
 use Session;
 use Excel;
 use Illuminate\Support\Facades\Validator;
 use App\Mail\sendEmail;
+use App\Mail\candidateEmail;
 use Illuminate\Support\Facades\Mail;
-
 use Jcf\Geocode\Geocode;
-
 use App\Traits\latlon;
+use Illuminate\Validation\Rule;
 
 class EmploymentController extends Controller
 {
     //
     use latlon;
 
-   
- public function sendmail(Request $request)
+    public function sendEmailToCandidate(Request $request)
     {
-        
-        $title=$request->input('Title');
-        $fname=$request->input('FirstName');
-        $lname=$request->input('LastName');
-        $email=$request->input('Email');
-        $sendto=$request->input('SendTo');                  
-        if(isset($sendto) && !empty($sendto)){
-        
-            $to       = $sendto;
-            $subject  = 'Account Confirmation Link';      
-            $message="Your Confirmation link \r\n";
-            $message.="You have Successfully Registered And please pay Registration fees Before 17-Feb-2018. \r\n";
-            $headers  = 'From: xyz@gmail.com' . "\r\n" .
-                        'Reply-To: allthebest91@gmail.com' . "\r\n" .
-                        'MIME-Version: 1.0' . "\r\n" .
-                        'Content-type: text/html; charset=iso-8859-1' . "\r\n" .
-                        'X-Mailer: PHP/' . phpversion();  
-            ini_set("SMTP", "mx1.hostinger.in");
-            ini_set("sendmail_from", "xyz@gmail.com");
-            ini_set("smtp_port", "587");
-            ini_set("smtp_username", "xyz@gmail.com");
-            ini_set("smtp_password", "password123");
-            ini_set("auth",true);
-            if($sentmail=mail($to, $subject, $message, $headers) )
-                {
-           return true;
-            } 
-            else 
-            {
-            return false;  
-            }
+
+
+        if($request->input('template_save')){
+
+            $validator=$this->templatevalidator($request->all());
+            if ($validator->fails()) {
+                return redirect()->route('emp.show',$request->input('emp_id'))->withErrors($validator)->withInput();
+             } else {
+                $data=['user_id'=>$request->input('user_id'),'template_name'=>$request->input('template_name'),'message'=>$request->input('message')];
+                Template::create($data);
+             }
         }
-    //  $check= Mail::to('junaid@atxlearning.com')->send(new sendEmail($request->input('Title'),$request->input('FirstName'),$request->input('LastName'),$request->input('Email'),$request->input('SendTo')));
-    }
-
-
- public function mail(Request $request)
-    {
-
-        Mail::to('junaid@atxlearning.com')->send(new sendEmail($request->input('name'),$request->input('company'),$request->input('messagetemplates'),$request->input('message'),$request->input('titleofjob'),$request->input('email'),$request->input('jobdescription')));
-
-    return "Your message has been delivered.";
         
+        //echo '<pre>';print_r($request->all());print_r($request->input('message'));die;
+        $from[]=['name'=>$request->input('name'),'address'=>$request->input('from')];
+
+        Mail::to($request->input('to'))->send(new candidateEmail($from,$request->input('to'),$request->input('company'),$request->input('title'),htmlentities($request->input('message'), ENT_COMPAT)));
+
+
+        return redirect()->route('emp.show',$request->input('emp_id'))->with('message','Email has been send successfully');
+                          
     }
+
+
+    protected function templatevalidator(array $data)
+    {
+        $user_id = $data['user_id'];
+
+        return Validator::make($data, [
+           'template_name' => Rule::unique('template')->where(function ($query) use ($user_id) {$query->where('user_id', $user_id);})
+        ]);
+    }
+
+
+    public function getTemplate(Request $request){
+
+        $json=array();
+
+        $template=Template::where('user_id','=',$request->input('user_id'))->where('template_name','=',$request->input('template_name'))->first();
+
+        $json['message']=$template->message;
+
+        return response()->json($json);
+    }
+
+
+
+     public function mail(Request $request)
+        {
+
+            Mail::to('junaid@atxlearning.com')->send(new sendEmail($request->input('name'),$request->input('company'),$request->input('messagetemplates'),$request->input('message'),$request->input('titleofjob'),$request->input('email'),$request->input('jobdescription')));
+
+            return "Your message has been delivered.";
+            
+        }
 
 
 
@@ -128,7 +139,7 @@ class EmploymentController extends Controller
         
          if ($validator->fails()) {
             return redirect()->route('admin.emp.add')->withErrors($validator)->withInput();
-        }
+         }
 
         $data=['title'=>$request->input('title'),'first_name'=>$request->input('first_name'),'last_name'=>$request->input('last_name'),'email'=>$request->input('email'),'phone'=>$request->input('phone'),'cell_number'=>$request->input('cell_number'),'best_time_to_call'=>$request->input('best_time_to_call'),'street1'=>$request->input('street1'),'street2'=>$request->input('street2'),'city'=>$request->input('city'),'state'=>$request->input('state'),'zipcode'=>$request->input('zipcode'),'country'=>$request->input('country'),'position'=>$request->input('position'),'days_available'=>implode(' ',$request->input('days_available')),'license'=>$request->input('license'),'need_call'=>$request->input('need_call'),'resume'=>$request->input('resume'), 'longitude'=>$response['longitude'],'latitude'=>$response['latitude']];
 

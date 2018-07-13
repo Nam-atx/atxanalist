@@ -32,6 +32,31 @@
     <link href="{{ asset('css/frontend/css/style.css')}}" rel="stylesheet" />
     <link href="{{ asset('css/frontend/color/default.css')}}" rel="stylesheet" />
     <link href="{{ asset('css/frontend/css/custom.css')}}" rel="stylesheet" />
+
+
+    <!-- Javascript Library Files -->
+    <script src="{{ asset('css/frontend/js/jquery.min.js')}}"></script>
+    <script src="{{ asset('css/frontend/js/jquery.easing.js')}}"></script>
+    <script src="{{ asset('css/frontend/js/bootstrap.js')}}"></script>
+    <script src="{{ asset('css/frontend/js/parallax/jquery.parallax-1.1.3.js')}}"></script>
+    <script src="{{ asset('css/frontend/js/nagging-menu.js')}}"></script>
+    <script src="{{ asset('css/frontend/js/jquery.nav.js')}}"></script>
+    <script src="{{ asset('css/frontend/js/prettyPhoto/jquery.prettyPhoto.js')}}"></script>
+    <script src="{{ asset('css/frontend/js/portfolio/jquery.quicksand.js')}}"></script>
+    <script src="{{ asset('css/frontend/js/portfolio/setting.js')}}"></script>
+    <script src="{{ asset('css/frontend/js/hover/jquery-hover-effect.js')}}"></script>
+    <script src="{{ asset('css/frontend/js/jquery.scrollTo.min.js')}}"></script>
+    <script src="{{ asset('css/frontend/js/animate.js')}}"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD8HeI8o-c1NppZA-92oYlXakhDPYR7XMY"></script>
+
+    <!-- Contact Form JavaScript File -->
+    <!--<script src="{{ asset('contactform/contactform.js')}}"></script>
+    <script src="{{ asset('assets/js/custom.js')}}"></script>-->
+    <!-- Template Custom Javascript File -->
+    
+    <script src="{{ asset('js/frontend/front-end.js') }}" defer></script>
+
+  
 </head>
 <body>
 
@@ -45,9 +70,7 @@
           </div>
           <div class="navigation">
             <nav>
-              <ul class="nav pull-right">
-               
-
+              <ul class="nav pull-right">               
                 @guest
                 
                 <li><a class="" href="{{ route('login') }}">{{ __('Login') }}</a></li>
@@ -81,26 +104,6 @@
     </div>
     </section>
   
-<!-- Javascript Library Files -->
-  <script src="{{ asset('css/frontend/js/jquery.min.js')}}"></script>
-  <script src="{{ asset('css/frontend/js/jquery.easing.js')}}"></script>
-  <script src="{{ asset('css/frontend/js/bootstrap.js')}}"></script>
-  <script src="{{ asset('css/frontend/js/parallax/jquery.parallax-1.1.3.js')}}"></script>
-  <script src="{{ asset('css/frontend/js/nagging-menu.js')}}"></script>
-  <script src="{{ asset('css/frontend/js/jquery.nav.js')}}"></script>
-  <script src="{{ asset('css/frontend/js/prettyPhoto/jquery.prettyPhoto.js')}}"></script>
-  <script src="{{ asset('css/frontend/js/portfolio/jquery.quicksand.js')}}"></script>
-  <script src="{{ asset('css/frontend/js/portfolio/setting.js')}}"></script>
-  <script src="{{ asset('css/frontend/js/hover/jquery-hover-effect.js')}}"></script>
-  <script src="{{ asset('css/frontend/js/jquery.scrollTo.min.js')}}"></script>
-  <script src="{{ asset('css/frontend/js/animate.js')}}"></script>
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD8HeI8o-c1NppZA-92oYlXakhDPYR7XMY"></script>
 
-  <!-- Contact Form JavaScript File -->
-  <!--<script src="{{ asset('contactform/contactform.js')}}"></script>
-  <script src="{{ asset('assets/js/custom.js')}}"></script>-->
-  <!-- Template Custom Javascript File -->
-  
-  <script src="{{ asset('js/frontend/front-end.js') }}" defer></script>
 </body>
 </html>

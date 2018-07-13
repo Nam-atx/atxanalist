@@ -23,7 +23,7 @@
                 </div>
                 
                 <div class="card-body1">
-                  
+                  <!-- employemnt data start -->
                     <div class="span4 csection">
                       <table class="table">
                       <tbody>
@@ -47,17 +47,23 @@
                       </tbody>
                       </table>
                     </div>
+                    <!-- employemnt data end -->
+
+                    <!-- comment section start -->
                     <div class="span4 csection">
                       <div class="comment-section">
-                      <div class="comment-show">
+                       <div class="comment-show">
                         @if($empcomments)
                         <ul class="comment-list">
-                        @foreach( $empcomments as $empcomment)
-                        <li>{{$empcomment->comment}} {{$empcomment->name?'By '.$empcomment->name:''}} {{$empcomment->created_at?'@ '.$empcomment->created_at:''}}</li>
-                        @endforeach
-                      </ul>
+                          @foreach( $empcomments as $empcomment)
+                          <li>{{$empcomment->comment}} {{$empcomment->name?'By '.$empcomment->name:''}} {{$empcomment->created_at?'@ '.$empcomment->created_at:''}}</li>
+                          @endforeach
+                        </ul>
                         @endif
                       </div>
+
+                      <input type="hidden" name="gettemplate" id="gettemplate" value="{{route('template.get')}}" />
+
                       <form id="comment-submit" method="POST" action="{{ route('emp.comment',$employement['id']) }}">
                         @csrf
                         <div class="form-group">
@@ -83,10 +89,9 @@
                     <div class="form-group">
                       <select class="form-control" id="userd">
                       <option value="">Select</option>
-                      @foreach($userdata as $users)
-                      <option value="{{$users->email}}">{{$users->name}}</option>
+                      @foreach($sales as $sale)
+                      <option value="{{$sale->email}}">{{$sale->name}}</option>
                       @endforeach
-
                       </select>
                     </div>
                     <div>
@@ -94,111 +99,128 @@
                     </div>
                     </div>
                     </div>
-                    <div class="span4 csection">
-                      <form class="form-inline form-send" action="{{route('send.mail')}}" method="POST">
+
+                    <!-- comment section end -->
+                    <!-- email section start -->
+                    <div class="span4 csection send-mail">
+                      @if (session('message'))
+                          <div class="alert alert-success">
+                              {{ session('message') }}
+                          </div>
+                      @endif
+                      <form class="form-inline form-send" action="{{route('candidate.mail')}}" method="POST">
+                         
                          {{ csrf_field() }}
-                        Your name<br>
-                        <input type="text" name="name" value="{{ Auth::user()->name }}"><br>
-                        To<br>
-                        <input type="text" name="to" value="{{$employement['email']}}" style="width:300px"><br>
-                        From<br>
-                        <input type="text" name="email" value="{{ Auth::user()->email }}" style="width:300px"><br>
 
-                            <label for="title">Select Template:</label>
-                            <select name="template" class="form-control" style="width:350px">
-                                <option value="">Select Template</option>
-                              {{-- 
-                               @foreach ($templates as $key => $value)
-                                    <option value="{{ $key }}">{{ $value }}</option>
-                                @endforeach
-                                --}}
-                            </select>
-                            <label for="title">Select Message:</label>
-                            <select name="message" class="form-control" style="width:350px">
-                            </select>
-                      
-              
-                        Message templates<br>
-                        <input type="text" name="messagetemplates" ><br>
-                        Message<br>
-                        <textarea rows="4" cols="50" name="message" ></textarea><br>
-                        Title of Job Opening<br>
-                        <input type="text" name="titleofjob" value="{{$employement['position']}}" style="width:300px"><br>
-                        <br> 
-                        <button type="submit" name="submit" >Send Email</button>
-                       
+                         <input type="hidden" name="to" value="{{$employement['email']}}">
+                         <input type="hidden" name="from" value="{{ Auth::user()->email }}">
+                         <input type="hidden" name="emp_id" value="{{$employement['id']}}">
+                         <input type="hidden" id="user-id" name="user_id" value="{{ Auth::user()->id }}">
+
+                        <div class="form-group">
+                            <label for="name">Your name</label>
+                            <input type="text" name="name" value="{{ Auth::user()->name }}" readonly required>
+                        </div>
+                        
+                        <div class="form-group">
+                          <label for="name">Company Name</label>
+                          <input type="text" name="company" id="company" value="{{old('company')}}"  required>
+                        </div>
+
+                        <div class="form-group">
+                          <label>Title of Job Opening</label>
+                          <input type="text" name="title" value="{{$employement['position']}}"  required>
+                        </div>
+
+
+                        <div class="form-group">
+                          <label>Template Name</label>
+                          <input id="template-name" type="text" name="template_name" value="{{old('template_name')}}" {{old('template_save')?'required':''}}>
+                          @if ($errors->has('template_name'))
+                            <span class="help-block">
+                                <strong>{{ $errors->first('template_name') }}</strong>
+                            </span>
+                          @endif
+                        </div>
+
+
+                        <div class="form-group">
+                          <label for="title">Select Template:</label>
+                          <select name="template" class="form-control template" id="template">
+                          <option value="">Select Template</option>
+                           @foreach ($templates as $key => $value)
+                             <option value="{{ $value->template_name }}" {{(old('template')==$value->template_name)?'selected':''}}>{{ $value->template_name }}</option>
+                           @endforeach
+                          </select>
+                        </div>
+
+
+                        <div class="form-group">
+                          <label>Message</label>
+                          <textarea rows="4" cols="50" class="summernote" name="message" id="message"  required>{{old('message')}}</textarea>
+                        </div>
+
+                        <div class="form-group">
+                          <input type="checkbox" id="template-save" class="template-save" name="template_save" {{old('template_save')?'checked':''}}/> Save as New Template 
+                        </div>
+                        
+                        <div class="form-group">
+                          <button type="submit" id="candidateemail" class="btn btn-primary" name="submit">Send Email</button>
+                        </div>
                       </form>
-                            
-
                     </div>
-                  
+                  <!-- email section end -->
                 </div>
             </div>
         
     </div>
+<!-- include libraries(jQuery, bootstrap) -->
+<link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.css" rel="stylesheet">
+ 
+<!-- include summernote css/js-->
+<link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote.js"></script>    
+ 
+<script>
+        $(document).ready(function() {
+            $('.summernote').summernote({
+  toolbar: [
+    //[groupname, [button list]]
+    ['style', ['bold', 'italic', 'underline', 'clear']],
+    ['fontsize', ['fontsize']],
+    ['color', ['color']],
+    ['para', ['ul']],
+    
+]
+});
+        });
+</script>
+<script>
+  $(document).ready(function(){
+    
+    $('#template-save').click(function(){
+      if($('#template-save').is(':checked')){
+        $('#template-name').attr('required',true);
+      } else{
+        $('#template-name').attr('required',false);
+      }
+    });
+    
+    $( "#template" ).change(function() {
+        $.ajax({
+          type: "POST",
+          url: $('#gettemplate').val(),
+          data:'user_id='+$('#user-id').val()+'&template_name='+$('#template').val(),
+          headers: { 'X-CSRF-Token' : $('meta[name="csrf-token"]').attr('content') },
+          success: function(data){
+            $('.note-editable').text(data.message);
+          }
+          });
+      });
+
+
+  });
+</script>
 
 @endsection
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script>
-$(document).ready(function(){
-    $("#userd").on('change',function(){
-      var email=$(this).val();
-      if(email!=''){
-      $.ajax({
-        headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-        url:'/sendmailtouser',
-        type:'post',
-        data: {
-              Title: $('#title').text(),
-              FirstName: $('#fname').text(),
-              LastName: $('#lname').text(),
-              Email: $('#email').text(),
-              SendTo:email,
-              },        
-         success: function(res){
-           if(res==true){
-             alert('Mail sent successfully.');
-           }else{
-             alert('Sorry Try again.');
-           }
-         }     
-      });
-      }
-
-
-
-    });
-});
-</script>
-
-<script src="http://demo.itsolutionstuff.com/plugin/jquery.js"></script>
-
-<script type="text/javascript">
-    $(document).ready(function() {
-        $('select[name="template"]').on('change', function() {
-            var templateID = $(this).val();
-            if(templateID) {
-                $.ajax({
-                    url: '/myform/ajax/'+templateID,
-                    type: "GET",
-                    dataType: "json",
-                    success:function(data) {
-
-                        
-                        $('select[name="message"]').empty();
-                        $.each(data, function(key, value) {
-                            $('select[name="message"]').append('<option value="'+ key +'">'+ value +'</option>');
-                        });
-
-
-                    }
-                });
-            }else{
-                $('select[name="message"]').empty();
-            }
-        });
-    });
-</script>

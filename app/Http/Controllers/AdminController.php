@@ -152,6 +152,7 @@ class AdminController extends Controller
             'name'     => 'required|max:100',
             'email'    => 'required|email|max:100|unique:users',
             'password' => 'required|min:6|confirmed',
+            'is_admin' => 'required',
         ]);
     }
 
