@@ -76,30 +76,36 @@
                                         <strong>{{ $errors->first('comment') }}</strong>
                                     </span>
                                 @endif
+
                             </div>
                         </div>
 
-                        <div class="form-group mb-0">
-                            <div class="col-md-2 offset-md-10 commit-send">
+                        <div class="form-group mb-0  button-center">
+                            <div class="commit-send">
                                 <button id="comment-submit" type="submit" class="btn btn-primary">{{ __('Send') }}</button>
-                            </div></div>
+                            </div>
+                        </div>
                             
                       </form>
-
-                    <div class="form-group">
-                      <select class="form-control" id="userd">
-                      <option value="">Select</option>
-                      @foreach($sales as $sale)
-                      <option value="{{$sale->email}}">{{$sale->name}}</option>
-                      @endforeach
-                      </select>
+                    <form id="sales-submit" method="POST" action="#">
+                      <input type="hidden" name="sales_send_email" id="sales_send_email" value="{{route('sendsales.email')}}" />
+                      <div id="sales-mail">
+                        <input type="hidden" id="emp_id" name="emp_id" value="{{$employement['id']}}">
+                          <div class="form-group">
+                            <select name="seles_email" class="form-control" id="seles_email">
+                            <option value="">Select Sales Person</option>
+                              @foreach($sales as $sale)
+                                <option value="{{$sale->email}}">{{$sale->name}}</option>
+                              @endforeach
+                            </select>
+                          </div>
+                          <div class="form-group button-center">
+                              <button type="submit" name="submit" id="sales_person" class="btn btn-primary">Send mail to Sales Person</button>
+                          </div>
+                      </div>
+                    </form>
                     </div>
-                    <div>
-                        <button type="submit" name="submit" class="btn btn-primary">Send details to Sales Person</button>
-                    </div>
-                    </div>
-                    </div>
-
+                  </div>
                     <!-- comment section end -->
                     <!-- email section start -->
                     <div class="span4 csection send-mail">
@@ -184,15 +190,9 @@
 <script>
         $(document).ready(function() {
             $('.summernote').summernote({
-  toolbar: [
-    //[groupname, [button list]]
-    ['style', ['bold', 'italic', 'underline', 'clear']],
-    ['fontsize', ['fontsize']],
-    ['color', ['color']],
-    ['para', ['ul']],
-    
-]
-});
+              toolbar: [['style', ['bold', 'italic', 'underline', 'clear']],
+                ['fontsize', ['fontsize']],['color', ['color']],['para', ['ul']],]
+              });
         });
 </script>
 <script>
@@ -218,6 +218,30 @@
           });
       });
 
+    $('#sales_person').click(function(e){
+        e.preventDefault();
+        
+        if( !$('#seles_email').val() ) {  
+            $('<div id="alertmessage"><div class="alert alert-danger">Please Select Sales Person</div></div>').insertAfter("#seles_email");
+        } else{
+          $('#alertmessage').remove();
+          $.ajax({
+            type: "POST",
+            url: $('#sales_send_email').val(),
+            data:'emp_id='+$('#emp_id').val()+'&seles_email='+$('#seles_email').val(),
+            headers: { 'X-CSRF-Token' : $('meta[name="csrf-token"]').attr('content') },
+            success: function(data){
+              if(data.success){
+                $('<div class="alert alert-success">'+data.success+'</div>').insertAfter("#sales_person");
+              }
+              if(data.error){
+                $('<div class="alert alert-danger">'+data.error+'</div>').insertAfter("#sales_person");
+              }
+            }
+          });
+        }
+
+    });
 
   });
 </script>

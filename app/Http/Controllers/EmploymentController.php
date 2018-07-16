@@ -9,26 +9,50 @@ use Input;
 use App\Employment;
 use App\empComments;
 use App\Template;
+use App\User;
 use DB;
 use Session;
 use Excel;
 use Illuminate\Support\Facades\Validator;
 use App\Mail\sendEmail;
 use App\Mail\candidateEmail;
+use App\Mail\salesEmail;
 use Illuminate\Support\Facades\Mail;
 use Jcf\Geocode\Geocode;
 use App\Traits\latlon;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Auth;
+use Exception;
 
 class EmploymentController extends Controller
 {
     //
     use latlon;
 
+    public function sendSalesEmail(Request $request){
+
+        
+        $employment=Employment::find($request->input('emp_id'))->first();
+        $subject='Resume of '. $employment->first_name;
+        $salesUser=User::where('email','=',$request->input('seles_email'))->first();
+        $comment=empComments::where('emp_id','=',$request->input('emp_id'))->latest()->first();
+        $user=Auth::user();
+        $from[]=['name'=>$user->name,'address'=>$user->email];
+        $emails = [$request->input('seles_email'), $user->email];
+
+        try {
+            Mail::to($emails)->send(new salesEmail($from,$request->input('seles_email'),$employment,$subject,$comment));
+            $json['success']='Mail has been send successfully';
+        } catch (\Exception $e) {
+            $json['error']=$e->getMessage();;
+        }
+        
+        return response()->json($json);
+
+    }
+
     public function sendEmailToCandidate(Request $request)
     {
-
-
         if($request->input('template_save')){
 
             $validator=$this->templatevalidator($request->all());
@@ -50,7 +74,6 @@ class EmploymentController extends Controller
                           
     }
 
-
     protected function templatevalidator(array $data)
     {
         $user_id = $data['user_id'];
@@ -60,6 +83,7 @@ class EmploymentController extends Controller
         ]);
     }
 
+    // get the template based on request
 
     public function getTemplate(Request $request){
 
@@ -72,6 +96,7 @@ class EmploymentController extends Controller
         return response()->json($json);
     }
 
+    // get the template based on request
 
 
      public function mail(Request $request)

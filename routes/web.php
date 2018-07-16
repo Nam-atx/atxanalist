@@ -36,6 +36,7 @@ Route::group(['middleware'=>['auth','user']],function(){
   Route::post('/sendmailtouser','EmploymentController@sendmail');
 
   Route::post('gettemplate','EmploymentController@getTemplate')->name('template.get');
+  Route::post('sales/sendemail','EmploymentController@sendSalesEmail')->name('sendsales.email');
 });
 
 
@@ -71,14 +72,6 @@ Route::group(['middleware'=>['auth','admin']],function(){
   //logs management
   Route::get('/admin/log/list','LogController@list')->name('admin.log.list');
 
-  // Sales person management by admin
-    Route::get('/admin/sales','Admin\SalesController@index')->name('admin.sales.index');
-    Route::get('/admin/sales/create','Admin\SalesController@create')->name('admin.sales.create');
-    Route::post('/admin/sales/store','Admin\SalesController@store')->name('admin.sales.store');
-    Route::get('/admin/sales/edit','Admin\SalesController@edit')->name('admin.sales.edit');
-    Route::put('/admin/sales/update','Admin\SalesController@update')->name('admin.sales.update');
-    Route::delete('/admin/sales/destroy','Admin\SalesController@destroy')->name('admin.sales.destroy');
-  // Sales person management by admin
 });
 
 // admin route section end
