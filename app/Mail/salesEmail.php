@@ -11,7 +11,7 @@ class salesEmail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $from,$email,$employement,$subject,$comment;
+    public $from,$email,$employement,$subject,$comment,$user;
         
 
     /**
@@ -19,7 +19,7 @@ class salesEmail extends Mailable
      *
      * @return void
      */
-    public function __construct($from,$email,$employement,$subject,$comment)
+    public function __construct($from,$email,$employement,$subject,$comment,$user)
     {
         //
 
@@ -28,6 +28,7 @@ class salesEmail extends Mailable
         $this->employement=$employement;
         $this->subject=$subject;
         $this->comment=$comment;
+        $this->user=$user;
 
     }
 
@@ -39,6 +40,6 @@ class salesEmail extends Mailable
     public function build()
     {
         
-        return $this->subject($this->subject)->markdown('emails.sales')->with(['employement'=>$this->employement,'comment'=>$this->comment]);
+        return $this->subject($this->subject)->markdown('emails.sales')->with(['employement'=>$this->employement,'comment'=>$this->comment,'user'=>$this->user]);
     }
 }

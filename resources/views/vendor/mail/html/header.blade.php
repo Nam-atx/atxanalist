@@ -1,7 +1,5 @@
 <tr>
     <td class="header">
-        <a href="{{ $url }}">
-            {{ $slot }}
-        </a>
+            <img src="http://atxlearning.com/wp-content/uploads/2017/01/ATX-logo.png">
     </td>
 </tr>

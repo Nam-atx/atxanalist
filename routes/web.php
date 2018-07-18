@@ -37,6 +37,14 @@ Route::group(['middleware'=>['auth','user']],function(){
 
   Route::post('gettemplate','EmploymentController@getTemplate')->name('template.get');
   Route::post('sales/sendemail','EmploymentController@sendSalesEmail')->name('sendsales.email');
+
+  //resume routes for recruiter
+
+  Route::get('/resume/add', 'Recruiter\EmploymentController@create')->name('recruiter.employment.create');
+  Route::post('/resume/save', 'Recruiter\EmploymentController@store')->name('recruiter.employment.store');
+
+  //resume routes for recruiter
+
 });
 
 

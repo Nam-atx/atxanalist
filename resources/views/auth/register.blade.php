@@ -1,17 +1,17 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
+
+    <div class="row justify-content-center  user-login">
+        <div class="col-md-12">
+            <div class="card" id="user-login">
                 <div class="card-header">{{ __('Register') }}</div>
 
                 <div class="card-body">
                     <form method="POST" action="{{ route('register') }}">
                         @csrf
 
-                        <div class="form-group row">
+                        <div class="form-group">
                             <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Name') }}</label>
 
                             <div class="col-md-6">
@@ -25,7 +25,7 @@
                             </div>
                         </div>
 
-                        <div class="form-group row">
+                        <div class="form-group">
                             <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
 
                             <div class="col-md-6">
@@ -39,7 +39,7 @@
                             </div>
                         </div>
 
-                        <div class="form-group row">
+                        <div class="form-group">
                             <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
 
                             <div class="col-md-6">
@@ -53,7 +53,7 @@
                             </div>
                         </div>
 
-                        <div class="form-group row">
+                        <div class="form-group">
                             <label for="password-confirm" class="col-md-4 col-form-label text-md-right">{{ __('Confirm Password') }}</label>
 
                             <div class="col-md-6">
@@ -61,7 +61,20 @@
                             </div>
                         </div>
 
-                        <div class="form-group row mb-0">
+                        <div class="control-group">
+                            <label class="control-label">Phone</label>
+                            <div class="controls">
+                              <input type="text" name="phone" id="phone"  value="{{old('phone')}}" required>
+                              @if ($errors->has('phone'))
+                                  <span class="help-block">
+                                      <strong>{{ $errors->first('phone') }}</strong>
+                                  </span>
+                              @endif
+
+                            </div>
+                          </div>
+
+                        <div class="form-group mb-0">
                             <div class="col-md-6 offset-md-4">
                                 <button type="submit" class="btn btn-primary">
                                     {{ __('Register') }}
@@ -73,5 +86,5 @@
             </div>
         </div>
     </div>
-</div>
+
 @endsection

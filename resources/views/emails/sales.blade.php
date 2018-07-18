@@ -23,5 +23,9 @@
   </tbody>
   </table>
 
+<strong> {{ $user->name }} , <br/>
+{{ $user->email }}<br>
+{{ $user->phone }}
+</strong>
 @endcomponent
 

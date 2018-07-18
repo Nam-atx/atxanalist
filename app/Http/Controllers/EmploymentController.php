@@ -41,7 +41,7 @@ class EmploymentController extends Controller
         $emails = [$request->input('seles_email'), $user->email];
 
         try {
-            Mail::to($emails)->send(new salesEmail($from,$request->input('seles_email'),$employment,$subject,$comment));
+            Mail::to($emails)->send(new salesEmail($from,$request->input('seles_email'),$employment,$subject,$comment,$user));
             $json['success']='Mail has been send successfully';
         } catch (\Exception $e) {
             $json['error']=$e->getMessage();;
@@ -67,7 +67,9 @@ class EmploymentController extends Controller
         //echo '<pre>';print_r($request->all());print_r($request->input('message'));die;
         $from[]=['name'=>$request->input('name'),'address'=>$request->input('from')];
 
-        Mail::to($request->input('to'))->send(new candidateEmail($from,$request->input('to'),$request->input('company'),$request->input('title'),htmlentities($request->input('message'), ENT_COMPAT)));
+        $user=Auth::user();
+
+        Mail::to($request->input('to'))->send(new candidateEmail($from,$request->input('to'),$request->input('company'),$request->input('title'),htmlentities($request->input('message'), ENT_COMPAT),$user));
 
 
         return redirect()->route('emp.show',$request->input('emp_id'))->with('message','Email has been send successfully');

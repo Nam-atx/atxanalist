@@ -7,7 +7,11 @@
             <div class="card">
                 <div class="card-header">Employer List</div>
                 <div class="card-body1">
-                  
+                  @if (session('message'))
+                      <div class="alert alert-success">
+                          {{ session('message') }}
+                      </div>
+                  @endif 
                   <form class="form-inline" action="{{route('user.employment.latestresume')}}"><div class="form-group"><input class="form-control" type="text" name="position" placeholder="Position" value="{{ app('request')->input('position') }}"></div>
                     <div class="form-group"><input type="text" class="form-control" name="city" placeholder="City"  value="{{ app('request')->input('city') }}" required> </div> <div class="form-group"> <input class="form-control" type="text" name="state" placeholder="State"  value="{{ app('request')->input('state') }}" required></div>
 

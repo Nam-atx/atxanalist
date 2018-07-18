@@ -64,6 +64,19 @@
               </div>
 
               <div class="control-group">
+                <label class="control-label">Phone</label>
+                <div class="controls">
+                  <input type="text" name="phone" id="phone"  value="{{old('phone')}}" required>
+                  @if ($errors->has('phone'))
+                      <span class="help-block">
+                          <strong>{{ $errors->first('phone') }}</strong>
+                      </span>
+                  @endif
+
+                </div>
+              </div>
+
+              <div class="control-group">
                 <label class="control-label">Admin</label>
                 <div class="controls">
                  <select name="is_admin" class="is-admin form-control">

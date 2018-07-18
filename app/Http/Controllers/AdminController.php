@@ -78,12 +78,13 @@ class AdminController extends Controller
 
     	$user=User::find($id);
 
-    	if(Validator::make($request->all(), ['name'=>'required|max:100','password' => 'required|min:6|confirmed',])->validate())
+    	if(Validator::make($request->all(), ['name'=>'required|max:100','phone'=>'required|max:11'])->validate())
     	{
 			$user->name=$request->input('name');    		
 			$user->password=bcrypt($request->input('password'));
 			$user->is_admin=$request->input('is_admin')	;
-			$user->status=$request->input('status');
+            $user->status=$request->input('status');
+			$user->phone=$request->input('phone');
 			$user->save();
 			flash($user->name .' has been updated successfully.')->success();
 			return redirect()->route('admin.users');
@@ -142,6 +143,7 @@ class AdminController extends Controller
             'password' => bcrypt($data['password']),
             'is_admin' => $data['is_admin'],
             'status' => $data['status'],
+            'phone' => $data['phone'],
         ]);
     }
 
