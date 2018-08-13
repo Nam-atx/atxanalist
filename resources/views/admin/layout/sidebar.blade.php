@@ -6,6 +6,10 @@
     <li class=""><a href="{{route('admin.excel.index')}}"><i class="icon icon-upload"></i> <span>Import</span> / <i class="icon icon-download"></i> <span>Export</span></a> </li>
     <li class=""><a href="{{route('admin.emp.list')}}"><i class="icon icon-user"></i> <span>Employments</span></a> </li>
     <li class=""><a href="{{route('admin.log.list')}}"><i class="icon icon-cogs"></i> <span>Logs</span></a> </li>
+    <li class=""><a href="{{route('admin.client.index')}}"> <span><i class="icon icon-upload"></i> <span>Clients Import</span> / <i class="icon icon-download"></i> <span>Clients Export</span></a></span></a> </li>
+
+    <li class=""><a href="{{route('admin.client.list')}}"><i class="icon icon-user"></i> <span>Clients</span></a> </li>
+
   </ul>
 </div>
 <!--sidebar-menu-->

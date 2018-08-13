@@ -22,6 +22,6 @@ class IsAdmin
         
         }
 
-        return redirect('/');
+        abort(404);
     }
 }

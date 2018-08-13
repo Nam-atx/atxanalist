@@ -17,13 +17,14 @@ class RedirectIfAuthenticated
      */
     public function handle($request, Closure $next, $guard = null)
     {
-        if (Auth::guard($guard)->check()) {
+        if (Auth::guard($guard)->check() && Auth::user()->is_admin==1) {
             return redirect('/admin/dashboard');
-        } /*else {
-            flash('Please login to access')->error();
-            return redirect()->action('AdminController@login');
-        }
-*/
+        } else if (Auth::guard($guard)->check() && Auth::user()->is_admin==2) {
+            return redirect('/sales/dashboard');
+        } else if (Auth::guard($guard)->check() && Auth::user()->is_admin==0) {
+            return redirect('/user/dashboard');
+        } 
+
         return $next($request);
     }
 }

@@ -41,7 +41,7 @@
                   <a href="{{route('admin.user.edit',$user->id)}}">Edit</a>| @if($user->status==1) <a href="{{route('admin.user.disable',$user->id)}}">Disable</a> @else <a href="{{route('admin.user.enable',$user->id)}}">Enable</a> @endif
               </td>
                 </tr>
-				@endforeach
+				      @endforeach
                 
               </tbody>
             </table>
