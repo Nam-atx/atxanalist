@@ -43,6 +43,19 @@ class LoginController extends Controller
     }
 
 
+    public function showLoginForm()
+    {
+        if (Auth::check() && Auth::user()->is_admin==1) {
+            return redirect('/admin/dashboard');
+        } else if (Auth::check() && Auth::user()->is_admin==2) {
+            return redirect('/sales/dashboard');
+        } else if (Auth::check() && Auth::user()->is_admin==0) {
+            return redirect('/user/dashboard');
+        } 
+
+        return view('auth.login');
+    }
+
 
      public function login(Request $request)
     {
@@ -97,15 +110,13 @@ class LoginController extends Controller
 
         $user=Auth::user();
         
-        if ($user->is_admin==1) {
+        if (Auth::check() && $user->is_admin==1) {
             return '/admin/dashboard';
-        } else if ($user->is_admin==2) {
+        } else if (Auth::check() && $user->is_admin==2) {
             return '/sales/dashboard';
-        } else if ($user->is_admin==0) {
+        } else if (Auth::check() && $user->is_admin==0) {
             return '/user/dashboard';
         } 
-
-        abort(404);
     }
 
 
@@ -114,6 +125,7 @@ class LoginController extends Controller
         $data=['user_id'=>$user->id,'name'=>$user->name,'type'=>'login','comment'=>'Loggedin by '.$user->name,'ip_address'=>$request->ip()];
 
         Systemlog::create($data);
+       
     }
 
 }

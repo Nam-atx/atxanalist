@@ -7,7 +7,6 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'App\\Client' => $baseDir . '/app/Client.php',
-    'App\\Client_comment' => $baseDir . '/app/Client_comment.php',
     'App\\Console\\Kernel' => $baseDir . '/app/Console/Kernel.php',
     'App\\Employment' => $baseDir . '/app/Employment.php',
     'App\\Events\\Event' => $baseDir . '/app/Events/Event.php',
@@ -26,6 +25,7 @@ return array(
     'App\\Http\\Controllers\\LogController' => $baseDir . '/app/Http/Controllers/LogController.php',
     'App\\Http\\Controllers\\MailController' => $baseDir . '/app/Http/Controllers/MailController.php',
     'App\\Http\\Controllers\\Recruiter\\EmploymentController' => $baseDir . '/app/Http/Controllers/Recruiter/EmploymentController.php',
+    'App\\Http\\Controllers\\Sales\\ClientController' => $baseDir . '/app/Http/Controllers/Sales/ClientController.php',
     'App\\Http\\Controllers\\Sales\\DashboardController' => $baseDir . '/app/Http/Controllers/Sales/DashboardController.php',
     'App\\Http\\Controllers\\User\\DashboardController' => $baseDir . '/app/Http/Controllers/User/DashboardController.php',
     'App\\Http\\Controllers\\User\\UserController' => $baseDir . '/app/Http/Controllers/User/UserController.php',
@@ -40,6 +40,7 @@ return array(
     'App\\Http\\Middleware\\VerifyCsrfToken' => $baseDir . '/app/Http/Middleware/VerifyCsrfToken.php',
     'App\\Mail\\candidateEmail' => $baseDir . '/app/Mail/candidateEmail.php',
     'App\\Mail\\salesEmail' => $baseDir . '/app/Mail/salesEmail.php',
+    'App\\Mail\\salestoclientEmail' => $baseDir . '/app/Mail/salestoclientEmail.php',
     'App\\Mail\\sendEmail' => $baseDir . '/app/Mail/sendEmail.php',
     'App\\Providers\\AppServiceProvider' => $baseDir . '/app/Providers/AppServiceProvider.php',
     'App\\Providers\\AuthServiceProvider' => $baseDir . '/app/Providers/AuthServiceProvider.php',

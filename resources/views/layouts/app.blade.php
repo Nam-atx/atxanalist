@@ -66,7 +66,7 @@
       <div class="navbar-inner">
         <div class="container">
           <div class="logo">
-            <a href="#"><img src="{{ asset('css/frontend//img/logo.png')}}" alt="" /></a>
+            <a href="#"><img src="{{ asset('css/frontend/img/logo.png')}}" alt="" /></a>
           </div>
           <div class="navigation">
             <nav>

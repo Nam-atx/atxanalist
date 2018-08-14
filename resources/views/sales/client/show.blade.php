@@ -5,22 +5,7 @@
  
     <div class="row justify-content-center">
             <div class="card">
-                <div class="card-header">Client detail
-                      {{-- @if($client['dnd']==0)
-                       <form class="dnd-form" action="{{route('emp.dnd')}}"  method="POST">
-                        {{ csrf_field() }}
-                        <input type="hidden" name="emp_id" value="{{$employement['id']}}">
-                        <button type="submit" name="submit" >DND</button>
-                       </form>
-                       @else
-                       <form action="{{route('emp.nondnd')}}"  method="POST">
-                        {{ csrf_field() }}
-                        <input type="hidden" name="emp_id" value="{{$employement['id']}}">
-                        <button type="submit" name="submit" >NON DND</button>
-                       </form>
-                       @endif
-                       --}}
-                </div>
+                <div class="card-header">Client detail</div>
                 
                 <div class="card-body1">
                   <!-- employemnt data start -->
@@ -54,12 +39,11 @@
                         @endif
                       </div>
 
-                      <input type="hidden" name="gettemplate" id="gettemplate" value="{{route('template.get')}}" />
+                      <input type="hidden" name="gettemplate" id="gettemplate" value="{{route('salestemplate.get')}}" />
 
-                      <form id="comment-submit" method="POST" action="{{ route('client.comment',$client['id']) }}">
+                      <form id="salescomment-submit" method="POST" action="{{ route('client.comment',$client['id']) }}">
                         @csrf
                         <div class="form-group">
-                            
                             <div class="col-md-12">
                                 <textarea id="comment" type="text" class="form-control{{ $errors->has('comment') ? ' is-invalid' : '' }}" name="comment" required autofocus>{{ old('comment') }}</textarea>
 
@@ -72,9 +56,16 @@
                             </div>
                         </div>
 
+                        <div class="form-group button-center">
+                          <div class="col-md-12">
+                            <input type="radio" name="status" id="status" class="status" value="1"> Yes <input id="status"  class="status" type="radio" name="status" value="0"> No
+                          </div>
+                        </div>
+
                         <div class="form-group mb-0  button-center">
                             <div class="commit-send">
-                                <button id="comment-submit" type="submit" class="btn btn-primary">{{ __('Send') }}</button>
+                                <input name="type" value="mail" id="mail-submit" type="submit" class="btn btn-primary">
+                                <input name="type"  value="voice"  id="voice-submit" type="submit" class="btn btn-primary">
                             </div>
                         </div>
                             
@@ -106,13 +97,13 @@
                               {{ session('message') }}
                           </div>
                       @endif
-                      <form class="form-inline form-send" action="{{route('candidate.mail')}}" method="POST">
+                      <form class="form-inline form-send" enctype="multipart/form-data" action="{{route('salestoclient.mail')}}" method="POST">
                          
                          {{ csrf_field() }}
 
                          <input type="hidden" name="to" value="{{$client['email']}}">
                          <input type="hidden" name="from" value="{{ Auth::user()->email }}">
-                         <input type="hidden" name="emp_id" value="{{$client['id']}}">
+                         <input type="hidden" name="client_id" value="{{$client['id']}}">
                          <input type="hidden" id="user-id" name="user_id" value="{{ Auth::user()->id }}">
 
                         <div class="form-group">
@@ -122,12 +113,12 @@
                         
                         <div class="form-group">
                           <label for="name">Company Name</label>
-                          <input type="text" name="company" id="company" value="{{old('company')}}"  required>
+                          <input type="text" name="company" id="company" value="ATX Learning Pvt Ltd"  required readonly>
                         </div>
 
                         <div class="form-group">
-                          <label>Title of Job Opening</label>
-                          <input type="text" name="title" value="{{$client['position']}}"  required>
+                          <label>Client Name</label>
+                          <input type="text" name="name" value="{{$client['name']}}"  required>
                         </div>
 
 
@@ -163,7 +154,7 @@
                         </div>
                         
                         <div class="form-group">
-                          <button type="submit" id="candidateemail" class="btn btn-primary" name="submit">Send Email</button>
+                          <button type="submit" id="salestoclientemail" class="btn btn-primary" name="submit">Send Email</button>
                         </div>
                       </form>
                     </div>
@@ -174,7 +165,6 @@
     </div>
 <!-- include libraries(jQuery, bootstrap) -->
 <link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.css" rel="stylesheet">
- 
 <!-- include summernote css/js-->
 <link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote.js"></script>    
@@ -189,7 +179,11 @@
 </script>
 <script>
   $(document).ready(function(){
-    
+
+    // $(".status").click(function(){
+    //   $(this).attr('checked');
+    // });
+
     $('#template-save').click(function(){
       if($('#template-save').is(':checked')){
         $('#template-name').attr('required',true);
@@ -205,6 +199,7 @@
           data:'user_id='+$('#user-id').val()+'&template_name='+$('#template').val(),
           headers: { 'X-CSRF-Token' : $('meta[name="csrf-token"]').attr('content') },
           success: function(data){
+            $('.summernote').text(data.message);
             $('.note-editable').text(data.message);
           }
           });

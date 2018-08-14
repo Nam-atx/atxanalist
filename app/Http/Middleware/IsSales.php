@@ -22,6 +22,6 @@ class IsSales
         
         }
 
-        abort(404);
+        return redirect('/home');
     }
 }

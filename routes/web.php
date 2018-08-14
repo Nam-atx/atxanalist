@@ -109,7 +109,7 @@ Route::group(['middleware'=>['auth','sales']],function(){
 
   Route::get('/sales/dashboard','Sales\DashboardController@index')->name('sales.dashboard.index');
   Route::get('/sales/clients', 'Sales\ClientController@index')->name('sales.client.index');
-  
+  Route::post('/sales/sendMail','Sales\ClientController@sendEmailToSales')->name('salestoclient.mail');
   Route::get('/sales/client/add', 'Sales\ClientController@create')->name('sales.client.create');
   Route::post('/sales/client/save', 'Sales\ClientController@store')->name('sales.client.store');
 
@@ -124,6 +124,10 @@ Route::group(['middleware'=>['auth','sales']],function(){
   Route::get('/sales/yearclient', 'Sales\DashboardController@yearclient')->name('sales.dashboard.yearclient');
   Route::get('/sales/latestclient', 'Sales\DashboardController@latestclient')->name('sales.dashboard.latestclient');
   
+  
+  Route::post('/sendmailtoclient','Sales\ClientController@sendmail');
+
+  Route::post('sales/gettemplate','Sales\ClientController@getTemplate')->name('salestemplate.get');
 
 });
 // Sales section routes end

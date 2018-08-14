@@ -16,9 +16,16 @@ class DashboardController extends Controller
 {
    use latlon;
 
+   public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
   protected $address='';
 
    public function dashboard(){
+
+        
         $latest_count = DB::table('employment')->select('employment.id','first_name')->leftJoin('emp_comments','emp_comments.emp_id','=','employment.id')->whereNull('emp_comments.emp_id')->get()->count();
     	   return view('user.employment.dashboard',['latest_count'=>$latest_count]);
    }

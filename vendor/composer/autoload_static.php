@@ -533,7 +533,6 @@ class ComposerStaticInit6eb44d2f17974c67bad055f300991b3e
 
     public static $classMap = array (
         'App\\Client' => __DIR__ . '/../..' . '/app/Client.php',
-        'App\\Client_comment' => __DIR__ . '/../..' . '/app/Client_comment.php',
         'App\\Console\\Kernel' => __DIR__ . '/../..' . '/app/Console/Kernel.php',
         'App\\Employment' => __DIR__ . '/../..' . '/app/Employment.php',
         'App\\Events\\Event' => __DIR__ . '/../..' . '/app/Events/Event.php',
@@ -552,6 +551,7 @@ class ComposerStaticInit6eb44d2f17974c67bad055f300991b3e
         'App\\Http\\Controllers\\LogController' => __DIR__ . '/../..' . '/app/Http/Controllers/LogController.php',
         'App\\Http\\Controllers\\MailController' => __DIR__ . '/../..' . '/app/Http/Controllers/MailController.php',
         'App\\Http\\Controllers\\Recruiter\\EmploymentController' => __DIR__ . '/../..' . '/app/Http/Controllers/Recruiter/EmploymentController.php',
+        'App\\Http\\Controllers\\Sales\\ClientController' => __DIR__ . '/../..' . '/app/Http/Controllers/Sales/ClientController.php',
         'App\\Http\\Controllers\\Sales\\DashboardController' => __DIR__ . '/../..' . '/app/Http/Controllers/Sales/DashboardController.php',
         'App\\Http\\Controllers\\User\\DashboardController' => __DIR__ . '/../..' . '/app/Http/Controllers/User/DashboardController.php',
         'App\\Http\\Controllers\\User\\UserController' => __DIR__ . '/../..' . '/app/Http/Controllers/User/UserController.php',
@@ -566,6 +566,7 @@ class ComposerStaticInit6eb44d2f17974c67bad055f300991b3e
         'App\\Http\\Middleware\\VerifyCsrfToken' => __DIR__ . '/../..' . '/app/Http/Middleware/VerifyCsrfToken.php',
         'App\\Mail\\candidateEmail' => __DIR__ . '/../..' . '/app/Mail/candidateEmail.php',
         'App\\Mail\\salesEmail' => __DIR__ . '/../..' . '/app/Mail/salesEmail.php',
+        'App\\Mail\\salestoclientEmail' => __DIR__ . '/../..' . '/app/Mail/salestoclientEmail.php',
         'App\\Mail\\sendEmail' => __DIR__ . '/../..' . '/app/Mail/sendEmail.php',
         'App\\Providers\\AppServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AppServiceProvider.php',
         'App\\Providers\\AuthServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AuthServiceProvider.php',

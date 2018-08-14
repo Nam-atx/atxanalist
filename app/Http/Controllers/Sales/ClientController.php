@@ -12,11 +12,13 @@ use App\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Mail\sendEmail;
+use App\Mail\salestoclientEmail;
 use Illuminate\Support\Facades\Mail;
 use App\Traits\latlon;
-
+use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Validator;
 use Exception;
+use App\Template;
 
 class ClientController extends Controller
 {
@@ -206,7 +208,7 @@ class ClientController extends Controller
         Systemlog::create($data);
 
 
-        $templates=DB::table('template')->get();
+        $templates=DB::table('template')->where('user_id','=',$user->id)->get();
 
 
         return view('sales.client.show',['client'=>$client,'clientcomments'=>$clientcomments,'sales'=>$sales,'templates'=>$templates]);
@@ -215,13 +217,14 @@ class ClientController extends Controller
 
     public function saveComment(Request $request, $id){
         $user=Auth::user();
-        $data=['user_id'=>$user->id,'client_id'=>$id,'comment'=>$request->input('comment')];
+        //echo '<pre>';print_r($request->all()); die;
+        $data=['user_id'=>$user->id,'client_id'=>$id,'comment'=>$request->input('comment'),'status'=>$request->input('status'),'type'=>$request->input('type')];
 
         clientComment::create($data);
 
         //$results=empComments::where('emp_id',$id)->get();
 
-        $results = DB::table('users')->join('client_comment', 'users.id', '=', 'client_comment.user_id')->where('client_comment.client_id',$id)->select('users.name', 'client_comment.client_id', 'client_comment.comment', DB::raw('DATE_FORMAT(client_comment.created_at, "%d %b %Y %r") as created_at'))->get();
+        $results = DB::table('users')->join('client_comment', 'users.id', '=', 'client_comment.user_id')->where('client_comment.client_id',$id)->select('users.name', 'client_comment.client_id', 'client_comment.comment', DB::raw('DATE_FORMAT(client_comment.created_at, "%d %b %Y %r") as created_at'))->where('client_comment.status','=','1')->get();
 
         return response()->json(['data' => $results,'status' => Response::HTTP_OK]); 
     }
@@ -258,5 +261,55 @@ class ClientController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+
+    public function sendEmailToSales(Request $request)
+    {
+        
+
+        if($request->input('template_save')){
+
+            $validator=$this->templatevalidator($request->all());
+            if ($validator->fails()) {
+                return redirect()->route('sales.client.show',$request->input('client_id'))->withErrors($validator)->withInput();
+             } else {
+                $data=['user_id'=>$request->input('user_id'),'template_name'=>$request->input('template_name'),'message'=>$request->input('message')];
+                Template::create($data);
+             }
+        }
+        
+        
+        $from[]=['name'=>$request->input('name'),'address'=>$request->input('from')];
+
+        $user=Auth::user();
+        //echo '<pre>';print_r($request->all());die('ttt');
+        
+        Mail::to($request->input('to'))->send(new salestoclientEmail($from,$request->input('to'),$request->input('company'),$request->input('title'),htmlentities($request->input('message'), ENT_COMPAT),$user));
+
+
+        return redirect()->route('sales.client.show',$request->input('client_id'))->with('message','Email has been send successfully');
+                          
+    }
+
+
+    protected function templatevalidator(array $data)
+    {
+        $user_id = $data['user_id'];
+
+        return Validator::make($data, [
+           'template_name' => Rule::unique('template')->where(function ($query) use ($user_id) {$query->where('user_id', $user_id);})
+        ]);
+    }
+
+    public function getTemplate(Request $request){
+
+        $json=array();
+
+        $template=Template::where('user_id','=',$request->input('user_id'))->where('template_name','=',$request->input('template_name'))->first();
+
+        $json['message']=$template->message;
+
+        return response()->json($json);
     }
 }

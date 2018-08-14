@@ -17,11 +17,10 @@ class IsAdmin
     {
 
         if (Auth::user() &&  Auth::user()->is_admin == 1) {
-        
             return $next($request);
-        
         }
 
-        abort(404);
+        return redirect('/home');
+        //abort(404);
     }
 }

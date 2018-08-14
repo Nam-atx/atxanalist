@@ -22,6 +22,6 @@ class IsUser
         
         }
 
-        abort(404);
+        return redirect('/home');
     }
 }

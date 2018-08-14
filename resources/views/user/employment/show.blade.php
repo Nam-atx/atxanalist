@@ -213,6 +213,7 @@
           data:'user_id='+$('#user-id').val()+'&template_name='+$('#template').val(),
           headers: { 'X-CSRF-Token' : $('meta[name="csrf-token"]').attr('content') },
           success: function(data){
+            $('.summernote').text(data.message);
             $('.note-editable').text(data.message);
           }
           });
