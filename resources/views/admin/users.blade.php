@@ -36,7 +36,7 @@
 			         <tr class="gradeX">
                   <td>{{$user->name}}</td>
                   <td>{{$user->email}}</td>
-                  <td>{{($user->is_admin==1)?'Admin':(($user->is_admin==2)?'Sales':'Recruitor')}}</td>
+                  <td>{{$user->roles[0]->display_name}}</td>
                   <td class="center">
                   <a href="{{route('admin.user.edit',$user->id)}}">Edit</a>| @if($user->status==1) <a href="{{route('admin.user.disable',$user->id)}}">Disable</a> @else <a href="{{route('admin.user.enable',$user->id)}}">Enable</a> @endif
               </td>

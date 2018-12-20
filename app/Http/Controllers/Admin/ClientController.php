@@ -13,11 +13,17 @@ use Illuminate\Support\Facades\Auth;
 use Exception;
 use App\Client;
 use DB;
+use App\clienthistory;
 class ClientController extends Controller
 {
     //
     use latlon;
 
+
+    public function __construct()
+    {
+        $this->middleware(['auth','admin']);
+    }
 
     public function clientImportExport()
     {
@@ -52,23 +58,63 @@ class ClientController extends Controller
                     $address.=$row['state'].' ';
                 }
 
-                if($row['zipcode']){
-                    $address.=$row['zipcode'].' ';
+                if($row['zip_code']){
+                    $address.=$row['zip_code'].' ';
                 }
                 // echo $address; die;
 
-                $response=$this->getlatlon($address);
+                //$response=$this->getlatlon($address);
+                $client=Client::where('email','=',$row['email_1'])->first();
+                if($client){
+                    $data=['name'=>$client->name, 'contact'=>$client->contact,'designation'=>$client->designation, 'phone'=>$client->phone,'email'=>$client->email,'contact_1'=>$client->contact_1,'designation_1'=>$client->designation_1, 'phone_1'=>$client->phone_1,'email_1'=>$client->email_1,'contact_2'=>$client->contact_2,'designation_2'=>$client->designation_2, 'phone_2'=>$client->phone_2,'email_2'=>$client->email_2,'fax'=>$client->fax,'city'=>$client->city,'state'=>$client->state,'zipcode'=>$client->zipcode,'requirement'=>$client->requirement,'status'=>$client->status,'opening_date'=>$client->opening_date,'longitude'=>$client->longitude,'latitude'=>$client->latitude];
+
+                    clienthistory::create($data);
+
+                    $client->name=$row['name_of_client_school'];
+                    $client->contact=$row['contact_person_1'];
+                    $client->designation=$row['designation_1'];
+                    $client->phone=$row['phone_number_1'];
+                    $client->email=$row['email_1'];
+                    $client->contact_1=$row['contact_person_2'];
+                    $client->designation_1=$row['designation_2'];
+                    $client->phone_1=$row['phone_number_2'];
+                    $client->email_1=$row['email_2'];
+                    if(!empty($row['contact_person_3'])){
+                        $client->contact_2=$row['contact_person_3'];
+                    }
+                    if(!empty($row['designation_3'])){
+                        $client->designation_2=$row['designation_3'];
+                    }
+                    if(!empty($row['phone_number_3'])){
+                        $client->phone_2=$row['phone_number_3'];
+                    }
+                    if(!empty($row['email_3'])){
+                        $client->email_2=$row['email_3'];
+                    }
+                    $client->fax=$row['fax'];
+                    $client->city=$row['city'];
+                    $client->state=$row['state'];
+                    $client->zipcode=$row['zip_code'];
+                    $client->requirement=$row['requirement'];
+                    $client->status=$row['status'];
+                    $client->opening_date=date('Y-m-d', strtotime($row['date']));
+                    $client->longitude=0;
+                    $client->latitude=0;
+                    $client->save();
 
 
-                $data=['name'=>$row['name_of_client'], 'contact'=>$row['contact_person1'], 'phone'=>$row['phone_number'],'fax'=>$row['fax'],'email'=>$row['email'],'city'=>$row['city'],'state'=>$row['state'],'zipcode'=>$row['zipcode'],'requirement'=>$row['requirement'],'status'=>$row['status'],'opening_date'=>date('Y-m-d', strtotime($row['date'])),'longitude'=>$response['longitude'],'latitude'=>$response['latitude']];
+                } else {
+                $data=['name'=>$row['name_of_client_school'], 'contact'=>$row['contact_person_1'],'designation'=>$row['designation_1'], 'phone'=>$row['phone_number_1'],'email'=>$row['email_1'],'contact_1'=>$row['contact_person_2'],'designation_1'=>$row['designation_2'], 'phone_1'=>$row['phone_number_2'],'email_1'=>$row['email_2'],'contact_2'=>$row['contact_person_3'],'designation_2'=>$row['designation_3'], 'phone_2'=>$row['phone_number_3'],'email_2'=>$row['email_3'],'fax'=>$row['fax'],'city'=>$row['city'],'state'=>$row['state'],'zipcode'=>$row['zip_code'],'requirement'=>$row['requirement'],'status'=>$row['status'],'opening_date'=>date('Y-m-d', strtotime($row['date'])),'longitude'=>0,'latitude'=>0];
 
-                //echo '<pre>';print_r($data); echo '</pre>';die;
-                Client::create($data);
+                  //echo '<pre>';print_r($data); echo '</pre>';
+                  Client::create($data);
+                }
             }
 
             });
         }
         flash('Your file successfully import in database!!!')->success();
+        //die;
         return back();
     }
 
@@ -129,7 +175,7 @@ class ClientController extends Controller
             return redirect()->route('admin.client.add')->withErrors($validator)->withInput();
          }
 
-        $data=['name'=>$request->input('name'),'contact'=>$request->input('contact'),'phone'=>$request->input('phone'),'fax'=>$request->input('fax'),'email'=>$request->input('email'),'city'=>$request->input('city'),'state'=>$request->input('state'),'zipcode'=>$request->input('zipcode'),'requirement'=>$request->input('requirement'),'status'=>$request->input('status'),'opening_date'=>$request->input('opening_date'),'longitude'=>$response['longitude'],'latitude'=>$response['latitude']];
+        $data=['name'=>$request->input('name'),'contact'=>$request->input('contact'),'designation'=>$request->input('designation'),'phone'=>$request->input('phone'),'fax'=>$request->input('fax'),'email'=>$request->input('email'),'contact_1'=>$request->input('contact_1'),'designation_1'=>$request->input('designation_1'),'phone_1'=>$request->input('phone_1'),'email_1'=>$request->input('email_1'),'contact_2'=>$request->input('contact_2'),'designation_2'=>$request->input('designation_2'),'phone_2'=>$request->input('phone_2'),'email_2'=>$request->input('email_2'),'city'=>$request->input('city'),'state'=>$request->input('state'),'zipcode'=>$request->input('zipcode'),'requirement'=>$request->input('requirement'),'status'=>$request->input('status'),'opening_date'=>$request->input('opening_date'),'longitude'=>$response['longitude'],'latitude'=>$response['latitude']];
 
         $client = Client::create($data);
 
@@ -142,6 +188,7 @@ class ClientController extends Controller
         return Validator::make($data, [
             'name' => 'required|string|max:255',
             'contact' => 'required|string|max:255',
+            'designation' => 'required|string|max:255',
             'phone' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:client',
             'city' => 'required|string',
@@ -153,6 +200,8 @@ class ClientController extends Controller
 
     public function edit($id){
         $client = Client::find($id);
+
+        
         return view('admin.client.edit',['client'=>$client]);
     }
 
@@ -190,8 +239,19 @@ class ClientController extends Controller
 
         $client->name=$request->input('name');
         $client->contact=$request->input('contact');
+        $client->designation=$request->input('designation');
         $client->phone=$request->input('phone');
         $client->email=$request->input('email');
+        $client->contact_1=$request->input('contact_1');
+        $client->designation_1=$request->input('designation_1');
+        $client->phone_1=$request->input('phone_1');
+        $client->email_1=$request->input('email_1');
+
+        $client->contact_2=$request->input('contact_2');
+        $client->designation_2=$request->input('designation_2');
+        $client->phone_2=$request->input('phone_2');
+        $client->email_2=$request->input('email_2');
+
         $client->city=$request->input('city');
         $client->state=$request->input('state');
         $client->zipcode=$request->input('zipcode');
@@ -212,6 +272,10 @@ class ClientController extends Controller
             'contact' => 'required|string|max:255',
             'phone' => 'required|string|max:255',
             'email' => 'required|string|email|max:255',
+            'contact_1' => 'required|string|max:255',
+            'designation_1' => 'required|string|max:255',
+            'phone_1' => 'required|string|max:255',
+            'email_1' => 'required|string|email|max:255',
             'city' => 'required|string',
             'state' => 'required|string',
             'zipcode' => 'required|string',

@@ -23,14 +23,14 @@
 <script src="{{asset('public/js/backend/bootstrap.min.js')}}"></script> 
 <script src="{{asset('public/js/backend/bootstrap-colorpicker.js')}}"></script> 
 
-<script src="{{asset('public/js/backend/jquery.flot.min.js')}}"></script> 
-<script src="{{asset('public/js/backend/jquery.flot.resize.min.js')}}"></script> 
-<script src="{{asset('public/js/backend/jquery.peity.min.js')}}"></script> 
+<!-- <script src="{{asset('public/js/backend/jquery.flot.min.js')}}"></script> 
+<script src="{{asset('public/js/backend/jquery.flot.resize.min.js')}}"></script>  -->
+<!-- <script src="{{asset('public/js/backend/jquery.peity.min.js')}}"></script> 
 <script src="{{asset('public/js/backend/fullcalendar.min.js')}}"></script> 
 <script src="{{asset('public/js/backend/matrix.js')}}"></script> 
-<script src="{{asset('public/js/backend/matrix.form_common.js')}}"></script> 
-<script src="{{asset('public/js/backend/matrix.dashboard.js')}}"></script> 
-<script src="{{asset('public/js/backend/jquery.gritter.min.js')}}"></script> 
+<script src="{{asset('public/js/backend/matrix.form_common.js')}}"></script>  -->
+<!-- <script src="{{asset('public/js/backend/matrix.dashboard.js')}}"></script>  -->
+<!-- <script src="{{asset('public/js/backend/jquery.gritter.min.js')}}"></script> 
 <script src="{{asset('public/js/backend/matrix.interface.js')}}"></script> 
 <script src="{{asset('public/js/backend/matrix.chat.js')}}"></script> 
 <script src="{{asset('public/js/backend/jquery.validate.js')}}"></script> 
@@ -42,7 +42,7 @@
 <script src="{{asset('public/js/backend/jquery.dataTables.min.js')}}"></script> 
 <script src="{{asset('public/js/backend/matrix.tables.js')}}"></script>
 <script src="{{asset('public/js/backend/bootstrap-datepicker.js')}}"></script> 
-<script src="{{asset('public/js/backend/masked.js')}}"></script> 
+<script src="{{asset('public/js/backend/masked.js')}}"></script>  -->
 </head>
 <body>
 

@@ -17,7 +17,7 @@
     <!-- Fonts -->
     
     <link rel="dns-prefetch" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css?family=Raleway:300,400,600" rel="stylesheet" type="text/css">
+    <!-- <link href="https://fonts.googleapis.com/css?family=Raleway:300,400,600" rel="stylesheet" type="text/css"> -->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
     <!--<link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/frontend/style.css') }}" rel="stylesheet">
@@ -32,6 +32,9 @@
     <link href="{{ asset('css/frontend/css/style.css')}}" rel="stylesheet" />
     <link href="{{ asset('css/frontend/color/default.css')}}" rel="stylesheet" />
     <link href="{{ asset('css/frontend/css/custom.css')}}" rel="stylesheet" />
+    <link href="{{ asset('css/frontend/bootstrap-datetimepicker.css')}}" rel="stylesheet" />
+   
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 
 
     <!-- Javascript Library Files -->
@@ -48,6 +51,8 @@
     <script src="{{ asset('css/frontend/js/jquery.scrollTo.min.js')}}"></script>
     <script src="{{ asset('css/frontend/js/animate.js')}}"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD8HeI8o-c1NppZA-92oYlXakhDPYR7XMY"></script>
+    
+    <script src="{{ asset('js/frontend/bootstrap-datetimepicker.js')}}"></script>
 
     <!-- Contact Form JavaScript File -->
     <!--<script src="{{ asset('contactform/contactform.js')}}"></script>
@@ -66,7 +71,7 @@
       <div class="navbar-inner">
         <div class="container">
           <div class="logo">
-            <a href="#"><img src="{{ asset('css/frontend/img/logo.png')}}" alt="" /></a>
+            <a href="{{ route('main') }}"><img style="height: 40px;width: 160px;background: #fff;" src="{{ asset('css/frontend/img/logo.png')}}" alt="" /></a>
           </div>
           <div class="navigation">
             <nav>
@@ -77,12 +82,22 @@
                 <li><a class="" href="{{ route('register') }}">{{ __('Register') }}</a></li>
 
                 @else
-                <li><a href="{{ route('main') }}">Home</i>
-                <li><a href="{{ route('home') }}">Resumes</i>
-                <li><a href="{{ route('recruiter.employment.create') }}">Add Resume</i>
-                <li><a href="#">{{ Auth::user()->name }}</i>
-                </a></li>
-                <li> <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();"> Logout </a><form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                <li><a href="{{ route('main') }}">Home</i></a></li>
+                <li><a href="{{ route('home') }}">Resumes</i></a></li>
+                <li><a href="{{ route('recruiter.employment.create') }}">Add Resume</i></a></li>
+                <li  class="dropdown" ><a data-toggle="dropdown" data-target="#profile-messages" class="dropdown-toggle" href="#"><span class="text">{{ Auth::user()->name }}</span><b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Total Number of Contacts ({{ Auth::user()->noContacts()}})  </a></li>
+                        <li><a href="#">Today ({{ Auth::user()->count(0)}})</a></li>
+                        <li><a href="#">Yesterday ({{ Auth::user()->count(1)}})</a></li>
+                        <li><a href="#">This Week ({{ Auth::user()->count(7)}})</a></li>
+                        <li><a href="#">This Month ({{ Auth::user()->count(30)}})</a></li>
+                        <li><a href="#">This Year ({{ Auth::user()->count(365)}})</a></li>
+                      </ul>
+
+                </li>
+                <li> 
+                    <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();"> Logout </a><form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                     @csrf
                 </form></li>
 
@@ -105,6 +120,18 @@
     </div>
     </section>
   
+<script type="text/javascript">
+/*$(document).ready(function () {
+    $('body').bind('cut copy paste', function (e) {
+        e.preventDefault();
+    });
+   
+    $("body").on("contextmenu",function(e){
+        return false;
+    });
+});
+*/
+</script>
 
 </body>
 </html>

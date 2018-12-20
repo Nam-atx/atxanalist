@@ -8,6 +8,7 @@ use App\Http\Requests;
 use Illuminate\Http\Response;
 use Input;
 use App\Employment;
+use App\Emphistory;
 use App\empComments;
 use App\Template;
 use App\User;
@@ -24,13 +25,48 @@ use App\Traits\latlon;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
 use Exception;
+use Carbon\Carbon;
 
 class EmploymentController extends Controller
 {
     //
     use latlon;
 
-    
+    public function __construct()
+    {
+        $this->middleware(['auth','admin']);
+    }
+
+
+    public function list(Request $request)
+    {
+        $sql=DB::table('employment');
+
+        if($request->input('email')){
+            $sql->where('email','LIKE','%'.$request->input('email').'%');
+        }
+
+        if($request->input('position')){
+            $sql->where('position','like','%'.$request->input('position').'%');
+           
+        }
+        if($request->input('city')){
+            $sql->where('city','=',$request->input('city'));
+            
+        }
+        if($request->input('state')){
+            $sql->where('state','=',$request->input('state'));
+          
+        }
+
+        $employments=$sql->paginate(10)->appends(request()->query());;
+
+        //$employments = Employment::paginate(10);
+        return view('admin.emp.list',['employments'=>$employments]);
+    }
+
+
+
     // show template
     public function importExport()
     {
@@ -110,35 +146,13 @@ class EmploymentController extends Controller
     }
 
 
-    // admin section employment listing
-
-    public function list(Request $request)
-    {
-        $sql=DB::table('employment');
-        if($request->input('position')){
-            $sql->where('position','=',$request->input('position'));
-           
-        }
-        if($request->input('city')){
-            $sql->where('city','=',$request->input('city'));
-            
-        }
-        if($request->input('state')){
-            $sql->where('state','=',$request->input('state'));
-          
-        }
-
-        $employments=$sql->paginate(10)->appends(request()->query());
-
-        //$employments = Employment::paginate(10);
-        return view('admin.emp.list',['employments'=>$employments]);
-    }
+    
 
 
 
     public function edit($id){
         $employment = Employment::find($id);
-        
+        $days[]='';
         if($employment->days_available){
             if (preg_match("/Monday/", $employment->days_available))
             {
@@ -161,9 +175,11 @@ class EmploymentController extends Controller
             }
         }
         
+
+
         return view('admin.emp.edit',['employment'=>$employment,'days'=>$days]);
 
-    }
+    } 
 
 
 
@@ -174,7 +190,7 @@ class EmploymentController extends Controller
             return redirect()->route('admin.emp.edit',$id)->withErrors($validator)->withInput();
         }
         
-         $address='';
+        $address='';
         if($request->input('street1')){
             $address.=$request->input('street1').' ';
         }
@@ -274,14 +290,17 @@ class EmploymentController extends Controller
 
         if($request->hasFile('import_file')){
             Excel::load($request->file('import_file')->getRealPath(), function ($reader) {
-            foreach ($reader->toArray() as $key => $row) {
+            foreach ($reader->toArray() as $key => $row) { 
+                
+                $application_date = Carbon::parse($row['application_date'])->format('Y-m-d'); 
+                
                 $address='';
-                if($row['address_street_address']){
+                /*if($row['address_street_address']){
                     $address.=$row['address_street_address'].' ';
                 }
                 if($row['address_street_address_line_2']){
                     $address.=$row['address_street_address_line_2'].' ';
-                }
+                }*/
 
                 if($row['city']){
                     $address.=$row['city'].' ';
@@ -295,17 +314,70 @@ class EmploymentController extends Controller
                 }
                 // echo $address; die;
 
-                $response=$this->getlatlon($address);
+                //$response=$this->getlatlon($address);
 
 
-                $data=['title'=>$row['title'], 'first_name'=>$row['first_name'], 'last_name'=>$row['last_name'],'email'=>$row['email_address'],'phone'=>$row['phone'],'cell_number'=>$row['cell_number'],'best_time_to_call'=>$row['best_time_to_call'],'street1'=>$row['address_street_address'],'street2'=>$row['address_street_address_line_2'],'city'=>$row['city'],'state'=>$row['state'],'zipcode'=>$row['zip_code'],'country'=>$row['address_country'],'position'=>$row['applying_for_position'],'days_available'=>$row['days_available'],'license'=>mb_convert_encoding($row['licenses_skills_training_awards'], 'UTF-8'),'need_call'=>$row['need_a_call_back'],'resume'=>'','longitude'=>$response['longitude'],'latitude'=>$response['latitude']];
+                if(empty($row['first_name'])){
+                    //echo '<pre>';print_r($row);echo '</pre>'; die('==>'.$key.'<==');
+                   // echo '==>'.$key.'<==<br>';
+                    continue;
+                }
 
+                $emp=Employment::where('email','=',$row['email_address'])->first();
+                //print_r($emp);die;
+
+
+                if($emp){
+
+                $data=['application_date'=>$emp->application_date,'title'=>$emp->title, 'first_name'=>$emp->first_name, 'last_name'=>$emp->last_name,'email'=>$emp->email,'phone'=>$emp->phone,'cell_number'=>$emp->cell_number,'best_time_to_call'=>$emp->best_time_to_call,'street1'=>$emp->street1,'street2'=>$emp->street2,'city'=>$emp->city,'state'=>$emp->state,'zipcode'=>$emp->zipcode,'country'=>$emp->country,'position'=>$emp->position,'days_available'=>$emp->days_available,'license'=>mb_convert_encoding($emp->license, 'UTF-8'),'need_call'=>$emp->need_call,'resume'=>$emp->resume];                    
+                Emphistory::create($data);
+
+                $emp->application_date=$application_date;
+                $emp->title=$row['title'];
+                $emp->first_name=$row['first_name'];
+                $emp->last_name=$row['last_name'];
+                //$emp->email=$row['email_address'];
+                $emp->phone=$row['phone'];
+                $emp->cell_number=$row['cell_number'];
+                $emp->best_time_to_call=$row['best_time_to_call'];
+                $emp->street1=$row['address_street_address'];
+                $emp->street2=$row['address_street_address_line_2'];
+                $emp->city=$row['city'];
+                $emp->state=$row['state'];
+                $emp->zipcode=$row['zip_code'];
+                $emp->country=$row['address_country'];
+                $emp->position=$row['applying_for_position'];
+                $emp->days_available=$row['days_available'];
+                $emp->license=$row['licenses_skills_training_awards'];
+                $emp->need_call=$row['need_a_call_back'];
+                if(!empty($row['resume'])){
+                    $emp->resume=$row['resume'];
+                }
+                $emp->longitude='0';
+                $emp->latitude='0';
+                $emp->save();
+
+                } else {
+
+                if(empty($row['email_address']))
+                {
+                    $row['email_address']='atx_'.$key.'_'.time().'@atxlearning.com';
+                    $email_status='1';
+                } else{
+                    $email_status='0';
+                }
+
+                $data=['application_date'=>$application_date,'title'=>$row['title'], 'first_name'=>$row['first_name'], 'last_name'=>$row['last_name'],'email'=>$row['email_address'],'phone'=>$row['phone'],'cell_number'=>$row['cell_number'],'best_time_to_call'=>$row['best_time_to_call'],'street1'=>$row['address_street_address'],'street2'=>$row['address_street_address_line_2'],'city'=>$row['city'],'state'=>$row['state'],'zipcode'=>(strlen($row['zip_code'])==4)?'0'.$row['zip_code']:$row['zip_code'],'country'=>$row['address_country'],'position'=>$row['applying_for_position'],'days_available'=>$row['days_available'],'license'=>mb_convert_encoding($row['licenses_skills_training_awards'], 'UTF-8'),'need_call'=>$row['need_a_call_back'],'resume'=>$row['resume'],'longitude'=>'0','latitude'=>'0','email_status'=>$email_status];
 
                 Employment::create($data);
+
+                }
+                //sleep(1);
             }
 
             });
         }
+        
         flash('Your file successfully import in database!!!')->success();
         return back();
     }

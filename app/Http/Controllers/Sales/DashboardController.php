@@ -33,9 +33,17 @@ class DashboardController extends Controller
        	$sql = DB::table('client')->join('client_comment', 'client_comment.client_id', '=', 'client.id')->select('client.*')->where('client_comment.user_id','=',$user->id)->where(DB::raw("(DATE_FORMAT(client_comment.created_at,'%Y-%m-%d'))"),'=',$comparedate);
 
 
-       if($request->input('name')){
-          $sql->where('client.name','LIKE','%'.$request->input('name').'%');
-       }
+      if($request->input('email')){
+            $sql->where('client.email','LIKE','%'.$request->input('email').'%');
+        }
+
+        if($request->input('name')){
+            $sql->where('client.name','LIKE','%'.$request->input('name').'%');
+        }
+
+        if($request->input('designation')){
+            $sql->where('client.designation','LIKE','%'.$request->input('designation').'%');
+         }
 
        if($request->input('radius')){
 
@@ -73,8 +81,14 @@ class DashboardController extends Controller
            }
 
          }
-//echo $sql->toSql();
-        $clientsql=$sql->distinct('client.id')->groupBy('client.id')->paginate(5);
+        
+        if($request->input('limit')){
+            $limit=$request->input('limit');
+        } else{
+          $limit=50;
+        }
+
+        $clientsql=$sql->distinct('client.id')->groupBy('client.id')->paginate($limit);
 
         
 
@@ -91,8 +105,16 @@ class DashboardController extends Controller
         
         $sql = DB::table('client')->select('client.*')->leftJoin('client_comment','client_comment.client_id','=','client.id')->whereNull('client_comment.client_id');
 
+        if($request->input('email')){
+            $sql->where('client.email','LIKE','%'.$request->input('email').'%');
+        }
+
         if($request->input('name')){
             $sql->where('client.name','LIKE','%'.$request->input('name').'%');
+        }
+
+        if($request->input('designation')){
+            $sql->where('client.designation','LIKE','%'.$request->input('designation').'%');
          }
 
          if($request->input('radius')){
@@ -133,7 +155,14 @@ class DashboardController extends Controller
          }
 
          
-        $clientsql=$sql->paginate(5);
+        if($request->input('limit')){
+            $limit=$request->input('limit');
+        } else{
+          $limit=50;
+        }
+
+
+        $clientsql=$sql->paginate($limit);
         
         $clients=$clientsql->appends($request->query());
 
@@ -154,9 +183,17 @@ class DashboardController extends Controller
       
       	$sql = DB::table('client')->join('client_comment', 'client_comment.client_id', '=', 'client.id')->select('client.*')->where('client_comment.user_id','=',$user->id)->where(DB::raw("(DATE_FORMAT(client_comment.created_at,'%Y-%m-%d'))"),'=',$comparedate);
 
-      if($request->input('name')){
-          $sql->where('client.name','LIKE','%'.$request->input('name').'%');
-       }
+        if($request->input('email')){
+            $sql->where('client.email','LIKE','%'.$request->input('email').'%');
+        }
+
+        if($request->input('name')){
+            $sql->where('client.name','LIKE','%'.$request->input('name').'%');
+        }
+
+        if($request->input('designation')){
+            $sql->where('client.designation','LIKE','%'.$request->input('designation').'%');
+         }
 
        if($request->input('radius')){
 
@@ -195,7 +232,13 @@ class DashboardController extends Controller
 
          }
 
-         $clientsql=$sql->distinct('client.id')->groupBy('client.id')->paginate(5);
+         if($request->input('limit')){
+            $limit=$request->input('limit');
+        } else{
+          $limit=50;
+        }
+
+         $clientsql=$sql->distinct('client.id')->groupBy('client.id')->paginate($limit);
 
          //echo '<pre>'; print_r($sql); die;
 
@@ -218,9 +261,17 @@ class DashboardController extends Controller
        
        $sql = DB::table('client')->join('client_comment', 'client_comment.client_id', '=', 'client.id')->select('client.*')->where('client_comment.client_id','=',$user->id)->where(DB::raw("(DATE_FORMAT(client_comment.created_at,'%Y-%m-%d'))"),'=',$comparedate);
 
-       if($request->input('name')){
-          $sql->where('client.name','LIKE','%'.$request->input('name').'%');
-       }
+       if($request->input('email')){
+            $sql->where('client.email','LIKE','%'.$request->input('email').'%');
+        }
+
+        if($request->input('name')){
+            $sql->where('client.name','LIKE','%'.$request->input('name').'%');
+        }
+
+        if($request->input('designation')){
+            $sql->where('client.designation','LIKE','%'.$request->input('designation').'%');
+         }
 
        if($request->input('radius')){
 
@@ -259,7 +310,14 @@ class DashboardController extends Controller
 
          }
 
-       $clientsql=$sql->distinct('client.id')->groupBy('client.id')->paginate(5);
+
+         if($request->input('limit')){
+            $limit=$request->input('limit');
+        } else{
+          $limit=50;
+        }
+
+       $clientsql=$sql->distinct('client.id')->groupBy('client.id')->paginate($limit);
 
          // echo '<pre>'; print_r($sql); die;
 
@@ -285,9 +343,17 @@ class DashboardController extends Controller
         
       	$sql = DB::table('client')->join('client_comment', 'client_comment.client_id', '=', 'client.id')->where('client_comment.user_id','=',$user->id)->select('client.*')->where(DB::raw("(DATE_FORMAT(client_comment.created_at,'%Y-%m-%d'))"),'<=',$nowdate)->where(DB::raw("(DATE_FORMAT(client_comment.created_at,'%Y-%m-%d'))"),'>=',$backdate);
 
-      if($request->input('name')){
-          $sql->where('client.name','LIKE','%'.$request->input('name').'%');
-       }
+      if($request->input('email')){
+            $sql->where('client.email','LIKE','%'.$request->input('email').'%');
+        }
+
+        if($request->input('name')){
+            $sql->where('client.name','LIKE','%'.$request->input('name').'%');
+        }
+
+        if($request->input('designation')){
+            $sql->where('client.designation','LIKE','%'.$request->input('designation').'%');
+         }
 
        if($request->input('radius')){
 
@@ -324,11 +390,17 @@ class DashboardController extends Controller
 
          }
 
-	    $clientsql=$sql->distinct('client.id')->groupBy('client.id')->paginate(5);
+         if($request->input('limit')){
+            $limit=$request->input('limit');
+        } else{
+          $limit=50;
+        }
 
-        $clients=$clientsql->appends(request()->query());
+	    $clientsql=$sql->distinct('client.id')->groupBy('client.id')->paginate($limit);
+
+      $clients=$clientsql->appends(request()->query());
         
-        return view('sales.dashboard.weekclient',['clients'=>$clients]);
+      return view('sales.dashboard.weekclient',['clients'=>$clients]);
     }
 
 
@@ -347,9 +419,17 @@ class DashboardController extends Controller
     
       $sql = DB::table('client')->join('client_comment', 'client_comment.client_id', '=', 'client.id')->select('client.*')->where(DB::raw("(DATE_FORMAT(client_comment.created_at,'%Y-%m-%d'))"),'<=',$nowdate)->where(DB::raw("(DATE_FORMAT(client_comment.created_at,'%Y-%m-%d'))"),'>=',$backdate);
 
-      if($request->input('name')){
-          $sql->where('client.name','LIKE','%'.$request->input('name').'%');
-       }
+      if($request->input('email')){
+            $sql->where('client.email','LIKE','%'.$request->input('email').'%');
+        }
+
+        if($request->input('name')){
+            $sql->where('client.name','LIKE','%'.$request->input('name').'%');
+        }
+
+        if($request->input('designation')){
+            $sql->where('client.designation','LIKE','%'.$request->input('designation').'%');
+         }
 
        if($request->input('radius')){
 
@@ -388,7 +468,13 @@ class DashboardController extends Controller
 
          }
 
-      $clientsql=$sql->distinct('client.id')->groupBy('client.id')->paginate(5);
+      if($request->input('limit')){
+            $limit=$request->input('limit');
+        } else{
+          $limit=50;
+        }
+
+      $clientsql=$sql->distinct('client.id')->groupBy('client.id')->paginate($limit);
 
          // echo '<pre>'; print_r($sql); die;
 
@@ -414,9 +500,17 @@ class DashboardController extends Controller
       
        $sql = DB::table('client')->join('client_comment', 'client_comment.client_id', '=', 'client.id')->select('client.*')->where(DB::raw("(DATE_FORMAT(client_comment.created_at,'%Y-%m-%d'))"),'<=',$nowdate)->where(DB::raw("(DATE_FORMAT(client_comment.created_at,'%Y-%m-%d'))"),'>=',$backdate);
 
-       if($request->input('name')){
-          $sql->where('client.name','LIKE','%'.$request->input('name').'%');
-       }
+       if($request->input('email')){
+            $sql->where('client.email','LIKE','%'.$request->input('email').'%');
+        }
+
+        if($request->input('name')){
+            $sql->where('client.name','LIKE','%'.$request->input('name').'%');
+        }
+
+        if($request->input('designation')){
+            $sql->where('client.designation','LIKE','%'.$request->input('designation').'%');
+         }
 
        if($request->input('radius')){
 
@@ -455,7 +549,13 @@ class DashboardController extends Controller
 
          }
 
-       $clientsql=$sql->distinct('client.id')->groupBy('client.id')->paginate(5);
+         if($request->input('limit')){
+            $limit=$request->input('limit');
+        } else{
+          $limit=50;
+        }
+
+       $clientsql=$sql->distinct('client.id')->groupBy('client.id')->paginate($limit);
 
          // echo '<pre>'; print_r($sql); die;
 

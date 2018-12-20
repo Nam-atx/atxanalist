@@ -26,8 +26,6 @@
   <div class="home-right">
   <ul>
       <li><a href="{{route('user.employment.latestresume')}}"><span>Latest Resume Upload ( {{$latest_count}} )</span></a></li>
-  
-      <li><a href="#"><span>Miles Filter</span></a> </li>
 
       <li><a href="#"><span>Emailing Candidates from Portal</span></a> </li>
 

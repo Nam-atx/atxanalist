@@ -27,9 +27,25 @@
           @endif  
           <div class="widget-content nopadding">
             <div class="widget-content nopadding">
-        	<form class="form-inline" action="{{route('admin.emp.list')}}"><div class="form-group"><input class="form-control" type="text" name="position" placeholder="Position" value="{{ app('request')->input('position') }}"></div>
-                <div class="form-group"><input type="text" class="form-control" name="city" placeholder="City"  value="{{ app('request')->input('city') }}"> </div> <div class="form-group"> <input class="form-control" type="text" name="state" placeholder="State"  value="{{ app('request')->input('state') }}"></div> <div class="form-group"> <button class="btn btn-primary" type="submit">Filter</button></div>
-              </form>
+        	<form class="form-inline" action="{{route('admin.emp.list')}}">
+
+            <div class="form-group">
+              <input class="form-control" type="text" name="email" placeholder="Email" value="{{ app('request')->input('email') }}">
+            </div>
+
+            <div class="form-group">
+              <input class="form-control" type="text" name="position" placeholder="Position" value="{{ app('request')->input('position') }}">
+            </div>
+            <div class="form-group">
+              <input type="text" class="form-control" name="city" placeholder="City"  value="{{ app('request')->input('city') }}"> 
+            </div> 
+            <div class="form-group"> 
+              <input class="form-control" type="text" name="state" placeholder="State"  value="{{ app('request')->input('state') }}">
+            </div> 
+            <div class="form-group"> 
+              <button class="btn btn-primary" type="submit">Filter</button>
+            </div>
+            </form>
               <form action="{{route('home')}}" class="form-inline reset"><button class="btn btn-primary" type="submit">Reset</button>
               </form>
             <table class="table table-bordered data-table">
@@ -58,11 +74,11 @@
                     <td>{{$employment->last_name}}</td>
                     <td>{{$employment->email}}</td>
                     <td>{{$employment->position}}</td>
-                    <td>{{$employment->street1}}<br> {{$employment->street2?','.$employment->street2.'<br>':''}}
-                    {{$employment->city?','.$employment->city:''}} {{$employment->state?','.$employment->state:''}}
-                    {{$employment->country?','.$employment->country:''}}
-                    {{$employment->zipcode?'-'.$employment->zipcode:''}}
-                    </td>
+                    <td>{{$employment->street1}} {{$employment->street1?'<br>,':''}} {{$employment->street2?$employment->street2.'<br>':''}} {{$employment->street2?',':''}}
+                             {{$employment->city?$employment->city:''}} {{$employment->city?',':''}} {{$employment->state?$employment->state:''}} {{$employment->state?',':''}}
+                            {{$employment->country?$employment->country:''}} {{$employment->country?',':''}}
+                            {{$employment->zipcode?'-'.$employment->zipcode:''}}
+                            </td>
                     <td>{{$employment->longitude}}</td>
                     <td>{{$employment->latitude}}</td>
                     <td><a href="{{route('admin.emp.edit',$employment->id)}}">Edit</a></td>

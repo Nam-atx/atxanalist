@@ -38,7 +38,7 @@ class EmploymentController extends Controller
         $comment=empComments::where('emp_id','=',$request->input('emp_id'))->latest()->first();
         $user=Auth::user();
         $from[]=['name'=>$user->name,'address'=>$user->email];
-        $emails = [$request->input('seles_email'), $user->email];
+        $emails = [$request->input('seles_email'), $user->email,'jitendra@atxlearning.com'];
 
         try {
             Mail::to($emails)->send(new salesEmail($from,$request->input('seles_email'),$employment,$subject,$comment,$user));
@@ -204,8 +204,13 @@ class EmploymentController extends Controller
     public function list(Request $request)
     {
         $sql=DB::table('employment');
+
+        if($request->input('email')){
+            $sql->where('email','LIKE','%'.$request->input('email').'%');
+        }
+
         if($request->input('position')){
-            $sql->where('position','=',$request->input('position'));
+            $sql->where('position','like','%'.$request->input('position').'%');
            
         }
         if($request->input('city')){
@@ -227,7 +232,7 @@ class EmploymentController extends Controller
 
     public function edit($id){
         $employment = Employment::find($id);
-        
+        $days[]='';
         if($employment->days_available){
             if (preg_match("/Monday/", $employment->days_available))
             {

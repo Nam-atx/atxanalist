@@ -47,6 +47,18 @@
               </div>
 
               <div class="control-group">
+              <label class="control-label">Designation</label>
+                <div class="controls {{ $errors->has('designation') ? ' is-invalid' : '' }}">
+                  <input type="text" name="designation" id="designation-required" value="{{$client->designation}}" >
+                  @if ($errors->has('designation'))
+                      <span class="help-block">
+                          <strong>{{ $errors->first('designation') }}</strong>
+                      </span>
+                  @endif
+                </div>
+              </div>
+
+              <div class="control-group">
               <label class="control-label">Phone</label>
                 <div class="controls {{ $errors->has('phone') ? ' is-invalid' : '' }}">
                   <input type="text" name="phone" id="phone-required" value="{{$client->phone}}" >
@@ -58,18 +70,7 @@
                 </div>
               </div>
 
-              <div class="control-group">
-              <label class="control-label">Fax</label>
-                <div class="controls {{ $errors->has('fax') ? ' is-invalid' : '' }}">
-                  <input type="text" name="fax" id="fax-required" value="{{$client->fax}}" >
-                  @if ($errors->has('fax'))
-                      <span class="help-block">
-                          <strong>{{ $errors->first('fax') }}</strong>
-                      </span>
-                  @endif
-                </div>
-              </div>
-
+              
               <div class="control-group">
               <label class="control-label">Email</label>
                 <div class="controls {{ $errors->has('email') ? ' is-invalid' : '' }}">
@@ -77,6 +78,120 @@
                   @if ($errors->has('email'))
                       <span class="help-block">
                           <strong>{{ $errors->first('email') }}</strong>
+                      </span>
+                  @endif
+                </div>
+              </div>
+
+
+              <div class="control-group">
+              <label class="control-label">Contact Person One</label>
+                <div class="controls {{ $errors->has('contact_1') ? ' is-invalid' : '' }}">
+                  <input type="text" name="contact_1" id="contact-1-required" value="{{$client->contact_1}}" >
+                  @if ($errors->has('contact_1'))
+                      <span class="help-block">
+                          <strong>{{ $errors->first('contact_1') }}</strong>
+                      </span>
+                  @endif
+                </div>
+              </div>
+
+              <div class="control-group">
+              <label class="control-label">Designation One</label>
+                <div class="controls {{ $errors->has('designation_1') ? ' is-invalid' : '' }}">
+                  <input type="text" name="designation_1" id="designation-1-required" value="{{$client->designation_1}}" >
+                  @if ($errors->has('designation_1'))
+                      <span class="help-block">
+                          <strong>{{ $errors->first('designation_1') }}</strong>
+                      </span>
+                  @endif
+                </div>
+              </div>
+
+              <div class="control-group">
+              <label class="control-label">Phone One</label>
+                <div class="controls {{ $errors->has('phone_1') ? ' is-invalid' : '' }}">
+                  <input type="text" name="phone_1" id="phone-1-required" value="{{$client->phone_1}}" >
+                  @if ($errors->has('phone_1'))
+                      <span class="help-block">
+                          <strong>{{ $errors->first('phone_1') }}</strong>
+                      </span>
+                  @endif
+                </div>
+              </div>
+
+              
+              <div class="control-group">
+              <label class="control-label">Email One</label>
+                <div class="controls {{ $errors->has('email_1') ? ' is-invalid' : '' }}">
+                  <input type="text" name="email_1" id="email-1-required" value="{{$client->email_1}}" >
+                  @if ($errors->has('email_1'))
+                      <span class="help-block">
+                          <strong>{{ $errors->first('email_1') }}</strong>
+                      </span>
+                  @endif
+                </div>
+              </div>
+
+
+              <div class="control-group">
+              <label class="control-label">Contact Person Two</label>
+                <div class="controls {{ $errors->has('contact_2') ? ' is-invalid' : '' }}">
+                  <input type="text" name="contact_2" id="contact-2-required" value="{{$client->contact_2}}" >
+                  @if ($errors->has('contact_2'))
+                      <span class="help-block">
+                          <strong>{{ $errors->first('contact_2') }}</strong>
+                      </span>
+                  @endif
+                </div>
+              </div>
+
+              <div class="control-group">
+              <label class="control-label">Designation Two</label>
+                <div class="controls {{ $errors->has('designation_2') ? ' is-invalid' : '' }}">
+                  <input type="text" name="designation_2" id="designation-2-required" value="{{$client->designation_2}}" >
+                  @if ($errors->has('designation_2'))
+                      <span class="help-block">
+                          <strong>{{ $errors->first('designation_2') }}</strong>
+                      </span>
+                  @endif
+                </div>
+              </div>
+
+              <div class="control-group">
+              <label class="control-label">Phone Two</label>
+                <div class="controls {{ $errors->has('phone_2') ? ' is-invalid' : '' }}">
+                  <input type="text" name="phone_2" id="phone-2-required" value="{{$client->phone_2}}" >
+                  @if ($errors->has('phone_2'))
+                      <span class="help-block">
+                          <strong>{{ $errors->first('phone_2') }}</strong>
+                      </span>
+                  @endif
+                </div>
+              </div>
+
+              
+              <div class="control-group">
+              <label class="control-label">Email Two</label>
+                <div class="controls {{ $errors->has('email_2') ? ' is-invalid' : '' }}">
+                  <input type="text" name="email_2" id="email-2-required" value="{{$client->email_2}}" >
+                  @if ($errors->has('email_2'))
+                      <span class="help-block">
+                          <strong>{{ $errors->first('email_2') }}</strong>
+                      </span>
+                  @endif
+                </div>
+              </div>
+
+
+
+              <div class="control-group">
+              <label class="control-label">Fax</label>
+                <div class="controls {{ $errors->has('fax') ? ' is-invalid' : '' }}">
+                  <input type="text" name="fax" id="fax-required" value="{{$client->fax}}" >
+                  @if ($errors->has('fax'))
+                      <span class="help-block">
+                          <strong>{{ $errors->first('fax') }}</strong>
                       </span>
                   @endif
                 </div>

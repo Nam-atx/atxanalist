@@ -81,8 +81,10 @@
                 <div class="controls">
                  <select name="is_admin" class="is-admin form-control">
                   <option value="1">Admin</option>
-                  <option value="0">Recrutor</option>
-                  <option value="2">Sale</option>
+                  <option value="2">Recrutor</option>
+                  <option value="3">Sale</option>
+                  <option value="4">Relation Manager</option>
+                  <option value="5">Editor</option>
                 </select>
                 </div>
               </div>

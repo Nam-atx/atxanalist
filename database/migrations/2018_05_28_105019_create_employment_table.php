@@ -15,7 +15,8 @@ class CreateEmploymentTable extends Migration
     {
         Schema::create('employment', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('title');
+            $table->string('application_date')->default('00-00-0000');
+            $table->string('title')->unique();
             $table->string('first_name');
             $table->string('last_name');
             $table->string('email')->unique();
@@ -33,6 +34,7 @@ class CreateEmploymentTable extends Migration
             $table->string('license',1024)->nullable();
             $table->string('need_call')->nullable();
             $table->string('resume')->nullable();
+            $table->string('email_status')->default('0');
             $table->timestamps();
         });
     }

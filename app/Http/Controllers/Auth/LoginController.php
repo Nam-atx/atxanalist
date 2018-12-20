@@ -47,9 +47,9 @@ class LoginController extends Controller
     {
         if (Auth::check() && Auth::user()->is_admin==1) {
             return redirect('/admin/dashboard');
-        } else if (Auth::check() && Auth::user()->is_admin==2) {
+        } else if (Auth::check() && Auth::user()->is_admin==3) {
             return redirect('/sales/dashboard');
-        } else if (Auth::check() && Auth::user()->is_admin==0) {
+        } else if (Auth::check() && Auth::user()->is_admin==2) {
             return redirect('/user/dashboard');
         } 
 
@@ -101,9 +101,40 @@ class LoginController extends Controller
         $this->clearLoginAttempts($request);
         
         return $this->authenticated($request, $this->guard()->user())
-                ?: redirect()->intended($this->redirectPath());
+                ?: redirect()->intended($this->redirectTo());
     }
 
+
+
+    public function redirectTo(){
+            // User role
+            //$role = Auth::user()->role->name; 
+            
+            $role = Auth::user()->roles[0]['name']; 
+            
+            // Check user role
+            switch ($role) {
+                case 'admin':
+                    return '/admin/dashboard';
+                    break;
+                
+                case 'user':
+                    return '/user/dashboard';
+                    break; 
+
+                case 'sales':
+                    return '/sales/dashboard';
+                    break; 
+
+                case 'editor':
+                    return '/editor/dashboard';
+                    break; 
+
+                default:
+                    return '/user/dashboard';
+                    break;
+            }
+    }
 
     protected function redirectPath()
     {
@@ -112,9 +143,9 @@ class LoginController extends Controller
         
         if (Auth::check() && $user->is_admin==1) {
             return '/admin/dashboard';
-        } else if (Auth::check() && $user->is_admin==2) {
+        } else if (Auth::check() && $user->is_admin==3) {
             return '/sales/dashboard';
-        } else if (Auth::check() && $user->is_admin==0) {
+        } else if (Auth::check() && $user->is_admin==2) {
             return '/user/dashboard';
         } 
     }

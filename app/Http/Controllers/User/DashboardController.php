@@ -15,7 +15,7 @@ use App\Traits\latlon;
 class DashboardController extends Controller
 {
    use latlon;
-
+   protected $limit=50;
    public function __construct()
     {
         $this->middleware('auth');
@@ -37,6 +37,10 @@ class DashboardController extends Controller
         
         $sql = DB::table('employment')->select('employment.*')->leftJoin('emp_comments','emp_comments.emp_id','=','employment.id')->whereNull('emp_comments.emp_id');
 
+        if($request->input('email')){
+            $sql->where('employment.email','LIKE','%'.$request->input('email').'%');
+        }
+
         if($request->input('position')){
             $sql->where('employment.position','LIKE','%'.$request->input('position').'%');
          }
@@ -56,8 +60,9 @@ class DashboardController extends Controller
             $this->address=ltrim($this->address,',');
             $getinfo=$this->getlatlon($this->address);
             
-            $lat=$getinfo['latitude'];
-            $lon=$getinfo['longitude'];
+            $latlong=Employment::where('city',$request->input('city'))->where('state',$request->input('state'))->first();
+            $lat=$latlong->latitude;
+            $lon=$latlong->longitude;
 
             $sql->addselect(DB::raw("round((3959*acos(cos(radians($lat))*cos(radians(`employment`.`latitude`))*cos(radians( `employment`.`longitude`)-radians($lon))+sin(radians($lat))*sin(radians(`employment`.`latitude`))))) AS `distance`"));
             $sql->where(DB::raw("round((3959*acos(cos(radians($lat))*cos(radians(`employment`.`latitude`))*cos(radians( `employment`.`longitude`)-radians($lon))+sin(radians($lat))*sin(radians(`employment`.`latitude`)))))"),'<=',$request->input('radius'));
@@ -68,20 +73,42 @@ class DashboardController extends Controller
 
           if($request->input('city')){
               $sql->where('employment.city','LIKE','%'.$request->input('city').'%');
-              
            }
 
            if($request->input('state')){
               $sql->where('employment.state','LIKE','%'.$request->input('state').'%');
-              
            }
 
          }
 
+        if($request->input('from_date')){
+          $sql->where('employment.application_date','>=',$request->input('from_date'));
+        }
          
-        $empsql=$sql->paginate(5);
+
+        if($request->input('to_date')){
+          $sql->where('employment.application_date','<=',$request->input('to_date'));
+        }
+
+         
+        if($request->input('limit')){
+            $this->limit=$request->input('limit');
+        }
+
+        //$empsql=$sql->orderBy('employment.application_date', 'desc')->paginate(20);
+        $empsql=$sql->orderBy('employment.application_date', 'desc')->paginate($this->limit);
         
         $employments=$empsql->appends($request->query());
+
+
+        $allrequest=array();
+        foreach($request->all() as $key=>$value)
+        {
+          $allrequest[$key]=urldecode($value);
+        }
+
+        $employments->appends($allrequest)->links();
+
 
         //echo '<pre>';print_r($employments); die;
 
@@ -103,6 +130,10 @@ class DashboardController extends Controller
        $sql = DB::table('employment')->join('emp_comments', 'emp_comments.emp_id', '=', 'employment.id')->select('employment.*')->where('emp_comments.user_id','=',$user->id)->where(DB::raw("(DATE_FORMAT(emp_comments.created_at,'%Y-%m-%d'))"),'=',$comparedate);
 
 
+       if($request->input('email')){
+            $sql->where('employment.email','LIKE','%'.$request->input('email').'%');
+        }
+
        if($request->input('position')){
           $sql->where('employment.position','LIKE','%'.$request->input('position').'%');
        }
@@ -122,8 +153,9 @@ class DashboardController extends Controller
             $this->address=ltrim($this->address,',');
             $getinfo=$this->getlatlon($this->address);
             
-            $lat=$getinfo['latitude'];
-            $lon=$getinfo['longitude'];
+           $latlong=Employment::where('city',$request->input('city'))->where('state',$request->input('state'))->first();
+            $lat=$latlong->latitude;
+            $lon=$latlong->longitude;
 
             $sql->addselect(DB::raw("round((3959*acos(cos(radians($lat))*cos(radians(`employment`.`latitude`))*cos(radians( `employment`.`longitude`)-radians($lon))+sin(radians($lat))*sin(radians(`employment`.`latitude`))))) AS `distance`"));
             $sql->where(DB::raw("round((3959*acos(cos(radians($lat))*cos(radians(`employment`.`latitude`))*cos(radians( `employment`.`longitude`)-radians($lon))+sin(radians($lat))*sin(radians(`employment`.`latitude`)))))"),'<=',$request->input('radius'));
@@ -144,11 +176,33 @@ class DashboardController extends Controller
 
          }
 
-       $empsql=$sql->distinct('employment.id')->groupBy('employment.id')->paginate(5);
+         if($request->input('from_date')){
+          $sql->where('employment.application_date','>=',$request->input('from_date'));
+        }
+         
+
+        if($request->input('to_date')){
+          $sql->where('employment.application_date','<=',$request->input('to_date'));
+        }
+
+
+        if($request->input('limit')){
+            $this->limit=$request->input('limit');
+        }
+
+         $empsql=$sql->distinct('employment.id')->groupBy('employment.id')->orderBy('employment.application_date', 'desc')->paginate($this->limit);
 
         //echo '<pre>'; print_r($sql); die;
 
          $employments=$empsql->appends($request->query());
+
+         $allrequest=array();
+        foreach($request->all() as $key=>$value)
+        {
+          $allrequest[$key]=urldecode($value);
+        }
+
+        $employments->appends($allrequest)->links();
 
         return view('user.employment.recentresume',['employments'=>$employments]);
     
@@ -165,6 +219,11 @@ class DashboardController extends Controller
 	  
       
       $sql = DB::table('employment')->join('emp_comments', 'emp_comments.emp_id', '=', 'employment.id')->select('employment.*')->where('emp_comments.user_id','=',$user->id)->where(DB::raw("(DATE_FORMAT(emp_comments.created_at,'%Y-%m-%d'))"),'=',$comparedate);
+
+
+      if($request->input('email')){
+            $sql->where('employment.email','LIKE','%'.$request->input('email').'%');
+        }
 
       if($request->input('position')){
           $sql->where('employment.position','LIKE','%'.$request->input('position').'%');
@@ -185,8 +244,9 @@ class DashboardController extends Controller
             $this->address=ltrim($this->address,',');
             $getinfo=$this->getlatlon($this->address);
             
-            $lat=$getinfo['latitude'];
-            $lon=$getinfo['longitude'];
+            $latlong=Employment::where('city',$request->input('city'))->where('state',$request->input('state'))->first();
+            $lat=$latlong->latitude;
+            $lon=$latlong->longitude;
 
             $sql->addselect(DB::raw("round((3959*acos(cos(radians($lat))*cos(radians(`employment`.`latitude`))*cos(radians( `employment`.`longitude`)-radians($lon))+sin(radians($lat))*sin(radians(`employment`.`latitude`))))) AS `distance`"));
             $sql->where(DB::raw("round((3959*acos(cos(radians($lat))*cos(radians(`employment`.`latitude`))*cos(radians( `employment`.`longitude`)-radians($lon))+sin(radians($lat))*sin(radians(`employment`.`latitude`)))))"),'<=',$request->input('radius'));
@@ -207,11 +267,32 @@ class DashboardController extends Controller
 
          }
 
-         $empsql=$sql->distinct('employment.id')->groupBy('employment.id')->paginate(5);
+        if($request->input('from_date')){
+          $sql->where('employment.application_date','>=',$request->input('from_date'));
+        }
+         
+
+        if($request->input('to_date')){
+          $sql->where('employment.application_date','<=',$request->input('to_date'));
+        }
+
+        if($request->input('limit')){
+            $this->limit=$request->input('limit');
+        }
+
+         $empsql=$sql->distinct('employment.id')->groupBy('employment.id')->orderBy('employment.application_date', 'desc')->paginate($this->limit);
 
          //echo '<pre>'; print_r($sql); die;
 
          $employments=$empsql->appends($request->query());
+
+        $allrequest=array();
+        foreach($request->all() as $key=>$value)
+        {
+          $allrequest[$key]=urldecode($value);
+        }
+
+        $employments->appends($allrequest)->links();
 
         return view('user.employment.yesterdayresume',['employments'=>$employments]);
     
@@ -230,6 +311,10 @@ class DashboardController extends Controller
     
        
        $sql = DB::table('employment')->join('emp_comments', 'emp_comments.emp_id', '=', 'employment.id')->select('employment.*')->where('emp_comments.user_id','=',$user->id)->where(DB::raw("(DATE_FORMAT(emp_comments.created_at,'%Y-%m-%d'))"),'=',$comparedate);
+
+       if($request->input('email')){
+            $sql->where('employment.email','LIKE','%'.$request->input('email').'%');
+        }
 
        if($request->input('position')){
           $sql->where('employment.position','LIKE','%'.$request->input('position').'%');
@@ -250,8 +335,9 @@ class DashboardController extends Controller
             $this->address=ltrim($this->address,',');
             $getinfo=$this->getlatlon($this->address);
             
-            $lat=$getinfo['latitude'];
-            $lon=$getinfo['longitude'];
+            $latlong=Employment::where('city',$request->input('city'))->where('state',$request->input('state'))->first();
+            $lat=$latlong->latitude;
+            $lon=$latlong->longitude;
 
             $sql->addselect(DB::raw("round((3959*acos(cos(radians($lat))*cos(radians(`employment`.`latitude`))*cos(radians( `employment`.`longitude`)-radians($lon))+sin(radians($lat))*sin(radians(`employment`.`latitude`))))) AS `distance`"));
             $sql->where(DB::raw("round((3959*acos(cos(radians($lat))*cos(radians(`employment`.`latitude`))*cos(radians( `employment`.`longitude`)-radians($lon))+sin(radians($lat))*sin(radians(`employment`.`latitude`)))))"),'<=',$request->input('radius'));
@@ -272,11 +358,32 @@ class DashboardController extends Controller
 
          }
 
-       $empsql=$sql->distinct('employment.id')->groupBy('employment.id')->paginate(5);
+         if($request->input('from_date')){
+          $sql->where('employment.application_date','>=',$request->input('from_date'));
+        }
+         
+
+        if($request->input('to_date')){
+          $sql->where('employment.application_date','<=',$request->input('to_date'));
+        }
+
+        if($request->input('limit')){
+            $this->limit=$request->input('limit');
+        }
+
+       $empsql=$sql->distinct('employment.id')->groupBy('employment.id')->orderBy('employment.application_date', 'desc')->paginate($this->limit);
 
          // echo '<pre>'; print_r($sql); die;
 
          $employments=$empsql->appends(request()->query());
+
+         $allrequest=array();
+        foreach($request->all() as $key=>$value)
+        {
+          $allrequest[$key]=urldecode($value);
+        }
+
+        $employments->appends($allrequest)->links();
 
         return view('user.employment.twodaybackresume',['employments'=>$employments]);
     
@@ -300,6 +407,11 @@ class DashboardController extends Controller
         
       $sql = DB::table('employment')->join('emp_comments', 'emp_comments.emp_id', '=', 'employment.id')->where('emp_comments.user_id','=',$user->id)->select('employment.*')->where(DB::raw("(DATE_FORMAT(emp_comments.created_at,'%Y-%m-%d'))"),'<=',$nowdate)->where(DB::raw("(DATE_FORMAT(emp_comments.created_at,'%Y-%m-%d'))"),'>=',$backdate);
 
+
+      if($request->input('email')){
+            $sql->where('employment.email','LIKE','%'.$request->input('email').'%');
+        }
+
       if($request->input('position')){
           $sql->where('employment.position','LIKE','%'.$request->input('position').'%');
        }
@@ -319,8 +431,9 @@ class DashboardController extends Controller
             $this->address=ltrim($this->address,',');
             $getinfo=$this->getlatlon($this->address);
             
-            $lat=$getinfo['latitude'];
-            $lon=$getinfo['longitude'];
+           $latlong=Employment::where('city',$request->input('city'))->where('state',$request->input('state'))->first();
+            $lat=$latlong->latitude;
+            $lon=$latlong->longitude;
 
             $sql->addselect(DB::raw("round((3959*acos(cos(radians($lat))*cos(radians(`employment`.`latitude`))*cos(radians( `employment`.`longitude`)-radians($lon))+sin(radians($lat))*sin(radians(`employment`.`latitude`))))) AS `distance`"));
             $sql->where(DB::raw("round((3959*acos(cos(radians($lat))*cos(radians(`employment`.`latitude`))*cos(radians( `employment`.`longitude`)-radians($lon))+sin(radians($lat))*sin(radians(`employment`.`latitude`)))))"),'<=',$request->input('radius'));
@@ -341,11 +454,32 @@ class DashboardController extends Controller
 
          }
 
-       $empsql=$sql->distinct('employment.id')->groupBy('employment.id')->paginate(5);
+         if($request->input('from_date')){
+          $sql->where('employment.application_date','>=',$request->input('from_date'));
+        }
+         
+
+        if($request->input('to_date')){
+          $sql->where('employment.application_date','<=',$request->input('to_date'));
+        }
+
+        if($request->input('limit')){
+            $this->limit=$request->input('limit');
+        }
+
+       $empsql=$sql->distinct('employment.id')->groupBy('employment.id')->orderBy('employment.application_date', 'desc')->paginate($this->limit);
 
         //echo '<pre>'; print_r($numbers); die;
          $employments=$empsql->appends(request()->query());
         
+         $allrequest=array();
+        foreach($request->all() as $key=>$value)
+        {
+          $allrequest[$key]=urldecode($value);
+        }
+
+        $employments->appends($allrequest)->links();
+
         return view('user.employment.weekresume',['employments'=>$employments]);
     }
 
@@ -362,7 +496,11 @@ class DashboardController extends Controller
        $backdate=$back->toDateString();
 
     
-      $sql = DB::table('employment')->join('emp_comments', 'emp_comments.emp_id', '=', 'employment.id')->select('employment.*')->where(DB::raw("(DATE_FORMAT(emp_comments.created_at,'%Y-%m-%d'))"),'<=',$nowdate)->where(DB::raw("(DATE_FORMAT(emp_comments.created_at,'%Y-%m-%d'))"),'>=',$backdate);
+      $sql = DB::table('employment')->join('emp_comments', 'emp_comments.emp_id', '=', 'employment.id')->select('employment.*')->where('emp_comments.user_id','=',$user->id)->where(DB::raw("(DATE_FORMAT(emp_comments.created_at,'%Y-%m-%d'))"),'<=',$nowdate)->where(DB::raw("(DATE_FORMAT(emp_comments.created_at,'%Y-%m-%d'))"),'>=',$backdate);
+
+      if($request->input('email')){
+            $sql->where('employment.email','LIKE','%'.$request->input('email').'%');
+        }
 
       if($request->input('position')){
           $sql->where('employment.position','LIKE','%'.$request->input('position').'%');
@@ -383,8 +521,9 @@ class DashboardController extends Controller
             $this->address=ltrim($this->address,',');
             $getinfo=$this->getlatlon($this->address);
             
-            $lat=$getinfo['latitude'];
-            $lon=$getinfo['longitude'];
+            $latlong=Employment::where('city',$request->input('city'))->where('state',$request->input('state'))->first();
+            $lat=$latlong->latitude;
+            $lon=$latlong->longitude;
 
             $sql->addselect(DB::raw("round((3959*acos(cos(radians($lat))*cos(radians(`employment`.`latitude`))*cos(radians( `employment`.`longitude`)-radians($lon))+sin(radians($lat))*sin(radians(`employment`.`latitude`))))) AS `distance`"));
             $sql->where(DB::raw("round((3959*acos(cos(radians($lat))*cos(radians(`employment`.`latitude`))*cos(radians( `employment`.`longitude`)-radians($lon))+sin(radians($lat))*sin(radians(`employment`.`latitude`)))))"),'<=',$request->input('radius'));
@@ -405,11 +544,32 @@ class DashboardController extends Controller
 
          }
 
-      $empsql=$sql->distinct('employment.id')->groupBy('employment.id')->paginate(5);
+         if($request->input('from_date')){
+          $sql->where('employment.application_date','>=',$request->input('from_date'));
+        }
+         
+
+        if($request->input('to_date')){
+          $sql->where('employment.application_date','<=',$request->input('to_date'));
+        }
+
+        if($request->input('limit')){
+            $this->limit=$request->input('limit');
+        }
+
+      $empsql=$sql->distinct('employment.id')->groupBy('employment.id')->orderBy('employment.application_date', 'desc')->paginate($this->limit);
 
          // echo '<pre>'; print_r($sql); die;
 
          $employments=$empsql->appends(request()->query());
+
+         $allrequest=array();
+        foreach($request->all() as $key=>$value)
+        {
+          $allrequest[$key]=urldecode($value);
+        }
+
+        $employments->appends($allrequest)->links();
 
         return view('user.employment.monthresume',['employments'=>$employments]);
     
@@ -428,7 +588,13 @@ class DashboardController extends Controller
        $backdate=$back->toDateString();
     
       
-       $sql = DB::table('employment')->join('emp_comments', 'emp_comments.emp_id', '=', 'employment.id')->select('employment.*')->where(DB::raw("(DATE_FORMAT(emp_comments.created_at,'%Y-%m-%d'))"),'<=',$nowdate)->where(DB::raw("(DATE_FORMAT(emp_comments.created_at,'%Y-%m-%d'))"),'>=',$backdate);
+       $sql = DB::table('employment')->join('emp_comments', 'emp_comments.emp_id', '=', 'employment.id')->select('employment.*')->where('emp_comments.user_id','=',$user->id)->where(DB::raw("(DATE_FORMAT(emp_comments.created_at,'%Y-%m-%d'))"),'<=',$nowdate)->where(DB::raw("(DATE_FORMAT(emp_comments.created_at,'%Y-%m-%d'))"),'>=',$backdate);
+
+
+       if($request->input('email')){
+            $sql->where('employment.email','LIKE','%'.$request->input('email').'%');
+        }
+
 
        if($request->input('position')){
           $sql->where('employment.position','LIKE','%'.$request->input('position').'%');
@@ -449,8 +615,9 @@ class DashboardController extends Controller
             $this->address=ltrim($this->address,',');
             $getinfo=$this->getlatlon($this->address);
             
-            $lat=$getinfo['latitude'];
-            $lon=$getinfo['longitude'];
+            $latlong=Employment::where('city',$request->input('city'))->where('state',$request->input('state'))->first();
+            $lat=$latlong->latitude;
+            $lon=$latlong->longitude;
 
             $sql->addselect(DB::raw("round((3959*acos(cos(radians($lat))*cos(radians(`employment`.`latitude`))*cos(radians( `employment`.`longitude`)-radians($lon))+sin(radians($lat))*sin(radians(`employment`.`latitude`))))) AS `distance`"));
             $sql->where(DB::raw("round((3959*acos(cos(radians($lat))*cos(radians(`employment`.`latitude`))*cos(radians( `employment`.`longitude`)-radians($lon))+sin(radians($lat))*sin(radians(`employment`.`latitude`)))))"),'<=',$request->input('radius'));
@@ -471,17 +638,35 @@ class DashboardController extends Controller
 
          }
 
-       $empsql=$sql->distinct('employment.id')->groupBy('employment.id')->paginate(5);
+         if($request->input('from_date')){
+          $sql->where('employment.application_date','>=',$request->input('from_date'));
+        }
+         
+
+        if($request->input('to_date')){
+          $sql->where('employment.application_date','<=',$request->input('to_date'));
+        }
+
+        if($request->input('limit')){
+            $this->limit=$request->input('limit');
+        }
+
+       $empsql=$sql->distinct('employment.id')->groupBy('employment.id')->orderBy('employment.application_date', 'desc')->paginate($this->limit);
 
          // echo '<pre>'; print_r($sql); die;
 
        $employments=$empsql->appends(request()->query());
 
+       $allrequest=array();
+        foreach($request->all() as $key=>$value)
+        {
+          $allrequest[$key]=urldecode($value);
+        }
+
+        $employments->appends($allrequest)->links();
+
        return view('user.employment.yearresume',['employments'=>$employments]);
     
     }
-
-
-
 
 }

@@ -5,6 +5,11 @@
 <div class="row">
 <div class="span6">
   <div class="follow-up">
+    <ul>
+      <li><a href="{{route('sales.client.todayfollowup')}}"><span>Today FollowUps</span></a> </li>
+      <li><a href="{{route('sales.client.futurefollowup')}}"> <span>Future FollowUps</span></a> </li>
+    </ul>
+    
     <label>Follow Up</label>
     <ul>
       <li><a href="{{route('sales.dashboard.recentclient')}}"><span>Recent Cleints</span></a> </li>
@@ -25,15 +30,13 @@
  <div class="span6">
   <div class="home-right">
   <ul>
-      <li><a href="{{route('sales.dashboard.latestclient')}}"><span>Latest Resume Upload ( {{$latest_count}} )</span></a></li>
-  
-      <li><a href="#"><span>Miles Filter</span></a> </li>
+      <li><a href="{{route('sales.dashboard.latestclient')}}"><span>Latest Schools Upload ( {{$latest_count}} )</span></a></li>
 
-      <li><a href="#"><span>Emailing Candidates from Portal</span></a> </li>
+      <li><a href="#"><span>Emailing Schools from Portal</span></a> </li>
 
       <li><a href="#"><span>Who logged in when with IP</span></a> </li>
 
-      <li><a href="#"><span>Submitting to sales</span></a> </li>
+      <li><a href="#"><span>Submitting to School</span></a> </li>
     </ul>
   </div>
 </div>

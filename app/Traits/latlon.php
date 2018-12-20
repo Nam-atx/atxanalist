@@ -11,21 +11,30 @@ trait latlon
         //$formattedAddr = str_replace(' ','+',$address);
         $formattedAddr = str_replace(' ','+',$address);
         //Send request and receive json data by address
-        $geocodeFromAddr = file_get_contents('http://www.mapquestapi.com/geocoding/v1/address?key=y1AKzOhOyI4HSR5VvDvToDvAQt9mPStT&location='.$formattedAddr); 
+        //echo 'http://www.mapquestapi.com/geocoding/v1/address?key=y1AKzOhOyI4HSR5VvDvToDvAQt9mPStT&location='.$formattedAddr;die;
+        $geocodeFromAddr = @file_get_contents('http://www.mapquestapi.com/geocoding/v1/address?key=y1AKzOhOyI4HSR5VvDvToDvAQt9mPStT&location='.$formattedAddr); 
         $output = json_decode($geocodeFromAddr);
-       
-       $latlon=end($output->results[0]->locations);
+       if(!empty($output)){
+        $latlon=end($output->results[0]->locations);
+       } else{
+        $latlon=array();
+       }
         //Get latitude and longitute from json data
-        $data['latitude']  = $latlon->latLng->lat; 
-        $data['longitude'] = $latlon->latLng->lng;
+       if(!empty($latlon->latLng)){
+            $data['latitude']  = $latlon->latLng->lat; 
+            $data['longitude'] = $latlon->latLng->lng;
+        } else{
+            $data['latitude']  = 0; 
+            $data['longitude'] = 0;
+        }
         //Return latitude and longitude of the given address
         if(!empty($data)){
             return $data;
         }else{
-            return false;
+            return array('latitude'=>0,'longitude'=>0);
         }
-        }else{
-            return false;   
+        } else{
+            return array('latitude'=>0,'longitude'=>0);  
         }
     }
 

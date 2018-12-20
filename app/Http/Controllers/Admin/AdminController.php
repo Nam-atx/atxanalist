@@ -12,12 +12,27 @@ use session;
 use App\User;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
-
-
+use App\Employment;
+use App\Client;
+use App\Role;
+use App\Permission;
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
+use App\Traits\latlon;
 class AdminController extends Controller
 {
     //
+  use latlon;
   use RegistersUsers;
+  protected $limit=50;
+
+  protected $address='';
+
+    public function __construct()
+    {
+        $this->middleware(['auth','admin']);
+    }
+
 
     public function login(Request $request){
 
@@ -41,8 +56,289 @@ class AdminController extends Controller
     // dashboard function
 
     public function dashboard(){
-    	return view('admin.dashboard');
+
+        $total_dnd=Employment::where('dnd','=',1)->count();
+        $total_recruiting_contacts=DB::table('employment')->join('emp_comments', 'emp_comments.emp_id', '=', 'employment.id')->select('employment.*')->count();
+        $total_sales_contacts=DB::table('client')->join('client_comment', 'client_comment.client_id', '=', 'client.id')->select('client.*')->count();
+        $total_emails=0;
+        $current_employees=Employment::where('atxemployee','=',1)->count();
+
+    	return view('admin.dashboard',['total_dnd'=>$total_dnd,'total_recruiting_contacts'=>$total_recruiting_contacts,'total_sales_contacts'=>$total_sales_contacts,'total_emails'=>$total_emails,'current_employees'=>$current_employees]);
     }
+
+    public function totaldnd(Request $request)
+    {
+        $sql=Employment::where('dnd','=',1);
+        if($request->input('email')){
+            $sql->where('employment.email','LIKE','%'.$request->input('email').'%');
+        }
+
+        if($request->input('position')){
+            $sql->where('employment.position','LIKE','%'.$request->input('position').'%');
+         }
+
+         if($request->input('radius')){
+
+           if($request->input('city')){
+              $this->address.=','.$request->input('city');
+           }
+
+           if($request->input('state')){
+              $this->address.=','.$request->input('state');
+           }
+
+          if(!empty($this->address)){
+            
+            $this->address=ltrim($this->address,',');
+            $getinfo=$this->getlatlon($this->address);
+            
+            $latlong=Employment::where('city',$request->input('city'))->where('state',$request->input('state'))->first();
+            $lat=$latlong->latitude;
+            $lon=$latlong->longitude;
+
+            $sql->addselect(DB::raw("round((3959*acos(cos(radians($lat))*cos(radians(`employment`.`latitude`))*cos(radians( `employment`.`longitude`)-radians($lon))+sin(radians($lat))*sin(radians(`employment`.`latitude`))))) AS `distance`"));
+            $sql->where(DB::raw("round((3959*acos(cos(radians($lat))*cos(radians(`employment`.`latitude`))*cos(radians( `employment`.`longitude`)-radians($lon))+sin(radians($lat))*sin(radians(`employment`.`latitude`)))))"),'<=',$request->input('radius'));
+
+          }
+
+         } else {
+
+          if($request->input('city')){
+              $sql->where('employment.city','LIKE','%'.$request->input('city').'%');
+           }
+
+           if($request->input('state')){
+              $sql->where('employment.state','LIKE','%'.$request->input('state').'%');
+           }
+
+         }
+
+        if($request->input('from_date')){
+          $sql->where('employment.application_date','>=',$request->input('from_date'));
+        }
+         
+
+        if($request->input('to_date')){
+          $sql->where('employment.application_date','<=',$request->input('to_date'));
+        }
+
+         
+        if($request->input('limit')){
+            $this->limit=$request->input('limit');
+        }
+
+        //$empsql=$sql->orderBy('employment.application_date', 'desc')->paginate(20);
+        $total_dnds=$sql->orderBy('employment.application_date', 'desc')->paginate($this->limit);
+
+        return view('admin.dashboard.totaldnd',['employments'=>$total_dnds]);
+    }
+
+
+    public function totalemployees(Request $request)
+    {
+
+        $sql=Employment::where('atxemployee','=',1);
+
+        if($request->input('email')){
+            $sql->where('employment.email','LIKE','%'.$request->input('email').'%');
+        }
+
+        if($request->input('position')){
+            
+            $sql->where('employment.position','LIKE','%'.$request->input('position').'%');
+            
+         }
+
+         if($request->input('radius')){
+
+           if($request->input('city')){
+              $this->address.=','.$request->input('city');
+           }
+
+           if($request->input('state')){
+              $this->address.=','.$request->input('state');
+           }
+
+          if(!empty($this->address)){
+            
+            $this->address=ltrim($this->address,',');
+            $getinfo=$this->getlatlon($this->address);
+            
+            $latlong=Employment::where('city',$request->input('city'))->where('state',$request->input('state'))->first();
+            $lat=$latlong->latitude;
+            $lon=$latlong->longitude;
+
+            $sql->addselect(DB::raw("round((3959*acos(cos(radians($lat))*cos(radians(`employment`.`latitude`))*cos(radians( `employment`.`longitude`)-radians($lon))+sin(radians($lat))*sin(radians(`employment`.`latitude`))))) AS `distance`"));
+            $sql->where(DB::raw("round((3959*acos(cos(radians($lat))*cos(radians(`employment`.`latitude`))*cos(radians( `employment`.`longitude`)-radians($lon))+sin(radians($lat))*sin(radians(`employment`.`latitude`)))))"),'<=',$request->input('radius'));
+
+          }
+
+         } else {
+
+          if($request->input('city')){
+              $sql->where('employment.city','LIKE','%'.$request->input('city').'%');
+           }
+
+           if($request->input('state')){
+              $sql->where('employment.state','LIKE','%'.$request->input('state').'%');
+           }
+
+         }
+
+        if($request->input('from_date')){
+          $sql->where('employment.application_date','>=',$request->input('from_date'));
+        }
+         
+
+        if($request->input('to_date')){
+          $sql->where('employment.application_date','<=',$request->input('to_date'));
+        }
+
+         
+        if($request->input('limit')){
+            $this->limit=$request->input('limit');
+        }
+        $current_employees=$sql->orderBy('employment.application_date', 'desc')->paginate($this->limit);
+        return view('admin.dashboard.totalemployees',['employments'=>$current_employees]);
+        
+    }
+
+    public function totalsales(Request $request)
+    {
+        $sql=Client::select('client.*')->Join('client_comment','client_comment.client_id','=','client.id');
+
+        if($request->input('email')){
+            $sql->where('client.email','LIKE','%'.$request->input('email').'%');
+        }
+
+        if($request->input('designation')){
+            $sql->where('client.designation','LIKE','%'.$request->input('designation').'%');
+         }
+
+         if($request->input('radius')){
+
+           if($request->input('city')){
+              $this->address.=','.$request->input('city');
+           }
+
+           if($request->input('state')){
+              $this->address.=','.$request->input('state');
+           }
+
+          if(!empty($this->address)){
+            
+            $this->address=ltrim($this->address,',');
+            $getinfo=$this->getlatlon($this->address);
+            
+            $latlong=Client::where('city',$request->input('city'))->where('state',$request->input('state'))->first();
+            $lat=$latlong->latitude;
+            $lon=$latlong->longitude;
+
+            $sql->addselect(DB::raw("round((3959*acos(cos(radians($lat))*cos(radians(`client`.`latitude`))*cos(radians( `client`.`longitude`)-radians($lon))+sin(radians($lat))*sin(radians(`client`.`latitude`))))) AS `distance`"));
+            $sql->where(DB::raw("round((3959*acos(cos(radians($lat))*cos(radians(`client`.`latitude`))*cos(radians( `client`.`longitude`)-radians($lon))+sin(radians($lat))*sin(radians(`client`.`latitude`)))))"),'<=',$request->input('radius'));
+
+          }
+
+         } else {
+
+          if($request->input('city')){
+              $sql->where('client.city','LIKE','%'.$request->input('city').'%');
+           }
+
+           if($request->input('state')){
+              $sql->where('client.state','LIKE','%'.$request->input('state').'%');
+           }
+
+         }
+
+        // if($request->input('from_date')){
+        //   $sql->where('client.application_date','>=',$request->input('from_date'));
+        // }
+         
+
+        // if($request->input('to_date')){
+        //   $sql->where('client.application_date','<=',$request->input('to_date'));
+        // }
+
+         
+        if($request->input('limit')){
+            $this->limit=$request->input('limit');
+        }
+
+        //$empsql=$sql->orderBy('employment.application_date', 'desc')->paginate(20);
+        $clients=$sql->orderBy('client.created_at', 'desc')->paginate($this->limit);
+
+        return view('admin.dashboard.totalsales',['clients'=>$clients]);
+    }
+
+    public function totalrecruiter(Request $request)
+    {
+        $sql=Employment::select('employment.*')->Join('emp_comments','emp_comments.emp_id','=','employment.id');
+
+        if($request->input('email')){
+            $sql->where('employment.email','LIKE','%'.$request->input('email').'%');
+        }
+
+        if($request->input('position')){
+            $sql->where('employment.position','LIKE','%'.$request->input('position').'%');
+         }
+
+         if($request->input('radius')){
+
+           if($request->input('city')){
+              $this->address.=','.$request->input('city');
+           }
+
+           if($request->input('state')){
+              $this->address.=','.$request->input('state');
+           }
+
+          if(!empty($this->address)){
+            
+            $this->address=ltrim($this->address,',');
+            $getinfo=$this->getlatlon($this->address);
+            
+            $latlong=Employment::where('city',$request->input('city'))->where('state',$request->input('state'))->first();
+            $lat=$latlong->latitude;
+            $lon=$latlong->longitude;
+
+            $sql->addselect(DB::raw("round((3959*acos(cos(radians($lat))*cos(radians(`employment`.`latitude`))*cos(radians( `employment`.`longitude`)-radians($lon))+sin(radians($lat))*sin(radians(`employment`.`latitude`))))) AS `distance`"));
+            $sql->where(DB::raw("round((3959*acos(cos(radians($lat))*cos(radians(`employment`.`latitude`))*cos(radians( `employment`.`longitude`)-radians($lon))+sin(radians($lat))*sin(radians(`employment`.`latitude`)))))"),'<=',$request->input('radius'));
+
+          }
+
+         } else {
+
+          if($request->input('city')){
+              $sql->where('employment.city','LIKE','%'.$request->input('city').'%');
+           }
+
+           if($request->input('state')){
+              $sql->where('employment.state','LIKE','%'.$request->input('state').'%');
+           }
+
+         }
+
+        if($request->input('from_date')){
+          $sql->where('employment.application_date','>=',$request->input('from_date'));
+        }
+         
+
+        if($request->input('to_date')){
+          $sql->where('employment.application_date','<=',$request->input('to_date'));
+        }
+
+         
+        if($request->input('limit')){
+            $this->limit=$request->input('limit');
+        }
+
+        //$empsql=$sql->orderBy('employment.application_date', 'desc')->paginate(20);
+        $employments=$sql->orderBy('employment.application_date', 'desc')->paginate($this->limit);
+
+        return view('admin.dashboard.totalrecruiter',['employments'=>$employments]);
+    }
+
 
 
 	// users list function
@@ -50,7 +346,7 @@ class AdminController extends Controller
     public function users()
     {
     	$users=User::all();
-
+      
     	return view('admin.users',compact(['users']));
     }
 
@@ -126,6 +422,7 @@ class AdminController extends Controller
     	$this->uservalidator($request->all())->validate();
 
     	event(new Registered($user = $this->usersave($request->all())));
+      
 
     	//Auth::login($user);
     	flash($user->name .' has been created successfully.')->success();
@@ -138,7 +435,7 @@ class AdminController extends Controller
 
     protected function usersave(array $data)
     {
-        return User::create([
+        $user=User::create([
             'name'     => $data['name'],
             'email'    => $data['email'],
             'password' => bcrypt($data['password']),
@@ -146,6 +443,11 @@ class AdminController extends Controller
             'status' => $data['status'],
             'phone' => $data['phone'],
         ]);
+
+        $role=Role::find($data['is_admin']);
+        $user->attachRole($role);
+
+        return $user;
     }
 
 

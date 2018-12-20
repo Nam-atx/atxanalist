@@ -1,6 +1,6 @@
 <!--Header-part-->
 <div id="header">
-  <h1><a href="{{route('admin.dashboard')}}">Matrix Admin</a></h1>
+  <h1   style="height: 51px;width: 191px;background-color: #fff;"><a href="{{route('admin.dashboard')}}" >Atx Learning</a></h1>
 </div>
 <!--close-Header-part--> 
 

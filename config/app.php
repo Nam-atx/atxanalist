@@ -167,7 +167,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         Laracasts\Flash\FlashServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
-
+        Zizaco\Entrust\EntrustServiceProvider::class,
     ],
 
     /*
@@ -220,6 +220,7 @@ return [
         //'Geocoder' => Toin0u\Geocoder\Facade\Geocoder::class,
         'Geocode' => Jcf\Geocode\Facades\Geocode::class,
         'Geocoder' => Spatie\Geocoder\Facades\Geocoder::class,
+        'Entrust'   => Zizaco\Entrust\EntrustFacade::class,
 
     ],
 
