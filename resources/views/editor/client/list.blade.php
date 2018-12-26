@@ -3,45 +3,35 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-      @if (session('message'))
-              <div class="alert alert-success">
-                  {{ session('message') }}
-              </div>
-          @endif 
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header">List of Candidates</div>
+                <div class="card-header">Client List</div>
                 <div class="card-body1">
                   
-                  <form class="form-inline" action="{{route('editor.emp.list')}}">
-                    
+                  <form class="form-inline" action="{{route('editor.client.list')}}">
                     <div class="form-group">
-                      <input class="form-control" type="text" name="position" placeholder="Profile" value="{{ app('request')->input('position') }}">
+                      <input class="form-control" type="text" name="name" placeholder="Name" value="{{ app('request')->input('name') }}"></div>
+
+                      <div class="form-group">
+                        <input class="form-control" type="text" name="email" placeholder="Email" value="{{ app('request')->input('email') }}">
+                      </div>
+                      
+                      <div class="form-group">
+                      <input class="form-control" type="text" name="designation" placeholder="Designation" value="{{ app('request')->input('designation') }}">
                     </div>
+                    
                     <div class="form-group">
                       <input type="text" class="form-control" name="city" placeholder="City"  value="{{ app('request')->input('city') }}">
                     </div> 
-
+                      
                     <div class="form-group"> 
                       <input class="form-control" type="text" name="state" placeholder="State"  value="{{ app('request')->input('state') }}">
                     </div> 
 
                     <div class="form-group"> 
                       <input type="text" class="form-control" name="radius" placeholder="Radius" value="{{ app('request')->input('radius') }}">
-                     
                     </div>
                     
-                    <div class="form-group">
-                      <input class="form-control" type="text" name="email" placeholder="Email" value="{{ app('request')->input('email') }}">
-                    </div>
-
-                    <div class="form-group">
-                      <input class="form-control" type="date" name="from_date" placeholder="From Date" value="{{ app('request')->input('from_date') }}">
-                    </div> 
-                    <div class="form-group">
-                      <input class="form-control" type="date" name="to_date" placeholder="To Date" value="{{ app('request')->input('to_date') }}">
-                    </div> 
-
                     <div class="form-group">
                       <select class="form-control" name="limit" placeholder="Limit">
                         <option value=""> select limit</option>
@@ -52,59 +42,43 @@
                         
                       </select>
                     </div> 
-                    
-                    <div class="form-group"> 
-                      <button class="btn btn-primary" type="submit">Filter</button>
-                    </div>
+
+                    <div class="form-group"> <button class="btn btn-primary" type="submit">Filter</button></div>
                   </form>
-                  <form action="{{route('user.employment.recentresume')}}" class="form-inline reset"><button class="btn btn-primary" type="submit">Reset</button>
+                  <form action="{{route('sales.dashboard.latestclient')}}" class="form-inline reset"><button class="btn btn-primary" type="submit">Reset</button>
                   </form>
                 
                     <table class="table">
                       <thead class="thead-light">
                         <tr>
-                          <th scope="col">Application Date</th>
-                          <th scope="col">Title</th>
-                          <th scope="col">First Name</th>
-                          <th scope="col">Last Name</th>
+                          <th scope="col">School/District</th>
+                          <th scope="col">Contact</th>
+                          <th scope="col">Designation</th>
+                          <th scope="col">Phone</th>
                           <th scope="col">Email</th>
-                          <th scope="col">Profile</th>
                           <th scope="col">City</th>
                           <th scope="col">State</th>
-                          <th scope="col">Zip-Code</th>
-                          <th scope="col">DND</th>
-                          
+                          <th scope="col">Zip Code</th>
+                          <th scope="col">Action</th>
                         </tr>
                       </thead>
                       <tbody>
-                        @if(!$employments->isEmpty())
-                        @foreach( $employments as $employment)
+                        @foreach( $clients as $client)
                         <tr>
-                            <td><a href="{{route('editor.emp.edit',$employment->id)}}?position={{app('request')->input('position')}}&city={{app('request')->input('city')}}&state={{app('request')->input('state')}}&radius={{app('request')->input('radius')}}&email={{app('request')->input('email')}}&from_date={{app('request')->input('from_date')}}&to_date={{app('request')->input('to_date')}}">{{ \Carbon\Carbon::parse($employment->application_date)->format('F d, Y') }}</a></td>
-                            <td>{{$employment->title}}</td>
-                            <td>{{$employment->first_name}}</td>
-                            <td>{{$employment->last_name}}</td>
-                            <td>{{preg_match('/@atxlearning.com/i', $employment->email)?'':$employment->email}}</td>
-                            <td>{{strtoupper($employment->position)}}</td>
-                            <td>{{$employment->city}}</td>
-                            <td>{{strtoupper($employment->state)}}</td>
-                            <td>{{$employment->zipcode}}</td>
-                            
-                            <td>{{ $employment->dnd == 1 ? "DND" : "NO DND" }}</td>
-                            
+                            <td>{{$client->name}}</td>
+                            <td>{{ucwords(strtolower($client->contact))}}</td>
+                            <td>{{$client->designation}}</td>
+                            <td>{{$client->phone}}</td>
+                            <td>{{$client->email}}</td>
+                            <td>{{ucwords(strtolower($client->city))}}</td>
+                            <td>{{strtoupper($client->state)}}</td>
+                            <td>{{$client->zipcode}}</td>
+                            <td><a href="{{route('editor.client.edit',$client->id)}}"><i class="far fa-eye"></i></a></td>
                         </tr>
                         @endforeach
-
-                        @else
-                          <tr>
-                            <td colspan="8">No record found</td>
-                          </tr>
-                        @endif
-
                     </tbody>
                     </table>
-                    {{$employments->links()}}
-
+                    {{$clients->links()}}
                 </div>
             </div>
         </div>

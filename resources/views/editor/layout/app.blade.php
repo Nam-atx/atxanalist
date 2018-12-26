@@ -71,7 +71,7 @@
       <div class="navbar-inner">
         <div class="container">
           <div class="logo">
-            <a href="{{ route('main') }}"><img style="height: 40px;width: 160px;background: #fff;" src="{{ asset('css/frontend/img/logo.png')}}" alt="" /></a>
+            <a href="{{ route('editor.dashboard.index') }}"><img style="height: 40px;width: 160px;background: #fff;" src="{{ asset('css/frontend/img/logo.png')}}" alt="" /></a>
           </div>
           <div class="navigation">
             <nav>

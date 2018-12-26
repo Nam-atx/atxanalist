@@ -174,7 +174,7 @@ Route::get('/admin/geolocal','EmploymentController@geolocal');
 
 
 Route::group(['middleware'=>['auth','editor']],function(){
-
+    Route::get('/editor/dashboard','Editor\DashboardController@index')->name('editor.dashboard.index');
     Route::get('/editor/emp/list','Editor\EmploymentController@list')->name('editor.emp.list');
     Route::get('/editor/emp/{emp}/show','Editor\EmploymentController@show')->name('editor.emp.show');
     Route::get('/editor/emp/{emp}/edit','Editor\EmploymentController@edit')->name('editor.emp.edit');
