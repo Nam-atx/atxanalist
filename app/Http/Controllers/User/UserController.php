@@ -9,11 +9,14 @@ use App\Employment;
 use App\empComments;
 use App\Systemlog;
 use App\User;
+use App\Client;
+use App\clientComment;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Mail\sendEmail;
 use Illuminate\Support\Facades\Mail;
 use App\Traits\latlon;
+use App\Template;
 use Carbon\Carbon;
 class UserController extends Controller
 {
@@ -141,6 +144,208 @@ class UserController extends Controller
 
     
 
+    public function atxemployees(Request $request)
+    {  
+        //
+        $string='';
+
+        $user=Auth::user();
+
+        $sql=DB::table('employment')->select('employment.*')->where('employment.atxemployee','=',1);
+
+        if($request->input('email')){
+            $sql->where('email','LIKE','%'.$request->input('email').'%');
+            $string.=',email='.$request->input('email');
+        }
+
+        if($request->input('position')){
+            $sql->where('position','LIKE','%'.$request->input('position').'%');
+            $string.=',postion='.$request->input('position');
+        }
+        
+
+
+        if($request->input('radius')){
+
+           if($request->input('city')){
+              $this->address.=','.$request->input('city');
+              $string.=',city='.$request->input('city');
+           }
+
+           if($request->input('state')){
+              $this->address.=','.$request->input('state');
+              $string.=',state='.$request->input('state');
+           }
+
+          if(!empty($this->address)){
+            
+            $this->address=ltrim($this->address,',');
+            $getinfo=$this->getlatlon($this->address);
+            
+            $latlong=Employment::where('city',$request->input('city'))->where('state',$request->input('state'))->first();
+            $lat=$latlong->latitude;
+            $lon=$latlong->longitude;
+
+            $sql->addselect(DB::raw("round((3959*acos(cos(radians($lat))*cos(radians(`employment`.`latitude`))*cos(radians( `employment`.`longitude`)-radians($lon))+sin(radians($lat))*sin(radians(`employment`.`latitude`))))) AS `distance`"));
+            $sql->where(DB::raw("round((3959*acos(cos(radians($lat))*cos(radians(`employment`.`latitude`))*cos(radians( `employment`.`longitude`)-radians($lon))+sin(radians($lat))*sin(radians(`employment`.`latitude`)))))"),'<=',$request->input('radius'));
+
+          }
+
+         } else {
+
+          if($request->input('city')){
+              $sql->where('employment.city','LIKE','%'.$request->input('city').'%');
+              
+               $string.=',city='.$request->input('city');
+              
+           }
+
+           if($request->input('state')){
+              $sql->where('employment.state','LIKE','%'.$request->input('state').'%');
+              $string.=',state='.$request->input('state');
+           }
+
+         }
+
+        if($string){
+            $data=['user_id'=>$user->id,'name'=>$user->name,'type'=>'search','comment'=>'search by '.$user->name. '=>'.$string,'ip_address'=>$request->ip()];
+            Systemlog::create($data);
+        }
+
+        if($request->input('from_date')){
+          $sql->where('employment.application_date','>=',$request->input('from_date'));
+        }
+         
+
+        if($request->input('to_date')){
+          $sql->where('employment.application_date','<=',$request->input('to_date'));
+        }
+
+        if($request->input('limit')){
+            $this->limit=$request->input('limit');
+        }
+
+        $empsql=$sql->orderBy('employment.application_date', 'desc')->paginate($this->limit);
+
+        $employments=$empsql->appends($request->query());
+        
+        //$employments=Employment::paginate(5);
+
+        $allrequest=array();
+        foreach($request->all() as $key=>$value)
+        {
+          $allrequest[$key]=urldecode($value);
+        }
+
+        $employments->appends($allrequest)->links();
+
+        return view('user.employment.atxemployees',['employments'=>$employments]);
+
+    }
+
+
+
+    public function atxavailables(Request $request)
+    {  
+        //
+        $string='';
+
+        $user=Auth::user();
+
+        $sql=DB::table('employment')->select('employment.*')->where('employment.atxavailable','=',1);
+
+        if($request->input('email')){
+            $sql->where('email','LIKE','%'.$request->input('email').'%');
+            $string.=',email='.$request->input('email');
+        }
+
+        if($request->input('position')){
+            $sql->where('position','LIKE','%'.$request->input('position').'%');
+            $string.=',postion='.$request->input('position');
+        }
+        
+
+
+        if($request->input('radius')){
+
+           if($request->input('city')){
+              $this->address.=','.$request->input('city');
+              $string.=',city='.$request->input('city');
+           }
+
+           if($request->input('state')){
+              $this->address.=','.$request->input('state');
+              $string.=',state='.$request->input('state');
+           }
+
+          if(!empty($this->address)){
+            
+            $this->address=ltrim($this->address,',');
+            $getinfo=$this->getlatlon($this->address);
+            
+            $latlong=Employment::where('city',$request->input('city'))->where('state',$request->input('state'))->first();
+            $lat=$latlong->latitude;
+            $lon=$latlong->longitude;
+
+            $sql->addselect(DB::raw("round((3959*acos(cos(radians($lat))*cos(radians(`employment`.`latitude`))*cos(radians( `employment`.`longitude`)-radians($lon))+sin(radians($lat))*sin(radians(`employment`.`latitude`))))) AS `distance`"));
+            $sql->where(DB::raw("round((3959*acos(cos(radians($lat))*cos(radians(`employment`.`latitude`))*cos(radians( `employment`.`longitude`)-radians($lon))+sin(radians($lat))*sin(radians(`employment`.`latitude`)))))"),'<=',$request->input('radius'));
+
+          }
+
+         } else {
+
+          if($request->input('city')){
+              $sql->where('employment.city','LIKE','%'.$request->input('city').'%');
+              
+               $string.=',city='.$request->input('city');
+              
+           }
+
+           if($request->input('state')){
+              $sql->where('employment.state','LIKE','%'.$request->input('state').'%');
+              $string.=',state='.$request->input('state');
+           }
+
+         }
+
+        if($string){
+            $data=['user_id'=>$user->id,'name'=>$user->name,'type'=>'search','comment'=>'search by '.$user->name. '=>'.$string,'ip_address'=>$request->ip()];
+            Systemlog::create($data);
+        }
+
+        if($request->input('from_date')){
+          $sql->where('employment.application_date','>=',$request->input('from_date'));
+        }
+         
+
+        if($request->input('to_date')){
+          $sql->where('employment.application_date','<=',$request->input('to_date'));
+        }
+
+        if($request->input('limit')){
+            $this->limit=$request->input('limit');
+        }
+
+        $empsql=$sql->orderBy('employment.application_date', 'desc')->paginate($this->limit);
+
+        $employments=$empsql->appends($request->query());
+        
+        //$employments=Employment::paginate(5);
+
+        $allrequest=array();
+        foreach($request->all() as $key=>$value)
+        {
+          $allrequest[$key]=urldecode($value);
+        }
+
+        $employments->appends($allrequest)->links();
+
+        return view('user.employment.atxavailables',['employments'=>$employments]);
+
+    }    
+
+
+
     public function dnd(Request $request){
 
         $mytime = \Carbon\Carbon::now();
@@ -170,6 +375,8 @@ class UserController extends Controller
 
     public function atxemployee(Request $request){
 
+            $user=Auth::user();
+
             $mytime = \Carbon\Carbon::now();
             
 
@@ -177,6 +384,7 @@ class UserController extends Controller
 
             $employment->atxemployee=1;
             $employment->atxemployee_date=$mytime->toDateTimeString();
+            $employment->atxemployee_user=$user->id;
 
             $employment->save();
 
@@ -185,13 +393,47 @@ class UserController extends Controller
 
       public function nonatxemployee(Request $request){
 
+             $user=Auth::user();    
              $employment=Employment::find($request->input('emp_id'));
 
              $employment->atxemployee=0;
              $employment->atxemployee_date=NULL;
+             $employment->atxemployee_user=0;
              $employment->save();
             
               return redirect()->route('emp.show',$request->input('emp_id'))->with('message','Employment has been updated successfully');
+         }
+
+
+         public function atxavailable(Request $request){
+
+            $user=Auth::user();
+
+            $mytime = \Carbon\Carbon::now();
+            
+
+            $employment=Employment::find($request->input('emp_id'));
+
+            $employment->atxavailable=1;
+            $employment->atxavailable_date=$mytime->toDateTimeString();
+            $employment->atxavailable_user=$user->id;
+
+            $employment->save();
+
+            return redirect()->route('emp.show',$request->input('emp_id'))->with('message','Lead has been updated successfully');
+        }
+
+      public function nonatxavailable(Request $request){
+
+             $user=Auth::user();    
+             $employment=Employment::find($request->input('emp_id'));
+
+             $employment->atxavailable=0;
+             $employment->atxavailable_date=NULL;
+             $employment->atxavailable_user=0;
+             $employment->save();
+            
+              return redirect()->route('emp.show',$request->input('emp_id'))->with('message','Lead has been updated successfully');
          }
 
     /**
@@ -225,11 +467,21 @@ class UserController extends Controller
     {
         //
         $sales=User::where('is_admin','=',3)->where('status','=',1)->get();
+
         
         $user=Auth::user();
         $employment=Employment::find($id);
 
-        $presql=Employment::where('id', '<', $id);
+        if($request->input('empstatus')=='available'){
+            $presql=Employment::where('employment.atxavailable','=',1)->where('id', '<', $id);
+        }
+        else if($request->input('empstatus')=='employee'){
+            $presql=Employment::where('employment.atxemployee','=',1)->where('id', '<', $id);
+        }
+        else{
+            $presql=Employment::where('id', '<', $id);
+        }    
+
         if($request->input('position')){
             $presql->where('position','LIKE','%'.$request->input('position').'%');
         }
@@ -268,8 +520,16 @@ class UserController extends Controller
 
         $previous = $presql->orderBy('employment.application_date', 'desc')->max('id');
 
+        if($request->input('empstatus')=='available'){
+            $nextsql=Employment::where('employment.atxavailable','=',1)->where('id', '>', $id);
+        } 
+        else if($request->input('empstatus')=='employee'){
+            $nextsql=Employment::where('employment.atxemployee','=',1)->where('id', '>', $id);
+        }
+        else{
+            $nextsql=Employment::where('id', '>', $id);
+        }    
 
-        $nextsql=Employment::where('id', '>', $id);
         if($request->input('position')){
             $nextsql->where('position','LIKE','%'.$request->input('position').'%');
         }
@@ -322,10 +582,12 @@ class UserController extends Controller
         Systemlog::create($data);
 
 
-        $templates=DB::table('template')->get();
+        $templates=DB::table('template')->where('user_id','=',$user->id)->get();
+
+        $latestTemplate = Template::where('user_id','=',$user->id)->orderBy('id', 'desc')->first();
 
 
-        return view('user.employment.show',['previous'=>$previous,'next'=>$next,'employement'=>$employment,'empcomments'=>$empcomments,'sales'=>$sales,'templates'=>$templates]);
+        return view('user.employment.show',['previous'=>$previous,'next'=>$next,'employement'=>$employment,'empcomments'=>$empcomments,'sales'=>$sales,'templates'=>$templates,'latestTemplate'=>$latestTemplate]);
 
     }
 
@@ -525,6 +787,7 @@ class UserController extends Controller
     public function employeeupdate(Request $request, $id){
 
         $employment=Employment::find($id);
+
         if($request->input('title')){
             $employment->title=$request->input('title');
         }
@@ -588,6 +851,9 @@ class UserController extends Controller
         if($request->input('resume')){
             $employment->resume=$request->input('resume');
         }
+        if($request->input('source')){
+            $employment->source=$request->input('source');
+        }
 
         $employment->save();
 
@@ -647,4 +913,121 @@ class UserController extends Controller
 
         return view('user.employment.loginhistory',['logs'=>$logs]);
     }
+
+
+
+    public function atxclients(Request $request)
+    {
+        $sql=Client::where('client.atxclient','=',1);
+                
+
+        if($request->input('name')){
+            $sql->where('client.name','LIKE','%'.$request->input('name').'%');
+        }
+        
+
+         if($request->input('radius')){
+
+           if($request->input('city')){
+              $this->address.=','.$request->input('city');
+           }
+
+           if($request->input('state')){
+              $this->address.=','.$request->input('state');
+           }
+
+          if(!empty($this->address)){
+            
+            $this->address=ltrim($this->address,',');
+            $getinfo=$this->getlatlon($this->address);
+            
+            $latlong=Client::where('city',$request->input('city'))->where('state',$request->input('state'))->first();
+            $lat=$latlong->latitude;
+            $lon=$latlong->longitude;
+
+            $sql->addselect(DB::raw("round((3959*acos(cos(radians($lat))*cos(radians(`client`.`latitude`))*cos(radians( `client`.`longitude`)-radians($lon))+sin(radians($lat))*sin(radians(`client`.`latitude`))))) AS `distance`"));
+            $sql->where(DB::raw("round((3959*acos(cos(radians($lat))*cos(radians(`client`.`latitude`))*cos(radians( `client`.`longitude`)-radians($lon))+sin(radians($lat))*sin(radians(`client`.`latitude`)))))"),'<=',$request->input('radius'));
+
+          }
+
+         } else {
+
+          if($request->input('city')){
+              $sql->where('client.city','LIKE','%'.$request->input('city').'%');
+           }
+
+           if($request->input('state')){
+              $sql->where('client.state','LIKE','%'.$request->input('state').'%');
+           }
+
+         }
+
+        if($request->input('limit')){
+            $this->limit=$request->input('limit');
+        }
+
+        $clients=$sql->paginate($this->limit);
+
+        return view('user.employment.atxclients',['clients'=>$clients]);
+    }
+
+
+    public function showclient($id,Request $request)
+    {
+        //
+        DB::enableQueryLog();
+        $sales=User::where('is_admin','=',3)->where('status','=',1)->get();
+ 
+        $presql=Client::where('client.atxclient','=',1)->where('id', '<', $id);
+        $previous = $presql->orderBy('client.created_at', 'desc')->max('id');
+
+        $nextsql=Client::where('client.atxclient','=',1)->where('id', '>', $id);
+        $next = $nextsql->orderBy('client.created_at', 'desc')->min('id');
+         
+
+        $user=Auth::user();
+        $client=Client::find($id);
+//dd(DB::getQueryLog()); exit;
+        $clientcomments = DB::table('users')
+            ->join('client_comment', 'client_comment.user_id', '=', 'users.id')
+            ->select('users.id','users.name','client_comment.comment',DB::raw('DATE_FORMAT(client_comment.created_at, "%d %b %Y %r") as created_at'))->where('client_comment.client_id','=',$id)->get();
+
+// echo '<pre>';print_r($empcomments);die();
+        
+        $data=['user_id'=>$user->id,'name'=>$user->name,'type'=>'view','comment'=>'sales viewed by '.$user->name,'ip_address'=>$request->ip()];
+
+        Systemlog::create($data);
+
+
+        //$templates=DB::table('template')->where('user_id','=',$user->id)->get();
+        
+        //$latestTemplate = Template::where('user_id','=',$user->id)->orderBy('id', 'desc')->first();
+        //dd(DB::getQueryLog()); exit;
+        return view('user.employment.showclient',['client'=>$client,'clientcomments'=>$clientcomments,'sales'=>$sales,'previous'=>$previous,'next'=>$next]);
+
+    }
+
+
+    public function saveClientComment(Request $request, $id){ 
+
+        $user=Auth::user(); 
+
+        //echo '<pre>';print_r($request->all()); die;
+        $data=['user_id'=>$user->id,'client_id'=>$id,'comment'=>$request->input('comment'),'status'=>$request->input('status'),'type'=>$request->input('type')];
+
+        clientComment::create($data);
+
+        $client=Client::find($id);
+        $client->followup_date=$request->input('followup_date');
+        $client->followup_user=$user->id;
+        $client->save();
+
+        //$results=empComments::where('emp_id',$id)->get();
+
+        $results = DB::table('users')->join('client_comment', 'users.id', '=', 'client_comment.user_id')->where('client_comment.client_id',$id)->select('users.name', 'client_comment.client_id', 'client_comment.comment', DB::raw('DATE_FORMAT(client_comment.created_at, "%d %b %Y %r") as created_at'))->where('client_comment.status','=','1')->get();
+
+        return response()->json(['data' => $results,'status' => Response::HTTP_OK]); 
+    }
+
+
 }

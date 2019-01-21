@@ -81,6 +81,8 @@
                 @else
                 <li><a href="{{ route('sales.dashboard.index') }}">Home</i></a>
                 <li><a href="{{ route('sales.client.index') }}">Schools</i></a>
+                <li><a href="{{ route('sales.client.atxleads') }}">Leads</i></a>    
+                <li><a href="{{ route('sales.client.atxavailables') }}">Availables</i></a>    
                 <li><a href="{{ route('sales.client.atxclients') }}">Clients</i></a>
                 <li><a href="{{ route('sales.client.create') }}">Add Client</i></a>
                 <li  class="dropdown" ><a data-toggle="dropdown" data-target="#profile-messages" class="dropdown-toggle" href="#"><span class="text">{{ Auth::user()->name }}</span><b class="caret"></b></a>

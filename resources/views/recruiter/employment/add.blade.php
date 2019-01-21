@@ -5,7 +5,7 @@
 <div class="justify-content-center">
 	<div class="col-md-12">
 	    <div class="card">
-	        <div class="card-header">Employer List</div>
+	        <div class="card-header">Add Resume</div>
 	        <div class="card-body">
 	        	<form class="form-horizontal" method="post" action="{{route('recruiter.employment.store')}}" name="user_add_validate" id="user_add_validate">
               {{ csrf_field() }}
@@ -14,13 +14,7 @@
                 <div class="controls {{ $errors->has('title') ? ' is-invalid' : '' }}">
                   <input type="radio" name="title" id="required" value="Ms." {{ (old('title')=='Ms.')?'checked':'' }}> Ms. <input type="radio" name="title" id="required" value="Mrs." {{ (old('title')=='Mrs.')?'checked':'' }}> Mrs.
                   <br>
-                  <input type="radio" name="title" id="required" value="Mr." {{ (old('title')=='Mr.')?'checked':'' }}> Mr. <input type="radio" name="title" id="required" value="Dr." {{ (old('title')=='Dr.')?'checked':'' }}> Dr.
-
-                  @if ($errors->has('title'))
-                      <span class="help-block">
-                          <strong>{{ $errors->first('title') }}</strong>
-                      </span>
-                  @endif
+                  <input type="radio" name="title" id="required" value="Mr." {{ (old('title')=='Mr.')?'checked':'' }}> Mr. <input type="radio" name="title" id="required" value="Dr." {{ (old('title')=='Dr.')?'checked':'' }}> Dr.                  
                 </div>
               </div>
               
@@ -67,11 +61,7 @@
               <label class="control-label">Phone</label>
                 <div class="controls {{ $errors->has('phone') ? ' is-invalid' : '' }}">
                   <input type="text" name="phone" id="required" value="{{ old('phone') }}" >
-                  @if ($errors->has('phone'))
-                      <span class="help-block">
-                          <strong>{{ $errors->first('phone') }}</strong>
-                      </span>
-                  @endif
+                  
                 </div>
               </div>
 
@@ -92,11 +82,7 @@
               <label class="control-label">Best Time To Call</label>
                 <div class="controls {{ $errors->has('best_time_to_call') ? ' is-invalid' : '' }}">
                   <input type="text" name="best_time_to_call" id="required" value="{{ old('best_time_to_call') }}">
-                  @if ($errors->has('best_time_to_call'))
-                      <span class="help-block">
-                          <strong>{{ $errors->first('best_time_to_call') }}</strong>
-                      </span>
-                  @endif
+                  
                 </div>
               </div>
 
@@ -104,11 +90,7 @@
               <label class="control-label">Street1</label>
                 <div class="controls {{ $errors->has('street1') ? ' is-invalid' : '' }}">
                   <input type="text" name="street1" id="required" value="{{ old('street1') }}" >
-                  @if ($errors->has('street1'))
-                      <span class="help-block">
-                          <strong>{{ $errors->first('street1') }}</strong>
-                      </span>
-                  @endif
+                  
                 </div>
               </div>
 
@@ -192,11 +174,7 @@
                   <input type="checkbox" name="days_available[]" id="required" value="Friday"  {{ (is_array(old('days_available')) && in_array('Friday',(old('days_available'))))?'checked':'' }}> Friday
                   <input type="checkbox" name="days_available[]" id="required" value="Any"  {{ (is_array(old('days_available')) && in_array('Any',(old('days_available'))))?'checked':'' }}> Any
 
-                  @if ($errors->has('days_available'))
-                      <span class="help-block">
-                          <strong>{{ $errors->first('days_available') }}</strong>
-                      </span>
-                  @endif
+                  
                 </div>
               </div>
 
@@ -216,14 +194,8 @@
                   <br/>
                   <input type="radio" name="need_call" id="required" value="No" {{ (old('need_call')=='No')?'checked':'' }}>No
                   <br/>
-                  <input type="radio" name="need_call" id="required" value="other" {{ (old('need_call')=='other')?'checked':'' }}>Other
+                  <input type="radio" name="need_call" id="required" value="other" {{ (old('need_call')=='other')?'checked':'' }}>Other                
                   
-                  
-                  @if ($errors->has('need_call'))
-                      <span class="help-block">
-                          <strong>{{ $errors->first('need_call') }}</strong>
-                      </span>
-                  @endif
                 </div>
               </div>
 
@@ -231,13 +203,22 @@
               <label class="control-label">Resume</label>
                 <div class="controls {{ $errors->has('resume') ? ' is-invalid' : '' }}">
                   <input type="text" name="resume" id="required" value="{{ old('resume') }}" >
-                  @if ($errors->has('resume'))
+                  
+                </div>
+              </div>
+
+              <div class="control-group">
+              <label class="control-label">Source</label>
+                <div class="controls {{ $errors->has('source') ? ' is-invalid' : '' }}">
+                  <input type="text" name="source" id="required" value="{{ old('source') }}" >
+                  @if ($errors->has('source'))
                       <span class="help-block">
-                          <strong>{{ $errors->first('resume') }}</strong>
+                          <strong>{{ $errors->first('source') }}</strong>
                       </span>
                   @endif
                 </div>
-              </div>
+              </div>              
+
               <div class="form-actions">
                 <input type="submit" value="Save" class="btn btn-success">
               </div>

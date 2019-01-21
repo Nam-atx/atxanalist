@@ -60,6 +60,8 @@ return [
         'name' => env('MAIL_FROM_NAME', 'Example'),
     ],
 
+
+    //'reply_to' => ['address' => 'Zen.Ali@atxlearning.com', 'name' => 'ATX Learning'],
     /*
     |--------------------------------------------------------------------------
     | E-Mail Encryption Protocol

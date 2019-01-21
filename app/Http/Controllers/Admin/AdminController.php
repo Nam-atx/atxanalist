@@ -275,13 +275,13 @@ class AdminController extends Controller
     {
         $sql=Employment::select('employment.*')->Join('emp_comments','emp_comments.emp_id','=','employment.id');
 
-        if($request->input('email')){
-            $sql->where('employment.email','LIKE','%'.$request->input('email').'%');
-        }
+          if($request->input('email')){
+              $sql->where('employment.email','LIKE','%'.$request->input('email').'%');
+          }
 
-        if($request->input('position')){
-            $sql->where('employment.position','LIKE','%'.$request->input('position').'%');
-         }
+          if($request->input('position')){
+              $sql->where('employment.position','LIKE','%'.$request->input('position').'%');
+          }
 
          if($request->input('radius')){
 
@@ -305,7 +305,11 @@ class AdminController extends Controller
             $sql->addselect(DB::raw("round((3959*acos(cos(radians($lat))*cos(radians(`employment`.`latitude`))*cos(radians( `employment`.`longitude`)-radians($lon))+sin(radians($lat))*sin(radians(`employment`.`latitude`))))) AS `distance`"));
             $sql->where(DB::raw("round((3959*acos(cos(radians($lat))*cos(radians(`employment`.`latitude`))*cos(radians( `employment`.`longitude`)-radians($lon))+sin(radians($lat))*sin(radians(`employment`.`latitude`)))))"),'<=',$request->input('radius'));
 
-          }
+
+
+          } 
+
+
 
          } else {
 
@@ -346,7 +350,7 @@ class AdminController extends Controller
     public function users()
     {
     	$users=User::all();
-      
+      //echo "<pre>"; var_dump(compact(['users'])); exit;
     	return view('admin.users',compact(['users']));
     }
 

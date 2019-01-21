@@ -40,8 +40,8 @@ class LogController extends Controller
           
         }
         if ($request->input('sort')){
-            if($request->input('orderby')){
-                $sql->orderby($request->input('sort'),$request->input('orderby'));
+            if($request->input('order')){
+                $sql->orderby($request->input('sort'),$request->input('order'));
             }
             else {
                 $sql->orderby($request->input('sort'),'asc');
@@ -51,7 +51,7 @@ class LogController extends Controller
         }
       // echo '<pre>';
        // print_r($request->all());
-        $logs=$sql->paginate(10)->appends(request()->query());;
+        $logs=$sql->paginate(10)->appends(request()->query());
 
         return view('admin.log.list',['logs'=>$logs]);
     }

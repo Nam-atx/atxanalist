@@ -3,14 +3,14 @@
 @section('content')
 
  <ul class="pager">
-    <li class="previous"><a href="{{$previous}}">< Previous</a></li>
-    <li class="next"><a href="{{$next}}">Next ></a></li>
+    <li class="previous"><a href="{{$previous}}?schstatus={{app('request')->input('schstatus')}}">< Previous</a></li>
+    <li class="next"><a href="{{$next}}?schstatus={{app('request')->input('schstatus')}}">Next ></a></li>
   </ul>
     <div class="row justify-content-center">
             <div class="card">
                 <div class="card-header col-md-12">
-                  <span class="col-md-4 candidate-detail-head">Client detail</span>
-                  <div class="col-md-3">
+                  <span class="col-md-4 candidate-detail-head">Client details</span>
+                  <div class="col-md-2">
                       @if($client['atxclient']==0)
                        <form id="atxclient" class="atxclient-form" action="{{route('sales.client.atxclient')}}"  method="POST">
                         {{ csrf_field() }}
@@ -28,12 +28,34 @@
 
                        @endif
                   </div>
+  
+                  <!-- Start added by basheer -->
+                  <div class="col-md-2">
+                      @if($client['atxlead']==0)
+                       <form id="atxlead" class="atxclient-form" action="{{route('sales.client.atxlead')}}"  method="POST">
+                        {{ csrf_field() }}
+                        <input type="hidden" name="client_id" value="{{$client['id']}}">
+                        <button type="submit" name="submit" id="atxlead-submit" >Lead</button>
+                       </form>
+                       @else
+
+                       <form id="nonatxlead" class="atxclient-form" action="{{route('sales.client.nonatxlead')}}"  method="POST">
+                        {{ csrf_field() }}
+                        <input type="hidden" name="client_id" value="{{$client['id']}}">
+                        <span>{{ \Carbon\Carbon::parse($client['atxlead_date'])->format('F d, Y') }}</span>
+                        <button type="submit" name="submit" style="color: white;background: green;border-radius: 20px;" id="nonaatxlead-submit">Remove Lead</button>
+                       </form>
+
+                       @endif
+                  </div>
+                  <!-- End -->
+
                   <div class="col-md-2">
                     @if(empty($client['update_required']))
                       <input name="update_required" type="checkbox" id="update-required" data-action="{{route('sales.client.updaterequired',$client['id'])}}"> Update Required
                     @endif
                   </div>
-                  <div class="col-md-3">
+                  <div class="col-md-2">
                       @if($client['dnd']==0)
                        
                        <form id="dnd-form" class="dnd-form" action="{{route('sales.client.dnd')}}"  method="POST">
@@ -335,12 +357,18 @@
                               {{ session('message') }}
                           </div>
                       @endif
+
+                      @if (session('error'))
+                          <div class="alert alert-danger">
+                              {{ session('error') }}
+                          </div>
+                      @endif
                       <form class="form-inline form-send" enctype="multipart/form-data" action="{{route('salestoclient.mail')}}" method="POST">
                          
                          {{ csrf_field() }}
 
-                         <input type="hidden" name="to" value="{{$client['email']}}">
-                         <input type="hidden" name="from" value="{{ Auth::user()->email }}">
+                         <!--<input type="hidden" name="to" value="{{$client['email']}}">-->
+                         <input type="hidden" name="reply_to" value="{{ Auth::user()->email }}">
                          <input type="hidden" name="client_id" value="{{$client['id']}}">
                          <input type="hidden" id="user-id" name="user_id" value="{{ Auth::user()->id }}">
 
@@ -358,12 +386,24 @@
                           <label>Client Name</label>
                           <input type="text" name="name" value="{{$client['name']}}"  required>
                         </div>
+                            
 
+                        <div class="form-group">
+                          <label for="title">Client Email:</label>
+                          <select name="to" class="form-control template" id="toemail" required>
+                          <option value="">Select Email</option>
+                          
+                             <option value="{{$client['email']}}">{{$client['email']}}</option>
+                             <option value="{{$client['email_1']}}">{{$client['email_1']}}</option>
+                             <option value="{{$client['email_2']}}">{{$client['email_2']}}</option>
+                          
+                          </select>
+                        </div>    
 
                         <div class="form-group">
                           <label>Template Name</label>
-                          <input id="template-name" type="text" name="template_name" value="{{old('template_name')}}" {{old('template_save')?'required':''}}>
-                          @if ($errors->has('template_name'))
+                          <input id="template-name" type="text" name="template_name" value="{{ isset($latestTemplate['template_name']) ? $latestTemplate['template_name'] : old('template_name') }}" {{old('template_save') ? required : ''}} required >
+                          @if($errors->has('template_name'))
                             <span class="help-block">
                                 <strong>{{ $errors->first('template_name') }}</strong>
                             </span>
@@ -375,16 +415,26 @@
                           <label for="title">Select Template:</label>
                           <select name="template" class="form-control template" id="template">
                           <option value="">Select Template</option>
-                           @foreach ($templates as $key => $value)
-                             <option value="{{ $value->template_name }}" {{(old('template')==$value->template_name)?'selected':''}}>{{ $value->template_name }}</option>
+                           @foreach($templates as $key => $value)
+                             <option value="{{ $value->template_name }}" {{($latestTemplate['template_name']==$value->template_name)?'selected':''}} {{(old('template')==$value->template_name)?'selected':''}}>{{ $value->template_name }}</option>
                            @endforeach
                           </select>
                         </div>
 
+                         <div class="form-group">
+                          <label>Subject</label>
+                          <input type="text" name="mail_subject" value="{{old('mail_subject')}}"  required>
+                          @if ($errors->has('mail_subject'))
+                            <span class="help-block">
+                                <strong>{{ $errors->first('mail_subject') }}</strong>
+                            </span>
+                          @endif
+                        </div>   
 
                         <div class="form-group">
                           <label>Message</label>
-                          <textarea rows="4" cols="50" class="summernote" name="message" id="message"  required>{{old('message')}}</textarea>
+                          <textarea rows="4" cols="50" name="message" id="message" class="summernote" required >{{ isset($latestTemplate['message']) ? $latestTemplate['message'] : old('message') }}</textarea>
+                          <div class="help-block alert-danger"></div>
                         </div>
 
                         <div class="form-group">
@@ -421,6 +471,9 @@
     // $(".status").click(function(){
     //   $(this).attr('checked');
     // });
+
+
+    
 
 
     $('#atxclient-submit').click(function(e){
@@ -501,6 +554,12 @@
         $('#template-name').attr('required',false);
       }
     });
+
+    $('#salestoclientemail').click(function(){
+        if($('.summernote').summernote('isEmpty')) {
+            $('.help-block').html('Message field should not be empty.');                
+        }          
+    });
     
     $( "#template" ).change(function() {
         $.ajax({
@@ -508,9 +567,17 @@
           url: $('#gettemplate').val(),
           data:'user_id='+$('#user-id').val()+'&template_name='+$('#template').val(),
           headers: { 'X-CSRF-Token' : $('meta[name="csrf-token"]').attr('content') },
-          success: function(data){
-            $('.summernote').text(data.message);
-            $('.note-editable').text(data.message);
+          success: function(data){  
+            if(data.message){ 
+                $('.summernote').text(data.message);
+                $('.note-editable').text(data.message);
+                $('#template-name').val(data.template_name);
+            }
+            else{ 
+                $('.summernote').text('');
+                $('.note-editable').text('');
+                $('#template-name').val('');
+            }    
           }
           });
       });

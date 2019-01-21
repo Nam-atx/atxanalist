@@ -109,6 +109,11 @@ Route::group(['middleware'=>['auth','user']],function(){
 
   Route::post('/atxemployee','User\UserController@atxemployee')->name('emp.atxemployee');
   Route::post('/nonatxemployee','User\UserController@nonatxemployee')->name('emp.nonatxemployee');
+  Route::get('/atxemployees','User\UserController@atxemployees')->name('emp.atxemployees');
+
+  Route::post('/atxavailable','User\UserController@atxavailable')->name('emp.atxavailable');
+  Route::post('/nonatxavailable','User\UserController@nonatxavailable')->name('emp.nonatxavailable');
+  Route::get('/atxavailables','User\UserController@atxavailables')->name('emp.atxavailables');
 
   Route::get('/todayfollowup','User\UserController@todayfollowup')->name('emp.todayfollowup');
   Route::get('/futurefollowup','User\UserController@futurefollowup')->name('emp.futurefollowup');
@@ -116,6 +121,10 @@ Route::group(['middleware'=>['auth','user']],function(){
 
   Route::post('/employeeupdate/{emp}','User\UserController@employeeupdate')->name('emp.employeeupdate');
   Route::post('/updaterequired/{emp}','User\UserController@updaterequired')->name('emp.updaterequired');
+
+  Route::get('/atxclients', 'User\UserController@atxclients')->name('emp.atxclients');
+  Route::get('/emp/client/{client}', 'User\UserController@showclient')->name('emp.showclient');
+  Route::post('/emp/client/{client}/comment','User\UserController@saveClientComment')->name('emp.client.comment');
 
   //resume routes for recruiter
 
@@ -151,8 +160,10 @@ Route::group(['middleware'=>['auth','sales']],function(){
   Route::post('/sales/dnd','Sales\ClientController@dnd')->name('sales.client.dnd');
   Route::post('/sales/nondnd','Sales\ClientController@nondnd')->name('sales.client.nondnd');
 
-  Route::post('/sales/atxclient','Sales\ClientController@atxclient')->name('sales.client.atxclient');
+  Route::post('/sales/atxclient','Sales\ClientController@atxclient')->name('sales.client.atxclient');  
   Route::post('/sales/nonatxclient','Sales\ClientController@nonatxclient')->name('sales.client.nonatxclient');
+  Route::post('/sales/atxlead','Sales\ClientController@atxlead')->name('sales.client.atxlead');
+  Route::post('/sales/nonatxlead','Sales\ClientController@nonatxlead')->name('sales.client.nonatxlead');
   Route::post('/sales/updaterequired/{client}','Sales\ClientController@updaterequired')->name('sales.client.updaterequired');
   Route::post('/sales/clientupdate/{client}','Sales\ClientController@clientupdate')->name('sales.client.clientupdate');
 
@@ -161,6 +172,13 @@ Route::group(['middleware'=>['auth','sales']],function(){
 
   Route::get('/sales/atxclients', 'Sales\ClientController@atxclients')->name('sales.client.atxclients');
   Route::get('/sales/myatxclients', 'Sales\ClientController@myatxclients')->name('sales.client.myatxclients');
+
+  Route::get('/sales/atxleads', 'Sales\ClientController@atxleads')->name('sales.client.atxleads');
+
+  Route::get('/sales/atxavailables', 'Sales\ClientController@atxavailables')->name('sales.client.atxavailables');
+  Route::get('/sales/emp/{emp}', 'Sales\ClientController@showavailable')->name('sales.client.showavailable');
+  Route::post('/sales/emp/{emp}/comment','Sales\ClientController@saveEmpComment')->name('client.emp.comment');
+
 
 });
 // Sales section routes end

@@ -29,7 +29,7 @@ class FakeFile extends OrigFile
     }
 
     public function getRealpath()
-    {
+    { 
         return $this->realpath;
     }
 

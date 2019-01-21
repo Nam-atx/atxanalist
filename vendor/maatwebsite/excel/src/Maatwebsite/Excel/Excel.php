@@ -102,7 +102,7 @@ class Excel {
      * @return LaravelExcelReader
      */
     public function load($file, $callback = null, $encoding = null, $noBasePath = false, $callbackConfigReader = null)
-    {
+    { 
         // Reader instance
         $reader = clone $this->reader;
 

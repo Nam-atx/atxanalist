@@ -1,14 +1,14 @@
-@extends('layouts.app')
+@extends('sales.layouts.app')
 
 @section('content')
 
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header">List of Candidates</div>
+                <div class="card-header">List of Availables</div>
                 <div class="card-body1">
                   
-                  <form class="form-inline" action="{{route('home')}}">
+                  <form class="form-inline" action="{{route('sales.client.atxavailables')}}">
 
                    
 
@@ -55,7 +55,7 @@
                   </div>
 
                   </form>
-                  <form action="{{route('home')}}" class="form-inline reset"><button class="btn btn-primary" type="submit">Reset</button>
+                  <form action="{{route('sales.client.atxavailables')}}" class="form-inline reset"><button class="btn btn-primary" type="submit">Reset</button>
                   </form>
                 
                     <table class="table">
@@ -80,15 +80,16 @@
                        <tr>
                           <td>{{ \Carbon\Carbon::parse($employment->application_date)->format('F d, Y') }}</td>
                             <td>{{$employment->title}}</td>
-                            <td><a href="{{route('emp.show',$employment->id)}}?position={{app('request')->input('position')}}&city={{app('request')->input('city')}}&state={{app('request')->input('state')}}&radius={{app('request')->input('radius')}}&email={{app('request')->input('email')}}&from_date={{app('request')->input('from_date')}}&to_date={{app('request')->input('to_date')}}">{{$employment->first_name}}</a></td>
+                            <td><a href="{{route('sales.client.showavailable',$employment->id)}}?position={{app('request')->input('position')}}&city={{app('request')->input('city')}}&state={{app('request')->input('state')}}&radius={{app('request')->input('radius')}}&email={{app('request')->input('email')}}&from_date={{app('request')->input('from_date')}}&to_date={{app('request')->input('to_date')}}">{{$employment->first_name}}</a></td>
                             <td>{{$employment->last_name}}</td>
                             <td>{{preg_match('/@atxlearning.com/i', $employment->email)?'':$employment->email}}</td>
                             <td>{{strtoupper($employment->position)}}</td>
                             <td>{{$employment->city}}</td>
                             <td>{{strtoupper($employment->state)}}</td>
                             <td>{{$employment->zipcode}}</td>
-                            <td>{{ !empty($employment->source) ? $employment->source : '' }}</td>
-                            <td>{{$employment->dnd == 1 ? "DND" : "NO DND"}}</td>
+                            <td>{{!empty($employment->source) ? $employment->source : ''}}</td>
+
+                            <td>{{ $employment->dnd == 1 ? "DND" : "NO DND" }}</td>
                             
                         </tr>
                         @endforeach

@@ -22,6 +22,7 @@ use Jcf\Geocode\Geocode;
 use App\Traits\latlon;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 use Exception;
 
 class EmploymentController extends Controller
@@ -70,33 +71,30 @@ class EmploymentController extends Controller
             return redirect()->route('recruiter.employment.create')->withErrors($validator)->withInput();
          }
 
-        $data=['title'=>$request->input('title'),'first_name'=>$request->input('first_name'),'last_name'=>$request->input('last_name'),'email'=>$request->input('email'),'phone'=>$request->input('phone'),'cell_number'=>$request->input('cell_number'),'best_time_to_call'=>$request->input('best_time_to_call'),'street1'=>$request->input('street1'),'street2'=>$request->input('street2'),'city'=>$request->input('city'),'state'=>$request->input('state'),'zipcode'=>$request->input('zipcode'),'country'=>$request->input('country'),'position'=>$request->input('position'),'days_available'=>implode(' ',$request->input('days_available')),'license'=>$request->input('license'),'need_call'=>$request->input('need_call'),'resume'=>$request->input('resume'), 'longitude'=>$response['longitude'],'latitude'=>$response['latitude']];
+        $now = Carbon::now();
+        $application_date=$now->toDateString();
+
+        $data=['application_date'=>$application_date,'title'=>$request->input('title'),'first_name'=>$request->input('first_name'),'last_name'=>$request->input('last_name'),'email'=>$request->input('email'),'phone'=>$request->input('phone'),'cell_number'=>$request->input('cell_number'),'best_time_to_call'=>$request->input('best_time_to_call'),'street1'=>$request->input('street1'),'street2'=>$request->input('street2'),'city'=>$request->input('city'),'state'=>$request->input('state'),'zipcode'=>$request->input('zipcode'),'country'=>$request->input('country'),'position'=>$request->input('position'),'days_available'=>($request->input('days_available') ? implode(' ',$request->input('days_available')) : ''),'license'=>$request->input('license'),'need_call'=>$request->input('need_call'),'resume'=>$request->input('resume'),'source'=>$request->input('source'),'longitude'=>$response['longitude'],'latitude'=>$response['latitude']];
 
         $employment = Employment::create($data);
 
-        return redirect()->route('user.employment.latestresume')->with('message','Client has been created successfully');
+        return redirect()->route('user.employment.latestresume')->with('message','Resume has been created successfully');
     }
 
 
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'title' => 'required|string|max:255',
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:employment',
-            'phone' => 'required|string',
-            'cell_number' => 'required|string',
-            'best_time_to_call' => 'required|string',
-            'street1' => 'required|string',
+            'email' => 'required|string|email|max:255|unique:employment',            
+            'cell_number' => 'required|string',       
             'city' => 'required|string',
             'state' => 'required|string',
             'zipcode' => 'required|string',
             'country' => 'required|string',
-            'position' => 'required|string',
-            'days_available' => 'required|array',
-            'need_call' => 'required|string',
-            'resume' => 'required|string',
+            'position' => 'required|string',      
+            'source' => 'required|string'
         ]);
     }
 
@@ -191,7 +189,7 @@ class EmploymentController extends Controller
         $employment->latitude=$response['latitude'];
         $employment->save();
 
-        return redirect()->route('admin.emp.list')->with('message','Client has been updated successfully');
+        return redirect()->route('admin.emp.list')->with('message','Resume has been updated successfully');
     }
 
 

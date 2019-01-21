@@ -5,13 +5,13 @@
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header">Clients List</div>
+                <div class="card-header">Leads List</div>
                 <div class="card-body1">
                   
-                  <form class="form-inline" action="{{route('sales.client.atxclients')}}">
+                  <form class="form-inline" action="{{route('sales.client.atxleads')}}">
 
                   <div class="form-group">
-                    <input class="form-control" type="text" name="name" placeholder="Name" value="{{ app('request')->input('name') }}">
+                    <input class="form-control" type="text" name="name" placeholder="School Name" value="{{ app('request')->input('name') }}">
                   </div>
                   <div class="form-group">
                     <input class="form-control" type="text" name="email" placeholder="Email" value="{{ app('request')->input('email') }}">
@@ -49,7 +49,7 @@
                   </div>
 
                   </form>
-                  <form action="{{route('sales.client.myatxclients')}}" class="form-inline reset"><button class="btn btn-primary" type="submit">Reset</button>
+                  <form action="{{route('sales.client.atxleads')}}?schstatus=lead" class="form-inline reset"><button class="btn btn-primary" type="submit">Reset</button>
                   </form>
                 
                     <table class="table">
@@ -77,7 +77,7 @@
                             <td>{{ucwords(strtolower($client->city))}}</td>
                             <td>{{strtoupper($client->state)}}</td>
                             <td>{{$client->zipcode}}</td>
-                            <td><a href="{{route('sales.client.show',$client->id)}}?schstatus=client"><i class="far fa-eye"></i></a></td>
+                            <td><a href="{{route('sales.client.show',$client->id)}}?schstatus=lead"><i class="far fa-eye"></i></a></td>
                         </tr>
                         @endforeach
                     </tbody>

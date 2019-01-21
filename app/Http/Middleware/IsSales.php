@@ -15,7 +15,7 @@ class IsSales
      */
     public function handle($request, Closure $next)
     {
-
+        
         if (Auth::user() &&  Auth::user()->is_admin == 3) {
         
             return $next($request);

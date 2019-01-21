@@ -57,7 +57,9 @@ class EmploymentController extends Controller
 
             $validator=$this->templatevalidator($request->all());
             if ($validator->fails()) {
-                return redirect()->route('emp.show',$request->input('emp_id'))->withErrors($validator)->withInput();
+                //return redirect()->route('emp.show',$request->input('emp_id'))->withErrors($validator)->withInput();
+                return redirect()->route('emp.show',$request->input('emp_id'))->with('error', 'Template name already exists!');
+                
              } else {
                 $data=['user_id'=>$request->input('user_id'),'template_name'=>$request->input('template_name'),'message'=>$request->input('message')];
                 Template::create($data);
@@ -65,11 +67,12 @@ class EmploymentController extends Controller
         }
         
         //echo '<pre>';print_r($request->all());print_r($request->input('message'));die;
-        $from[]=['name'=>$request->input('name'),'address'=>$request->input('from')];
+        //$from[]=['name'=>$request->input('name'),'address'=>$request->input('from')];
+        $replyTo[]=['address' => $request->input('reply_to'), 'name' => $request->input('name')];
 
         $user=Auth::user();
 
-        Mail::to($request->input('to'))->send(new candidateEmail($from,$request->input('to'),$request->input('company'),$request->input('title'),htmlentities($request->input('message'), ENT_COMPAT),$user));
+        Mail::to($request->input('to'))->send(new candidateEmail($replyTo,$request->input('to'),$request->input('company'),$request->input('mail_subject'),htmlentities($request->input('message'), ENT_COMPAT),$user));
 
 
         return redirect()->route('emp.show',$request->input('emp_id'))->with('message','Email has been send successfully');
@@ -93,7 +96,10 @@ class EmploymentController extends Controller
 
         $template=Template::where('user_id','=',$request->input('user_id'))->where('template_name','=',$request->input('template_name'))->first();
 
-        $json['message']=$template->message;
+        if(!empty($template->message)){
+            $json['message']=str_replace('</p>','',str_replace('<p>','',str_replace('&nbsp;',' ',$template->message)));
+            $json['template_name']=$template->template_name;
+        }
 
         return response()->json($json);
     }

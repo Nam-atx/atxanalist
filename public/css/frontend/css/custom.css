@@ -20,6 +20,8 @@
 
 .form-inline .form-group input,.form-inline .form-group select{width:90%;}
 
+.form-inline .form-group2{display: inline-block;float: left;margin: 0px 5px; width:15%;}
+
 select,textarea, input[type="text"],.form-horizontal select, input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input {
      padding: 0px 10px 0px 10px;
     -webkit-box-shadow: none;
@@ -42,6 +44,7 @@ select {height: 28px;}
 
 .dnd-form{float:right;margin-bottom: 0px;}
 .csection{margin-left: 0px;border: 1px solid #cecece;width: 397px;}
+.csection2{margin-left: 0px;border: 1px solid #cecece;width: 50%;}
 
 .comment-show{min-height:35px;height:350px;overflow: scroll;}
 .comment-list{list-style: none;padding-left: 0px;text-indent: 10px;margin: 0px;}

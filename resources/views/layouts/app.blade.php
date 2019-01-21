@@ -83,6 +83,9 @@
 
                 @else
                 <li><a href="{{ route('main') }}">Home</i></a></li>
+                <li><a href="{{ route('emp.atxclients') }}">Clients</i></a>
+                <li><a href="{{ route('emp.atxavailables') }}">Availables</i></a></li>
+                <li><a href="{{ route('emp.atxemployees') }}">Employees</i></a></li>
                 <li><a href="{{ route('home') }}">Resumes</i></a></li>
                 <li><a href="{{ route('recruiter.employment.create') }}">Add Resume</i></a></li>
                 <li  class="dropdown" ><a data-toggle="dropdown" data-target="#profile-messages" class="dropdown-toggle" href="#"><span class="text">{{ Auth::user()->name }}</span><b class="caret"></b></a>

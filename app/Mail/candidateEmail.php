@@ -11,7 +11,7 @@ class candidateEmail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $from,$email,$company,$subject,$messagebody,$user;
+    public $replyTo,$email,$company,$subject,$messagebody,$user;
         
 
     /**
@@ -19,11 +19,11 @@ class candidateEmail extends Mailable
      *
      * @return void
      */
-    public function __construct($from,$email,$company,$subject,$messagebody,$user)
+    public function __construct($replyTo,$email,$company,$subject,$messagebody,$user)
     {
         //
 
-        $this->from=$from;
+        $this->replyTo=$replyTo;
         $this->email=$email;
         $this->company=$company;
         $this->subject=$subject;

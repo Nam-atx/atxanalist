@@ -133,6 +133,10 @@ class LoginController extends Controller
 
                 case 'editor':
                     return '/editor/dashboard';
+                    break;
+
+                case 'rm':
+                    return '/rm/dashboard';
                     break; 
 
                 default:

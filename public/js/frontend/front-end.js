@@ -12,7 +12,7 @@ $(document).ready(function(){
            url:url,
            data:{comment:comment,future_followup_date:future_followup_date},
            headers:{"X-CSRF-Token":$('meta[name="csrf-token"]').attr("content")},
-           success:function(data){
+           success:function(data){ 
               $('#comment').val('');
               $('.comment-list li').remove();
               $('#dtp_input1').val('');
@@ -40,7 +40,7 @@ $(document).ready(function(){
            url:url,
            data:{comment:comment,status:status,type:type,followup_date:followup_date},
            headers:{"X-CSRF-Token":$('meta[name="csrf-token"]').attr("content")},
-           success:function(data){
+           success:function(data){ 
               $('#comment').val('');
               $('.comment-list li').remove();
               $('#dtp_input1').val('');
