@@ -61,11 +61,18 @@ class DashboardController extends Controller
             $getinfo=$this->getlatlon($this->address);
             
             $latlong=Employment::where('city',$request->input('city'))->where('state',$request->input('state'))->first();
-            $lat=$latlong->latitude;
-            $lon=$latlong->longitude;
 
-            $sql->addselect(DB::raw("round((3959*acos(cos(radians($lat))*cos(radians(`employment`.`latitude`))*cos(radians( `employment`.`longitude`)-radians($lon))+sin(radians($lat))*sin(radians(`employment`.`latitude`))))) AS `distance`"));
-            $sql->where(DB::raw("round((3959*acos(cos(radians($lat))*cos(radians(`employment`.`latitude`))*cos(radians( `employment`.`longitude`)-radians($lon))+sin(radians($lat))*sin(radians(`employment`.`latitude`)))))"),'<=',$request->input('radius'));
+            if(!empty($latlong->latitude) && !empty($latlong->longitude)){
+
+              $lat=$latlong->latitude;
+              $lon=$latlong->longitude;
+
+              $sql->addselect(DB::raw("round((3959*acos(cos(radians($lat))*cos(radians(`employment`.`latitude`))*cos(radians( `employment`.`longitude`)-radians($lon))+sin(radians($lat))*sin(radians(`employment`.`latitude`))))) AS `distance`"));
+              $sql->where(DB::raw("round((3959*acos(cos(radians($lat))*cos(radians(`employment`.`latitude`))*cos(radians( `employment`.`longitude`)-radians($lon))+sin(radians($lat))*sin(radians(`employment`.`latitude`)))))"),'<=',$request->input('radius'));
+            }
+            else{              
+                return redirect()->route('user.employment.latestresume')->with('errmsg', 'No such data are available in this search criteria in our database.');  
+            }  
 
           }
 

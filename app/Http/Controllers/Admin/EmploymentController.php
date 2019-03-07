@@ -272,8 +272,11 @@ class EmploymentController extends Controller
 
     // export data
     public function exportExcel($type)
-    {
+    { 
+        ini_set('memory_limit', '-1');    
+        
         $data = Employment::get()->toArray();
+        //echo "<pre>"; var_dump($data); exit;
         return Excel::create('exportdata', function($excel) use ($data) {
             $excel->sheet('data', function($sheet) use ($data)
             {
@@ -286,12 +289,12 @@ class EmploymentController extends Controller
 
     // import data
     public function importExcel(Request $request)
-    {
+    { 
 
         if($request->hasFile('import_file')){ 
             Excel::load($request->file('import_file')->getRealPath(), function ($reader) { 
-            foreach ($reader->toArray() as $key => $row) { 
-                
+              
+            foreach ($reader->toArray() as $key => $row) {                 
                 
                 $application_date = Carbon::parse($row['application_date'])->format('Y-m-d'); 
                 
@@ -323,14 +326,15 @@ class EmploymentController extends Controller
                    // echo '==>'.$key.'<==<br>';
                     continue;
                 }
-
+                //DB::enableQueryLog();    
                 $emp=Employment::where('email','=',$row['email_address'])->first();
+                //dd(DB::getQueryLog()); exit;
                 
 
-                if($emp){
-
+                if($emp){ 
+echo $row['email_address'].">>".$emp->email."<br />";
                 $data=['application_date'=>$emp->application_date,'title'=>$emp->title, 'first_name'=>$emp->first_name, 'last_name'=>$emp->last_name,'email'=>$emp->email,'phone'=>$emp->phone,'cell_number'=>$emp->cell_number,'best_time_to_call'=>$emp->best_time_to_call,'street1'=>$emp->street1,'street2'=>$emp->street2,'city'=>$emp->city,'state'=>$emp->state,'zipcode'=>$emp->zipcode,'country'=>$emp->country,'position'=>$emp->position,'days_available'=>$emp->days_available,'license'=>mb_convert_encoding($emp->license, 'UTF-8'),'need_call'=>$emp->need_call,'resume'=>$emp->resume,'source'=>$emp->source];                    
-                Emphistory::create($data);
+                //Emphistory::create($data);
 
                 $emp->application_date=$application_date;
                 $emp->title=$row['title'];
@@ -358,7 +362,7 @@ class EmploymentController extends Controller
                 }    
                 $emp->longitude='0';
                 $emp->latitude='0';
-                $emp->save();
+                //$emp->save();
 
                 } else {
 
@@ -376,11 +380,11 @@ class EmploymentController extends Controller
                 else{
                     $source = '';
                 }    
-
+echo "test".$row['email_address']."<br />";
 
                 $data=['application_date'=>$application_date,'title'=>$row['title'], 'first_name'=>$row['first_name'], 'last_name'=>$row['last_name'],'email'=>$row['email_address'],'phone'=>$row['phone'],'cell_number'=>$row['cell_number'],'best_time_to_call'=>$row['best_time_to_call'],'street1'=>$row['address_street_address'],'street2'=>$row['address_street_address_line_2'],'city'=>$row['city'],'state'=>$row['state'],'zipcode'=>(strlen($row['zip_code'])==4)?'0'.$row['zip_code']:$row['zip_code'],'country'=>$row['address_country'],'position'=>$row['applying_for_position'],'days_available'=>$row['days_available'],'license'=>mb_convert_encoding($row['licenses_skills_training_awards'], 'UTF-8'),'need_call'=>$row['need_a_call_back'],'resume'=>$row['resume'],'source'=>$source,'longitude'=>'0','latitude'=>'0','email_status'=>$email_status];
 
-                Employment::create($data);
+                //Employment::create($data);
 
                 }
                 //sleep(1);
@@ -388,7 +392,7 @@ class EmploymentController extends Controller
 
             });
         }
-        
+        exit;
         flash('Your file successfully import in database!!!')->success();
         return back();
     }

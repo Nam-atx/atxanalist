@@ -44,8 +44,8 @@ class LoginController extends Controller
 
 
     public function showLoginForm()
-    {
-        if (Auth::check() && Auth::user()->is_admin==1) {
+    { 
+        if (Auth::check() && Auth::user()->is_admin==1) { 
             return redirect('/admin/dashboard');
         } else if (Auth::check() && Auth::user()->is_admin==3) {
             return redirect('/sales/dashboard');
@@ -103,8 +103,7 @@ class LoginController extends Controller
          
         $request->session()->regenerate();
 
-        $this->clearLoginAttempts($request);
-        
+        $this->clearLoginAttempts($request);        
         return $this->authenticated($request, $this->guard()->user())
                 ?: redirect()->intended($this->redirectTo());
     }
@@ -127,11 +126,11 @@ class LoginController extends Controller
                     return '/user/dashboard';
                     break; 
 
-                case 'sales':
+                case 'sales':                    
                     return '/sales/dashboard';
                     break; 
 
-                case 'editor':
+                case 'editor':                
                     return '/editor/dashboard';
                     break;
 

@@ -30,7 +30,7 @@
 
                   <div class="form-group">
                     <input class="form-control" type="text" name="email" placeholder="Email" value="{{ app('request')->input('email') }}">
-                  </div> 
+                  </div>                   
 
                   <div class="form-group">
                     <input class="form-control" type="date" name="from_date" placeholder="From Date" value="{{ app('request')->input('from_date') }}">
@@ -76,6 +76,14 @@
                         </tr>
                       </thead>
                       <tbody>
+
+                        @if (\Session::has('errmsg'))
+                        <tr >
+                          <td colspan=10 style="color:red;">{!! \Session::get('errmsg') !!}</td>
+                        </tr>
+                        @else                    
+
+
                         @foreach( $employments as $employment)
                        <tr>
                           <td>{{ \Carbon\Carbon::parse($employment->application_date)->format('F d, Y') }}</td>
@@ -95,6 +103,8 @@
                     </tbody>
                     </table>
                     {{$employments->links()}}
+                    
+                    @endif
                 </div>
             </div>
         </div>

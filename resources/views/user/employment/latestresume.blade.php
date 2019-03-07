@@ -75,6 +75,14 @@
                         </tr>
                       </thead>
                       <tbody>
+
+                        @if (\Session::has('errmsg'))
+                        <tr >
+                          <td colspan=10 style="color:red;">{!! \Session::get('errmsg') !!}</td>
+                        </tr>
+                        @else
+
+
                         @if(!$employments->isEmpty())
                         @foreach( $employments as $employment)
                         
@@ -105,6 +113,7 @@
                     </table>
                     {{$employments->links()}}
 
+                    @endif
                 </div>
             </div>
         </div>

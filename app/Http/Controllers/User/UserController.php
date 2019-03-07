@@ -49,8 +49,10 @@ class UserController extends Controller
         $string='';
 
         $user=Auth::user();
-
+//DB::enableQueryLog();
         $sql=DB::table('employment')->select('employment.*');
+
+        //$sql=DB::table('employment')->leftJoin('emp_comments', 'employment.id', '=', 'emp_comments.emp_id')->select('employment.*')->where('emp_comments.comment', '<>', '')->groupBy('application_date');
 
         if($request->input('email')){
             $sql->where('email','LIKE','%'.$request->input('email').'%');
@@ -82,12 +84,18 @@ class UserController extends Controller
             $getinfo=$this->getlatlon($this->address);
             
             $latlong=Employment::where('city',$request->input('city'))->where('state',$request->input('state'))->first();
-            $lat=$latlong->latitude;
-            $lon=$latlong->longitude;
 
-            $sql->addselect(DB::raw("round((3959*acos(cos(radians($lat))*cos(radians(`employment`.`latitude`))*cos(radians( `employment`.`longitude`)-radians($lon))+sin(radians($lat))*sin(radians(`employment`.`latitude`))))) AS `distance`"));
-            $sql->where(DB::raw("round((3959*acos(cos(radians($lat))*cos(radians(`employment`.`latitude`))*cos(radians( `employment`.`longitude`)-radians($lon))+sin(radians($lat))*sin(radians(`employment`.`latitude`)))))"),'<=',$request->input('radius'));
-
+            if(!empty($latlong->latitude) && !empty($latlong->longitude)){
+              
+              $lat=$latlong->latitude;        
+              $lon=$latlong->longitude;
+            
+              $sql->addselect(DB::raw("round((3959*acos(cos(radians($lat))*cos(radians(`employment`.`latitude`))*cos(radians( `employment`.`longitude`)-radians($lon))+sin(radians($lat))*sin(radians(`employment`.`latitude`))))) AS `distance`"));
+              $sql->where(DB::raw("round((3959*acos(cos(radians($lat))*cos(radians(`employment`.`latitude`))*cos(radians( `employment`.`longitude`)-radians($lon))+sin(radians($lat))*sin(radians(`employment`.`latitude`)))))"),'<=',$request->input('radius'));
+            }
+            else{              
+                return redirect()->route('home')->with('errmsg', 'No such data are available in this search criteria in our database.');  
+            }
           }
 
          } else {

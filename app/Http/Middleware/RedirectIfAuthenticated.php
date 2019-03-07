@@ -23,7 +23,7 @@ class RedirectIfAuthenticated
             return redirect('/sales/dashboard');
         } else if (Auth::guard($guard)->check() && Auth::user()->is_admin==2) {
             return redirect('/user/dashboard');
-        } else if (Auth::guard($guard)->check() && Auth::user()->is_admin==5) {
+        } else if (Auth::guard($guard)->check() && Auth::user()->is_admin==5) { 
             return redirect('/editor/dashboard');
         } else if (Auth::guard($guard)->check() && Auth::user()->is_admin==4) {
             return redirect('/rm/dashboard');

@@ -30,13 +30,19 @@ class HomeController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
+    { 
         if (Auth::check() && Auth::user()->is_admin==1) {
             return redirect('/admin/dashboard');
         } else if (Auth::check() && Auth::user()->is_admin==3) {
             return redirect('/sales/dashboard');
         } else if (Auth::check() && Auth::user()->is_admin==2) {
             return redirect('/user/dashboard');
+        } 
+        else if (Auth::check() && Auth::user()->is_admin==4) {
+            return redirect('/rm/dashboard');
+        } 
+        else if (Auth::check() && Auth::user()->is_admin==5) {
+            return redirect('/editor/dashboard');
         } 
         return view('home');
     }

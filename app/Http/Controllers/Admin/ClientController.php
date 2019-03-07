@@ -14,6 +14,7 @@ use Exception;
 use App\Client;
 use DB;
 use App\clienthistory;
+
 class ClientController extends Controller
 {
     //
@@ -33,7 +34,10 @@ class ClientController extends Controller
     // export data
     public function clientExportExcel($type)
     {
+        ini_set('memory_limit', '-1');
+        
         $data = Client::get()->toArray();
+        
         return Excel::create('exportdata', function($excel) use ($data) {
             $excel->sheet('data', function($sheet) use ($data)
             {

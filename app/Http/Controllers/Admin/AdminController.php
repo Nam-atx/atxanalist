@@ -19,6 +19,7 @@ use App\Permission;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use App\Traits\latlon;
+
 class AdminController extends Controller
 {
     //
@@ -350,7 +351,7 @@ class AdminController extends Controller
     public function users()
     {
     	$users=User::all();
-      //echo "<pre>"; var_dump(compact(['users'])); exit;
+      //echo "<pre>"; var_dump(compact(['users'])); exit;      
     	return view('admin.users',compact(['users']));
     }
 

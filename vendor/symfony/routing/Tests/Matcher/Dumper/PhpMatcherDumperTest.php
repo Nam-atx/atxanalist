@@ -75,7 +75,7 @@ class PhpMatcherDumperTest extends TestCase
     }
 
     public function getRouteCollections()
-    {
+    { 
         /* test case 1 */
 
         $collection = new RouteCollection();
