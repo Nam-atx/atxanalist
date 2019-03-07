@@ -93,10 +93,8 @@ class UserController extends Controller
               $sql->addselect(DB::raw("round((3959*acos(cos(radians($lat))*cos(radians(`employment`.`latitude`))*cos(radians( `employment`.`longitude`)-radians($lon))+sin(radians($lat))*sin(radians(`employment`.`latitude`))))) AS `distance`"));
               $sql->where(DB::raw("round((3959*acos(cos(radians($lat))*cos(radians(`employment`.`latitude`))*cos(radians( `employment`.`longitude`)-radians($lon))+sin(radians($lat))*sin(radians(`employment`.`latitude`)))))"),'<=',$request->input('radius'));
             }
-            else{ 
-
-                return redirect()->route('home')->with('errmsg', 'No such data are available in this search criteria in our database.'); 
-                 
+            else{              
+                return redirect()->route('home')->with('errmsg', 'No such data are available in this search criteria in our database.');  
             }
           }
 
