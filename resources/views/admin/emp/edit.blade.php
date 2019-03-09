@@ -6,7 +6,7 @@
 <div id="content">
 <!--breadcrumbs-->
   <div id="content-header">
-    <div id="breadcrumb"> <a href="{{route('admin.users')}}" title="Go to Home" class="tip-bottom"><i class="icon-user"></i> Employment</a> <a href="{{route('admin.user.create')}}" class="current"><i class="icon-user"></i> Edit Employee</a></div>
+    <div id="breadcrumb"> <a href="{{route('admin.emp.list')}}" title="Go to Home" class="tip-bottom"><i class="icon-user"></i> Employment</a> <a href="javascript:window.location.reload(true)" class="current"><i class="icon-user"></i> Edit Employee</a></div>
     
   </div>
 <!--End-breadcrumbs-->
