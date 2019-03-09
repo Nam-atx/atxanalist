@@ -59,7 +59,7 @@ class EmploymentController extends Controller
           
         }
 
-        $employments=$sql->paginate(10)->appends(request()->query());;
+        $employments=$sql->orderBy('application_date', 'desc')->paginate(10)->appends(request()->query());
 
         //$employments = Employment::paginate(10);
         return view('admin.emp.list',['employments'=>$employments]);
@@ -185,10 +185,10 @@ class EmploymentController extends Controller
 
     public function update(Request $request, $id)
     {
-       $validator= $this->validatorUpdate($request->all());
-         if ($validator->fails()) {
-            return redirect()->route('admin.emp.edit',$id)->withErrors($validator)->withInput();
-        }
+       // $validator= $this->validatorUpdate($request->all());
+       //   if ($validator->fails()) {
+       //      return redirect()->route('admin.emp.edit',$id)->withErrors($validator)->withInput();
+       //  }
         
         $address='';
         if($request->input('street1')){
@@ -235,7 +235,10 @@ class EmploymentController extends Controller
         $employment->zipcode=$request->input('zipcode');
         $employment->country=$request->input('country');
         $employment->position=$request->input('position');
-        $employment->days_available=implode(' ',$request->input('days_available'));
+        $employment->application_date = Carbon::parse($request->input('application_date'))->format('Y-m-d'); 
+        if(!empty($request->input('days_available'))){
+            $employment->days_available=implode(' ',$request->input('days_available'));
+        }
         $employment->license=$request->input('license');
         $employment->need_call=$request->input('need_call');
         $employment->resume=$request->input('resume');

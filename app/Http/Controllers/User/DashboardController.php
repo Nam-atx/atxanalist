@@ -70,7 +70,8 @@ class DashboardController extends Controller
               $sql->addselect(DB::raw("round((3959*acos(cos(radians($lat))*cos(radians(`employment`.`latitude`))*cos(radians( `employment`.`longitude`)-radians($lon))+sin(radians($lat))*sin(radians(`employment`.`latitude`))))) AS `distance`"));
               $sql->where(DB::raw("round((3959*acos(cos(radians($lat))*cos(radians(`employment`.`latitude`))*cos(radians( `employment`.`longitude`)-radians($lon))+sin(radians($lat))*sin(radians(`employment`.`latitude`)))))"),'<=',$request->input('radius'));
             }
-            else{              
+            else{  
+                        
                 return redirect()->route('user.employment.latestresume')->with('errmsg', 'No such data are available in this search criteria in our database.');  
             }  
 
