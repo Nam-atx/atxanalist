@@ -45,6 +45,10 @@ class DashboardController extends Controller
             $sql->where('employment.position','LIKE','%'.$request->input('position').'%');
          }
 
+         if($request->input('phone')){
+            $sql->where('employment.phone','LIKE','%'.$request->input('phone').'%');
+         }
+
          if($request->input('radius')){
 
            if($request->input('city')){
