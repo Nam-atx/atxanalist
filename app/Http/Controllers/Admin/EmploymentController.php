@@ -42,8 +42,16 @@ class EmploymentController extends Controller
     {
         $sql=DB::table('employment');
 
+        if($request->input('name')){
+            $sql->where('first_name','LIKE','%'.$request->input('name').'%')->orWhere('last_name','LIKE','%'.$request->input('name').'%')->orWhere(DB::raw('concat(first_name," ",last_name)'),'LIKE','%'.$request->input('name').'%');
+        }
+
         if($request->input('email')){
             $sql->where('email','LIKE','%'.$request->input('email').'%');
+        }
+
+        if($request->input('phone')){
+            $sql->where('phone','LIKE','%'.$request->input('phone').'%');
         }
 
         if($request->input('position')){
