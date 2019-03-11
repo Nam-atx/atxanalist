@@ -18,6 +18,7 @@
             <h5>Edit Employment</h5>
           </div>
           <div class="widget-content nopadding">
+
             <form class="form-horizontal" method="post" action="{{route('admin.emp.update',$employment->id)}}" name="user_add_validate" id="user_add_validate">
               {{ csrf_field() }}
               <input name="_method" type="hidden" value="PUT">
@@ -265,11 +266,11 @@
                 </div>
               </div>
 
-
               <div class="form-actions">
                 <input type="submit" value="Save" class="btn btn-success">
               </div>
             </form>
+
           </div>
         </div>
       </div>

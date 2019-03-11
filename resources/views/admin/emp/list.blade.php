@@ -18,7 +18,7 @@
      <div class="span12">
        <div class="widget-box">
          <div class="widget-title"> <span class="icon"> <i class="icon-user"></i> </span>
-          <h5>Employment List</h5>
+          <h5>Employment List</h5> 
           </div>
           @if (session('message'))
               <div class="alert alert-success">
@@ -30,7 +30,15 @@
         	<form class="form-inline" action="{{route('admin.emp.list')}}">
 
             <div class="form-group">
+              <input class="form-control" type="text" name="name" placeholder="Name" value="{{ app('request')->input('name') }}">
+            </div>
+
+            <div class="form-group">
               <input class="form-control" type="text" name="email" placeholder="Email" value="{{ app('request')->input('email') }}">
+            </div>
+
+            <div class="form-group">
+              <input class="form-control" type="text" name="phone" placeholder="Phone" value="{{ app('request')->input('phone') }}">
             </div>
 
             <div class="form-group">
@@ -46,12 +54,14 @@
               <button class="btn btn-primary" type="submit">Filter</button>
             </div>
             </form>
-              <form action="{{route('home')}}" class="form-inline reset"><button class="btn btn-primary" type="submit">Reset</button>
+              <form action="{{route('admin.emp.list')}}" class="form-inline reset"><button class="btn btn-primary" type="submit">Reset</button>
               </form>
             <table class="table table-bordered data-table">
               <thead>
                 <tr>
-                  <th scope="col">Title</th>
+                  <th scope="col">Application Date</th>
+                  <th scope="col">Source</th>
+                  <!-- <th scope="col">Title</th> -->
                   <th scope="col">First Name</th>
                   <th scope="col">Last Name</th>
                   <th scope="col">Email</th>
@@ -66,11 +76,10 @@
 
               	@foreach( $employments as $employment)
                 <tr>
-
-
-
-                    <td>{{$employment->title}}</td>
-                    <td>{{$employment->first_name}}</td>
+                    <td>{{$employment->application_date}}</td>
+                    <td>{{$employment->source}}</td>
+                    <!-- <td>{{$employment->title}}</td> -->
+                    <td>{{$employment->title}} {{$employment->first_name}}</td>
                     <td>{{$employment->last_name}}</td>
                     <td>{{$employment->email}}</td>
                     <td>{{$employment->position}}</td>

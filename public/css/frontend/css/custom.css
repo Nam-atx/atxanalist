@@ -16,11 +16,13 @@
 .justify-content-center .card-header{color:#31f99d;padding: 2px;}
 
 .form-inline{display: block;}
-.form-inline .form-group{display: inline-block;float: left;margin: 0px 5px; width:10%;}
+.form-inline .form-group{display: inline-block;float: left;margin: 0px 5px; width:90px;} /*width in pixcel*/
 
 .form-inline .form-group input,.form-inline .form-group select{width:90%;}
 
 .form-inline .form-group2{display: inline-block;float: left;margin: 0px 5px; width:15%;}
+
+.form-filter{width:1300px;}
 
 select,textarea, input[type="text"],.form-horizontal select, input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input {
      padding: 0px 10px 0px 10px;

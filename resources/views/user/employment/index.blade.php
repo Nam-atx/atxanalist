@@ -7,10 +7,8 @@
             <div class="card">
                 <div class="card-header">List of Candidates</div>
                 <div class="card-body1">
-                  
+                  <div class="form-filter">
                   <form class="form-inline" action="{{route('home')}}">
-
-                   
 
                   <div class="form-group">
                     <input class="form-control" type="text" name="position" placeholder="Profile" value="{{ app('request')->input('position') }}">
@@ -30,7 +28,11 @@
 
                   <div class="form-group">
                     <input class="form-control" type="text" name="email" placeholder="Email" value="{{ app('request')->input('email') }}">
-                  </div>                   
+                  </div>
+
+                  <div class="form-group">
+                    <input class="form-control" type="text" name="phone" placeholder="Phone" value="{{ app('request')->input('phone') }}">
+                  </div>                    
 
                   <div class="form-group">
                     <input class="form-control" type="date" name="from_date" placeholder="From Date" value="{{ app('request')->input('from_date') }}">
@@ -55,8 +57,11 @@
                   </div>
 
                   </form>
-                  <form action="{{route('home')}}" class="form-inline reset"><button class="btn btn-primary" type="submit">Reset</button>
+                </div>
+                <div class="form-filter2">
+                  <form action="{{route('home')}}" class=""><button class="btn btn-primary" type="submit">Reset</button>
                   </form>
+                </div>
                 
                     <table class="table">
                       <thead class="thead-light">
