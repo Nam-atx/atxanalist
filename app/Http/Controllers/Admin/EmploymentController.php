@@ -223,7 +223,7 @@ class EmploymentController extends Controller
         try {
             $address=rtrim($address);
 
-           $response=$this->getlatlon($address);
+           //$response=$this->getlatlon($address);
            //print_r($response); die;
         } catch (\Exception $e) {
             echo $e->getMessage();
@@ -252,8 +252,8 @@ class EmploymentController extends Controller
         $employment->license=$request->input('license');
         $employment->need_call=$request->input('need_call');
         $employment->resume=$request->input('resume');
-        $employment->longitude=$response['longitude'];
-        $employment->latitude=$response['latitude'];
+        //$employment->longitude=$response['longitude'];
+        //$employment->latitude=$response['latitude'];
         $employment->save();
 
         return redirect()->route('admin.emp.list')->with('message','Client has been updated successfully');
