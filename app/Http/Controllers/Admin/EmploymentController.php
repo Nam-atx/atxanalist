@@ -40,11 +40,12 @@ class EmploymentController extends Controller
 
     public function list(Request $request)
     {
+        
         $sql=DB::table('employment');
 
         if($request->input('name')){
             $sql->where('first_name','LIKE','%'.$request->input('name').'%')->orWhere('last_name','LIKE','%'.$request->input('name').'%')->orWhere(DB::raw('concat(first_name," ",last_name)'),'LIKE','%'.$request->input('name').'%');
-        }
+        } 
 
         if($request->input('email')){
             $sql->where('email','LIKE','%'.$request->input('email').'%');
@@ -67,10 +68,11 @@ class EmploymentController extends Controller
           
         }
 
-        $employments=$sql->orderBy('application_date', 'desc')->paginate(10)->appends(request()->query());
+        $employments=$sql->orderBy('application_date', 'desc')->paginate(10)->appends(request()->query());;
 
-        //$employments = Employment::paginate(10);
         return view('admin.emp.list',['employments'=>$employments]);
+
+
     }
 
 
