@@ -339,6 +339,7 @@ class EmploymentController extends Controller
                    // echo '==>'.$key.'<==<br>';
                     continue;
                 }
+                
                 //DB::enableQueryLog();    
                 $emp=Employment::where('email','=',$row['email_address'])->first();
                 //dd(DB::getQueryLog()); exit;
