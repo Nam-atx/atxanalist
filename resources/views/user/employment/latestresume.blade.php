@@ -12,6 +12,7 @@
                           {{ session('message') }}
                       </div>
                   @endif 
+                  <div class="form-filter">
                   <form class="form-inline" action="{{route('user.employment.latestresume')}}">
                     <div class="form-group">
                       <input class="form-control" type="text" name="position" placeholder="Profile" value="{{ app('request')->input('position') }}">
@@ -34,6 +35,10 @@
                     </div> 
 
                     <div class="form-group">
+                      <input class="form-control" type="text" name="phone" placeholder="Phone" value="{{ app('request')->input('phone') }}">
+                    </div>
+
+                    <div class="form-group">
                       <input class="form-control" type="date" name="from_date" placeholder="From Date" value="{{ app('request')->input('from_date') }}">
                     </div> 
                     <div class="form-group">
@@ -53,8 +58,11 @@
 
                      <div class="form-group"> <button class="btn btn-primary" type="submit">Filter</button></div>
                   </form>
-                  <form action="{{route('user.employment.latestresume')}}" class="form-inline reset"><button class="btn btn-primary" type="submit">Reset</button>
+                </div>
+                <div class="form-filter2">
+                  <form action="{{route('user.employment.latestresume')}}" class=""><button class="btn btn-primary" type="submit">Reset</button>
                   </form>
+                </div>
                 
                     <table class="table">
                       <thead class="thead-light">

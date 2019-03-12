@@ -6,7 +6,7 @@
 <div id="content">
 <!--breadcrumbs-->
   <div id="content-header">
-    <div id="breadcrumb"> <a href="{{route('admin.users')}}" title="Go to Home" class="tip-bottom"><i class="icon-user"></i> Employment</a> <a href="{{route('admin.user.create')}}" class="current"><i class="icon-user"></i> Edit Employee</a></div>
+    <div id="breadcrumb"> <a href="{{route('admin.emp.list')}}" title="Go to Home" class="tip-bottom"><i class="icon-user"></i> Employment</a> <a href="javascript:window.location.reload(true)" class="current"><i class="icon-user"></i> Edit Employee</a></div>
     
   </div>
 <!--End-breadcrumbs-->
@@ -18,9 +18,24 @@
             <h5>Edit Employment</h5>
           </div>
           <div class="widget-content nopadding">
+
             <form class="form-horizontal" method="post" action="{{route('admin.emp.update',$employment->id)}}" name="user_add_validate" id="user_add_validate">
               {{ csrf_field() }}
               <input name="_method" type="hidden" value="PUT">
+
+              <div class="control-group">
+              <label class="control-label">Application Date</label>
+                <div class="controls {{ $errors->has('application_date') ? ' is-invalid' : '' }}">
+                  <input type="text" name="application_date" id="application_date" value="{{ \Carbon\Carbon::parse($employment->application_date)->format('d-M-Y') }}" >
+                  <a href="javascript:void(0)" id="calender">Back to calender</a>
+                  @if ($errors->has('application_date'))
+                      <span class="help-block">
+                          <strong>{{ $errors->first('application_date') }}</strong>
+                      </span>
+                  @endif
+                </div>
+              </div>
+              
               <div class="control-group">
                 <label class="control-label">Title</label>
                 <div class="controls {{ $errors->has('title') ? ' is-invalid' : '' }}">
@@ -251,11 +266,11 @@
                 </div>
               </div>
 
-
               <div class="form-actions">
                 <input type="submit" value="Save" class="btn btn-success">
               </div>
             </form>
+
           </div>
         </div>
       </div>
@@ -265,5 +280,13 @@
 
 
 </div>
+<script>
+$("#application_date").dblclick(function(){
+    $("#application_date").prop('type', 'text');
+})
+$("#calender").click(function(){
+    $("#application_date").prop('type', 'date');
+});
 
+</script>
 @endsection
