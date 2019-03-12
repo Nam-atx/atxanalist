@@ -61,7 +61,7 @@
                 <tr>
                   <th scope="col">Application Date</th>
                   <th scope="col">Source</th>
-                  <!-- <th scope="col">Title</th> -->
+                  <th scope="col">Title</th>
                   <th scope="col">First Name</th>
                   <th scope="col">Last Name</th>
                   <th scope="col">Email</th>
@@ -78,16 +78,17 @@
                 <tr>
                     <td>{{ \Carbon\Carbon::parse($employment->application_date)->format('d-M-Y') }}</td>
                     <td>{{$employment->source}}</td>
-                    <!-- <td>{{$employment->title}}</td> -->
+                    <td>{{$employment->title}}</td>
                     <td>{{$employment->title}} {{$employment->first_name}}</td>
                     <td>{{$employment->last_name}}</td>
                     <td>{{$employment->email}}</td>
                     <td>{{$employment->position}}</td>
-                    <td>{{$employment->street1}} {{$employment->street1?'<br>,':''}} {{$employment->street2?$employment->street2.'<br>':''}} {{$employment->street2?',':''}}
+                    <td>{!! $employment->street1 ? $employment->street1.',<br>' : '' !!} 
+                        {!! $employment->street2?$employment->street2.',<br>':'' !!} 
                              {{$employment->city?$employment->city:''}} {{$employment->city?',':''}} {{$employment->state?$employment->state:''}} {{$employment->state?',':''}}
                             {{$employment->country?$employment->country:''}} {{$employment->country?',':''}}
                             {{$employment->zipcode?'-'.$employment->zipcode:''}}
-                            </td>
+                    </td>
                     <td>{{$employment->longitude}}</td>
                     <td>{{$employment->latitude}}</td>
                     <td><a href="{{route('admin.emp.edit',$employment->id)}}">Edit</a></td>
