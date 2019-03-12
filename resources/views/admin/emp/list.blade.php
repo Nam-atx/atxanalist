@@ -76,7 +76,7 @@
 
               	@foreach( $employments as $employment)
                 <tr>
-                    <td>{{$employment->application_date}}</td>
+                    <td>{{ \Carbon\Carbon::parse($employment->application_date)->format('d-M-Y') }}</td>
                     <td>{{$employment->source}}</td>
                     <!-- <td>{{$employment->title}}</td> -->
                     <td>{{$employment->title}} {{$employment->first_name}}</td>
