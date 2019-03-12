@@ -35,7 +35,7 @@
                   @endif
                 </div>
               </div>
-              
+
               <div class="control-group">
                 <label class="control-label">Title</label>
                 <div class="controls {{ $errors->has('title') ? ' is-invalid' : '' }}">
@@ -261,6 +261,18 @@
                   @if ($errors->has('resume'))
                       <span class="help-block">
                           <strong>{{ $errors->first('resume') }}</strong>
+                      </span>
+                  @endif
+                </div>
+              </div>
+
+              <div class="control-group">
+              <label class="control-label">Source</label>
+                <div class="controls {{ $errors->has('source') ? ' is-invalid' : '' }}">
+                  <input type="text" name="source" id="source" value="{{$employment->source}}" >
+                  @if ($errors->has('source'))
+                      <span class="help-block">
+                          <strong>{{ $errors->first('source') }}</strong>
                       </span>
                   @endif
                 </div>
