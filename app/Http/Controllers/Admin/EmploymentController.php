@@ -40,10 +40,19 @@ class EmploymentController extends Controller
 
     public function list(Request $request)
     {
+        
         $sql=DB::table('employment');
+
+        if($request->input('name')){
+            $sql->where('first_name','LIKE','%'.$request->input('name').'%')->orWhere('last_name','LIKE','%'.$request->input('name').'%')->orWhere(DB::raw('concat(first_name," ",last_name)'),'LIKE','%'.$request->input('name').'%');
+        } 
 
         if($request->input('email')){
             $sql->where('email','LIKE','%'.$request->input('email').'%');
+        }
+
+        if($request->input('phone')){
+            $sql->where('phone','LIKE','%'.$request->input('phone').'%');
         }
 
         if($request->input('position')){
@@ -59,10 +68,11 @@ class EmploymentController extends Controller
           
         }
 
-        $employments=$sql->paginate(10)->appends(request()->query());;
+        $employments=$sql->orderBy('application_date', 'desc')->paginate(10)->appends(request()->query());;
 
-        //$employments = Employment::paginate(10);
         return view('admin.emp.list',['employments'=>$employments]);
+
+
     }
 
 
@@ -185,10 +195,10 @@ class EmploymentController extends Controller
 
     public function update(Request $request, $id)
     {
-       $validator= $this->validatorUpdate($request->all());
-         if ($validator->fails()) {
-            return redirect()->route('admin.emp.edit',$id)->withErrors($validator)->withInput();
-        }
+       // $validator= $this->validatorUpdate($request->all());
+       //   if ($validator->fails()) {
+       //      return redirect()->route('admin.emp.edit',$id)->withErrors($validator)->withInput();
+       //  }
         
         $address='';
         if($request->input('street1')){
@@ -213,7 +223,7 @@ class EmploymentController extends Controller
         try {
             $address=rtrim($address);
 
-           $response=$this->getlatlon($address);
+           //$response=$this->getlatlon($address);
            //print_r($response); die;
         } catch (\Exception $e) {
             echo $e->getMessage();
@@ -235,12 +245,15 @@ class EmploymentController extends Controller
         $employment->zipcode=$request->input('zipcode');
         $employment->country=$request->input('country');
         $employment->position=$request->input('position');
-        $employment->days_available=implode(' ',$request->input('days_available'));
+        $employment->application_date = Carbon::parse($request->input('application_date'))->format('Y-m-d'); 
+        if(!empty($request->input('days_available'))){
+            $employment->days_available=implode(' ',$request->input('days_available'));
+        }
         $employment->license=$request->input('license');
         $employment->need_call=$request->input('need_call');
         $employment->resume=$request->input('resume');
-        $employment->longitude=$response['longitude'];
-        $employment->latitude=$response['latitude'];
+        //$employment->longitude=$response['longitude'];
+        //$employment->latitude=$response['latitude'];
         $employment->save();
 
         return redirect()->route('admin.emp.list')->with('message','Client has been updated successfully');
@@ -332,9 +345,9 @@ class EmploymentController extends Controller
                 
 
                 if($emp){ 
-echo $row['email_address'].">>".$emp->email."<br />";
+
                 $data=['application_date'=>$emp->application_date,'title'=>$emp->title, 'first_name'=>$emp->first_name, 'last_name'=>$emp->last_name,'email'=>$emp->email,'phone'=>$emp->phone,'cell_number'=>$emp->cell_number,'best_time_to_call'=>$emp->best_time_to_call,'street1'=>$emp->street1,'street2'=>$emp->street2,'city'=>$emp->city,'state'=>$emp->state,'zipcode'=>$emp->zipcode,'country'=>$emp->country,'position'=>$emp->position,'days_available'=>$emp->days_available,'license'=>mb_convert_encoding($emp->license, 'UTF-8'),'need_call'=>$emp->need_call,'resume'=>$emp->resume,'source'=>$emp->source];                    
-                //Emphistory::create($data);
+                Emphistory::create($data);
 
                 $emp->application_date=$application_date;
                 $emp->title=$row['title'];
@@ -362,7 +375,7 @@ echo $row['email_address'].">>".$emp->email."<br />";
                 }    
                 $emp->longitude='0';
                 $emp->latitude='0';
-                //$emp->save();
+                $emp->save();
 
                 } else {
 
@@ -380,11 +393,11 @@ echo $row['email_address'].">>".$emp->email."<br />";
                 else{
                     $source = '';
                 }    
-echo "test".$row['email_address']."<br />";
+
 
                 $data=['application_date'=>$application_date,'title'=>$row['title'], 'first_name'=>$row['first_name'], 'last_name'=>$row['last_name'],'email'=>$row['email_address'],'phone'=>$row['phone'],'cell_number'=>$row['cell_number'],'best_time_to_call'=>$row['best_time_to_call'],'street1'=>$row['address_street_address'],'street2'=>$row['address_street_address_line_2'],'city'=>$row['city'],'state'=>$row['state'],'zipcode'=>(strlen($row['zip_code'])==4)?'0'.$row['zip_code']:$row['zip_code'],'country'=>$row['address_country'],'position'=>$row['applying_for_position'],'days_available'=>$row['days_available'],'license'=>mb_convert_encoding($row['licenses_skills_training_awards'], 'UTF-8'),'need_call'=>$row['need_a_call_back'],'resume'=>$row['resume'],'source'=>$source,'longitude'=>'0','latitude'=>'0','email_status'=>$email_status];
 
-                //Employment::create($data);
+                Employment::create($data);
 
                 }
                 //sleep(1);
@@ -392,7 +405,7 @@ echo "test".$row['email_address']."<br />";
 
             });
         }
-        exit;
+        
         flash('Your file successfully import in database!!!')->success();
         return back();
     }

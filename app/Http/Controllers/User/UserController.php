@@ -64,7 +64,10 @@ class UserController extends Controller
             $string.=',postion='.$request->input('position');
         }
         
-
+        if($request->input('phone')){
+            $sql->where('phone','LIKE','%'.$request->input('phone').'%');
+            $string.=',phone='.$request->input('phone');
+        }
 
         if($request->input('radius')){
 
