@@ -24,6 +24,18 @@
               <input name="_method" type="hidden" value="PUT">
 
               <div class="control-group">
+              <label class="control-label">Source</label>
+                <div class="controls {{ $errors->has('source') ? ' is-invalid' : '' }}">
+                  <input type="text" name="source" id="source" value="{{$employment->source}}" >
+                  @if ($errors->has('source'))
+                      <span class="help-block">
+                          <strong>{{ $errors->first('source') }}</strong>
+                      </span>
+                  @endif
+                </div>
+              </div>
+              
+              <div class="control-group">
               <label class="control-label">Application Date</label>
                 <div class="controls {{ $errors->has('application_date') ? ' is-invalid' : '' }}">
                   <input type="text" name="application_date" id="application_date" value="{{ \Carbon\Carbon::parse($employment->application_date)->format('d-M-Y') }}" >
@@ -261,18 +273,6 @@
                   @if ($errors->has('resume'))
                       <span class="help-block">
                           <strong>{{ $errors->first('resume') }}</strong>
-                      </span>
-                  @endif
-                </div>
-              </div>
-
-              <div class="control-group">
-              <label class="control-label">Source</label>
-                <div class="controls {{ $errors->has('source') ? ' is-invalid' : '' }}">
-                  <input type="text" name="source" id="source" value="{{$employment->source}}" >
-                  @if ($errors->has('source'))
-                      <span class="help-block">
-                          <strong>{{ $errors->first('source') }}</strong>
                       </span>
                   @endif
                 </div>
