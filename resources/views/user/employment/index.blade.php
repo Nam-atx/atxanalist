@@ -67,16 +67,16 @@
                       <thead class="thead-light">
                         <tr>
                           <th scope="col">Application Date</th>
-                          <th scope="col">Title</th>
+                          <!-- <th scope="col">Title</th> -->
                           <th scope="col">First Name</th>
-                          <th scope="col">Last Name</th>
-                          <th scope="col">Email</th>
+                          <!-- <th scope="col">Last Name</th> -->
+                          <!-- <th scope="col">Email</th> -->
                           <th scope="col">Profile</th>
                           <th scope="col">City</th>
                           <th scope="col">State</th>
-                          <th scope="col">Zip-Code</th>
-                          <th scope="col">Source</th>
-                          <th scope="col">DND</th>
+                          <!-- <th scope="col">Zip-Code</th> -->
+                          <!-- <th scope="col">Source</th> -->
+                          <!-- <th scope="col">DND</th> -->
                           
                         </tr>
                       </thead>
@@ -92,16 +92,16 @@
                         @foreach( $employments as $employment)
                        <tr>
                           <td>{{ \Carbon\Carbon::parse($employment->application_date)->format('F d, Y') }}</td>
-                            <td>{{$employment->title}}</td>
+                            <!-- <td>{{$employment->title}}</td> -->
                             <td><a href="{{route('emp.show',$employment->id)}}?position={{app('request')->input('position')}}&city={{app('request')->input('city')}}&state={{app('request')->input('state')}}&radius={{app('request')->input('radius')}}&email={{app('request')->input('email')}}&from_date={{app('request')->input('from_date')}}&to_date={{app('request')->input('to_date')}}">{{$employment->first_name}}</a></td>
-                            <td>{{$employment->last_name}}</td>
-                            <td>{{preg_match('/@atxlearning.com/i', $employment->email)?'':$employment->email}}</td>
+                            <!-- <td>{{$employment->last_name}}</td> -->
+                            <!-- <td>{{preg_match('/@atxlearning.com/i', $employment->email)?'':$employment->email}}</td> -->
                             <td>{{strtoupper($employment->position)}}</td>
                             <td>{{$employment->city}}</td>
                             <td>{{strtoupper($employment->state)}}</td>
-                            <td>{{$employment->zipcode}}</td>
-                            <td>{{ !empty($employment->source) ? $employment->source : '' }}</td>
-                            <td>{{$employment->dnd == 1 ? "DND" : "NO DND"}}</td>
+                            <!-- <td>{{$employment->zipcode}}</td> -->
+                            <!-- <td>{{ !empty($employment->source) ? $employment->source : '' }}</td> -->
+                            <!-- <td>{{$employment->dnd == 1 ? "DND" : "NO DND"}}</td> -->
                             
                         </tr>
                         @endforeach
