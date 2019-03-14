@@ -19,27 +19,19 @@
           </div>
           <div class="widget-content nopadding">
 
-            <form class="form-horizontal" method="post" action="{{route('admin.emp.update',$employment->id)}}" name="user_add_validate" id="user_add_validate">
+            <!-- comment box added -->
+            <table width="100%">
+              <tr>
+                <td style="width:60%;">
+                  <form class="form-horizontal" method="post" action="{{route('admin.emp.update',$employment->id)}}" name="user_add_validate" id="user_add_validate">
               {{ csrf_field() }}
               <input name="_method" type="hidden" value="PUT">
 
               <div class="control-group">
-              <label class="control-label">Source</label>
-                <div class="controls {{ $errors->has('source') ? ' is-invalid' : '' }}">
-                  <input type="text" name="source" id="source" value="{{$employment->source}}" >
-                  @if ($errors->has('source'))
-                      <span class="help-block">
-                          <strong>{{ $errors->first('source') }}</strong>
-                      </span>
-                  @endif
-                </div>
-              </div>
-              
-              <div class="control-group">
               <label class="control-label">Application Date</label>
                 <div class="controls {{ $errors->has('application_date') ? ' is-invalid' : '' }}">
                   <input type="text" name="application_date" id="application_date" value="{{ \Carbon\Carbon::parse($employment->application_date)->format('d-M-Y') }}" >
-                  <br><a href="javascript:void(0)" id="calender">Back to calender</a>
+                  <a href="javascript:void(0)" id="calender">Back to calender</a>
                   @if ($errors->has('application_date'))
                       <span class="help-block">
                           <strong>{{ $errors->first('application_date') }}</strong>
@@ -219,25 +211,6 @@
                 </div>
               </div>
 
-              <div class="control-group">
-              <label class="control-label">Days Available</label>
-                <div class="controls {{ $errors->has('days_available') ? ' is-invalid' : '' }}">
-                  <input type="checkbox" {{in_array('Monday', $days)?'checked':''}} name="days_available[]" id="required" value="Monday" > Monday
-                  <input type="checkbox" {{in_array('Tuesday', $days)?'checked':''}} name="days_available[]" id="required" value="Tuesday" > Tuesday
-                  <br>
-                  <input type="checkbox" name="days_available[]"  {{in_array('Wednesday', $days)?'checked':''}}  id="required" value="Wednesday" > Wednesday
-                  <input type="checkbox" name="days_available[]" {{in_array('Thursday', $days)?'checked':''}} id="required" value="Thursday" > Thursday
-                  <br>
-                  <input type="checkbox" name="days_available[]"  {{in_array('Friday', $days)?'checked':''}} id="required" value="Friday" > Friday
-                  <input type="checkbox" name="days_available[]" {{in_array('Any', $days)?'checked':''}} id="required" value="Any" > Any
-
-                  @if ($errors->has('days_available'))
-                      <span class="help-block">
-                          <strong>{{ $errors->first('days_available') }}</strong>
-                      </span>
-                  @endif
-                </div>
-              </div>
 
               <div class="control-group">
               <label class="control-label">License</label>
@@ -278,13 +251,69 @@
                 </div>
               </div>
 
+              <div class="control-group">
+              <label class="control-label">Source</label>
+                <div class="controls {{ $errors->has('source') ? ' is-invalid' : '' }}">
+                  <input type="text" name="source" id="source" value="{{$employment->source}}" >
+                  @if ($errors->has('source'))
+                      <span class="help-block">
+                          <strong>{{ $errors->first('source') }}</strong>
+                      </span>
+                  @endif
+                </div>
+              </div>
+
               <div class="form-actions">
                 <input type="submit" value="Save" class="btn btn-success">
               </div>
             </form>
+                </td>
+                <td style="width:40%; vertical-align: top;">
+                  <h5>Comments</h5>
+                  <div class="comment-section">
+                      <div class="comment-show">
+                        @if($empcomments)
+                        <ul class="comment-list">
+                          @foreach( $empcomments as $empcomment)
+                          <li>{{$empcomment->comment}} {{$empcomment->name?'By '.$empcomment->name:''}} {{$empcomment->created_at?'@ '.$empcomment->created_at:''}}</li>
+                          @endforeach
+                        </ul>
+                        @endif
+                      </div>
+
+                      <input type="hidden" name="gettemplate" id="gettemplate" value="{{route('template.get')}}" />
+
+                      <form id="comment-submit" method="POST" action="{{ route('admin.emp.comment',$employment['id']) }}">
+                        @csrf
+                        <div class="form-group">
+                            
+                            <div class="col-md-12">
+                                <textarea id="comment" type="text" class="form-control{{ $errors->has('comment') ? ' is-invalid' : '' }}" name="comment" required autofocus>{{ old('comment') }}</textarea>
+
+                                @if ($errors->has('comment'))
+                                    <span class="invalid-feedback">
+                                        <strong>{{ $errors->first('comment') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                            <div class="commit-send col-md-2">
+                                <button id="comment-submit" type="submit" class="btn btn-success">{{ __('Send') }}</button>
+                            </div>
+                        </div>
+                        
+                      </form>
+                    </div>
+                </td>
+              </tr>
+            </table>
+            
 
           </div>
         </div>
+
+
+
+
       </div>
     </div>
     

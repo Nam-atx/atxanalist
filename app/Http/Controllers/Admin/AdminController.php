@@ -129,7 +129,7 @@ class AdminController extends Controller
         }
 
         //$empsql=$sql->orderBy('employment.application_date', 'desc')->paginate(20);
-        $total_dnds=$sql->orderBy('employment.application_date', 'desc')->paginate($this->limit);
+        $total_dnds=$sql->orderBy('employment.application_date', 'desc')->paginate($this->limit)->appends(request()->query());
 
         return view('admin.dashboard.totaldnd',['employments'=>$total_dnds]);
     }
@@ -199,7 +199,7 @@ class AdminController extends Controller
         if($request->input('limit')){
             $this->limit=$request->input('limit');
         }
-        $current_employees=$sql->orderBy('employment.application_date', 'desc')->paginate($this->limit);
+        $current_employees=$sql->orderBy('employment.application_date', 'desc')->paginate($this->limit)->appends(request()->query());
         return view('admin.dashboard.totalemployees',['employments'=>$current_employees]);
         
     }
@@ -267,7 +267,7 @@ class AdminController extends Controller
         }
 
         //$empsql=$sql->orderBy('employment.application_date', 'desc')->paginate(20);
-        $clients=$sql->orderBy('client.created_at', 'desc')->paginate($this->limit);
+        $clients=$sql->orderBy('client.created_at', 'desc')->paginate($this->limit)->appends(request()->query());
 
         return view('admin.dashboard.totalsales',['clients'=>$clients]);
     }
@@ -275,7 +275,7 @@ class AdminController extends Controller
     public function totalrecruiter(Request $request)
     {
         $sql=Employment::select('employment.*')->Join('emp_comments','emp_comments.emp_id','=','employment.id');
-
+//dd($sql->toSql); die;
           if($request->input('email')){
               $sql->where('employment.email','LIKE','%'.$request->input('email').'%');
           }
@@ -339,7 +339,7 @@ class AdminController extends Controller
         }
 
         //$empsql=$sql->orderBy('employment.application_date', 'desc')->paginate(20);
-        $employments=$sql->orderBy('employment.application_date', 'desc')->paginate($this->limit);
+        $employments=$sql->orderBy('employment.application_date', 'desc')->paginate($this->limit)->appends(request()->query());
 
         return view('admin.dashboard.totalrecruiter',['employments'=>$employments]);
     }

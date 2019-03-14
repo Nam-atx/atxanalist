@@ -12,6 +12,7 @@
 <link href="{{asset('public/fonts/backend/css/font-awesome.css')}}" rel="stylesheet" />
 <link rel="stylesheet" href="{{asset('public/css/backend/jquery.gritter.css')}}" />
 
+<link rel="stylesheet" href="{{asset('public/css/frontend/css/custom.css')}}" />
 <link rel="stylesheet" href="{{asset('public/css/backend/style.css')}}" />
 <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700,800' rel='stylesheet' type='text/css'>
 <meta name="csrf-token" content="{{ csrf_token() }}">

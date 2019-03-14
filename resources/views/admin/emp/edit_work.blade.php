@@ -11,35 +11,26 @@
   </div>
 <!--End-breadcrumbs-->
 <div class="container-fluid">
-    <div class="row-fluid">
-      <div class="span12">
+    <!-- <div class="row-fluid"> -->
+      <div class="card">
+      <!-- <div class="span12"> -->
         <div class="widget-box">
           <div class="widget-title"> <span class="icon"> <i class="icon-user"></i> </span>
             <h5>Edit Employment</h5>
           </div>
           <div class="widget-content nopadding">
-
-            <form class="form-horizontal" method="post" action="{{route('admin.emp.update',$employment->id)}}" name="user_add_validate" id="user_add_validate">
+             <div class="card-body1">
+              <!---------------------------Left Sidebar---------------------------------->
+              <div class="span4 csection2" >
+                <form class="form-horizontal" method="post" action="{{route('admin.emp.update',$employment->id)}}" name="user_add_validate" id="user_add_validate">
               {{ csrf_field() }}
               <input name="_method" type="hidden" value="PUT">
 
               <div class="control-group">
-              <label class="control-label">Source</label>
-                <div class="controls {{ $errors->has('source') ? ' is-invalid' : '' }}">
-                  <input type="text" name="source" id="source" value="{{$employment->source}}" >
-                  @if ($errors->has('source'))
-                      <span class="help-block">
-                          <strong>{{ $errors->first('source') }}</strong>
-                      </span>
-                  @endif
-                </div>
-              </div>
-              
-              <div class="control-group">
               <label class="control-label">Application Date</label>
                 <div class="controls {{ $errors->has('application_date') ? ' is-invalid' : '' }}">
                   <input type="text" name="application_date" id="application_date" value="{{ \Carbon\Carbon::parse($employment->application_date)->format('d-M-Y') }}" >
-                  <br><a href="javascript:void(0)" id="calender">Back to calender</a>
+                  <a href="javascript:void(0)" id="calender">Back to calender</a>
                   @if ($errors->has('application_date'))
                       <span class="help-block">
                           <strong>{{ $errors->first('application_date') }}</strong>
@@ -47,7 +38,7 @@
                   @endif
                 </div>
               </div>
-
+              
               <div class="control-group">
                 <label class="control-label">Title</label>
                 <div class="controls {{ $errors->has('title') ? ' is-invalid' : '' }}">
@@ -282,11 +273,52 @@
                 <input type="submit" value="Save" class="btn btn-success">
               </div>
             </form>
+              </div>
+               <div class="span4 csection2" >
+               </div>
+              <!----------------------------Right Sidebar--------------------------------->
+              <div class="span4 csection2" >
+                <div class="comment-section"> 
+                       <div class="comment-show">
 
+                        <ul class="comment-list">
+                         <li>dfggfh</li>
+
+                        </ul>
+
+                      </div>
+
+                      <input type="hidden" name="gettemplate" id="gettemplate" value="{{route('salestemplate.get')}}" />
+
+                      <form id="empcomment-submit" method="POST" action="{{  }}">
+                        @csrf
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <textarea id="comment" type="text" class="form-control{{ $errors->has('comment') ? ' is-invalid' : '' }}" name="comment" placeholder="Comment Here.." required autofocus>{{ old('comment') }}</textarea>
+
+                                @if ($errors->has('comment'))
+                                    <span class="invalid-feedback">
+                                        <strong>{{ $errors->first('comment') }}</strong>
+                                    </span>
+                                @endif
+
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-12">
+                              <input type="submit" class="btn btn-success" name="emp_comment" value="Save comment"/>
+                            </div>
+                        </div>
+
+                      </form>
+                    </div>
+              </div>
+             </div>
           </div>
         </div>
-      </div>
+      <!-- </div> -->
     </div>
+    <!-- </div> -->
     
   </div>
 

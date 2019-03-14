@@ -68,14 +68,48 @@ class EmploymentController extends Controller
           
         }
 
-        $employments=$sql->orderBy('application_date', 'desc')->paginate(10)->appends(request()->query());;
+        $employments=$sql->orderBy('application_date', 'desc')->paginate(10)->appends(request()->query());
 
         return view('admin.emp.list',['employments'=>$employments]);
 
 
     }
+/************************START CODE***************************/
+    public function updatelist(Request $request)
+    {
+         $sql=Employment::where('update_required','=',1);
+
+         $employments=$sql->orderBy('application_date', 'desc')->paginate(10);
+
+         return view('admin.emp.updatelist',['employments'=>$employments,]);
+    }
+
+    public function reqedit($id){
+        $user=Auth::user();
+        $employment = Employment::find($id);
+        $empcomments = DB::table('users')
+            ->join('emp_comments', 'emp_comments.user_id', '=', 'users.id')
+            ->select('users.id','users.name','emp_comments.comment',DB::raw('DATE_FORMAT(emp_comments.created_at, "%d %b %Y %r") as created_at'))->where('emp_comments.emp_id','=',$id)->get();
 
 
+        return view('admin.emp.reqedit',['employment'=>$employment,'empcomments'=>$empcomments]);
+    }
+
+    public function saveComment(Request $request, $id){ 
+        $user=Auth::user();
+        $data=['user_id'=>$user->id,'emp_id'=>$id,'comment'=>$request->input('comment')];
+
+        empComments::create($data);
+
+        $results=empComments::where('emp_id',$id)->get();
+
+        $results = DB::table('users')->join('emp_comments', 'users.id', '=', 'emp_comments.user_id')->where('emp_comments.emp_id',$id)->select('users.name', 'emp_comments.emp_id', 'emp_comments.comment', DB::raw('DATE_FORMAT(emp_comments.created_at, "%d %b %Y %r") as created_at'))->get();
+
+
+        return response()->json(['data' => $results,'status' => Response::HTTP_OK]); 
+    }
+
+/************************END CODE***************************/
 
     // show template
     public function importExport()

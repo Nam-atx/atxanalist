@@ -47,6 +47,11 @@ Route::group(['middleware'=>['auth','admin']],function(){
   Route::get('/admin/emp/add','Admin\EmploymentController@add')->name('admin.emp.add');
   Route::post('/admin/emp/save','Admin\EmploymentController@save')->name('admin.emp.save');
 
+  /*for update request*/
+  Route::get('/admin/resume/list','Admin\EmploymentController@updatelist')->name('admin.emp.updatelist');
+  Route::get('/admin/resume/{emp}/reqedit','Admin\EmploymentController@reqedit')->name('admin.emp.reqedit');
+  Route::post('/admin/emp/{emp}/comment','Admin\EmploymentController@saveComment')->name('admin.emp.comment');
+
   //logs management
   Route::get('/admin/log/list','Admin\LogController@list')->name('admin.log.list');
 
